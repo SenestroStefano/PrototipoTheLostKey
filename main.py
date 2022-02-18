@@ -2,11 +2,6 @@ import pygame, os
 import giocatore
 import global_var as glob
 
-# Inizializzazione Vettore di animazione camminata
-PlayerWalkingO = []
-PlayerWalkingVD = []
-PlayerWalkingVU = []
-
 # estrapolo tutti i file dalla cartella selezionata
 
 try:
@@ -40,13 +35,13 @@ def riempi(percorso):
     for filename in FileNames:
         if percorso == Folder_walkO:
             # print("Trovato Percorso WO")
-            PlayerWalkingO.append(filename)
+            glob.PlayerWalkingO.append(filename)
         if percorso == Folder_walkVD:
             # print("Trovato Percorso WVD")
-            PlayerWalkingVD.append(filename)
+            glob.PlayerWalkingVD.append(filename)
         if percorso == Folder_walkVU:
             # print("Trovato Percorso WVU")
-            PlayerWalkingVU.append(filename)
+            glob.PlayerWalkingVU.append(filename)
 
         # print("File name:"+filename+"\n\n")
 
@@ -55,7 +50,7 @@ riempi(Folder_walkVD)
 riempi(Folder_walkVU)
 
 # Inizializzazione Vettore di animazioni
-character_image = (PlayerWalkingVD,PlayerWalkingVU,PlayerWalkingO)
+character_image = (glob.PlayerWalkingVD,glob.PlayerWalkingVU,glob.PlayerWalkingO)
 
 # print(character_image)
 

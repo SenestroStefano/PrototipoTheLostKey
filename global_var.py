@@ -16,6 +16,12 @@ MULT = 4
 
 Player_speed = 0.5 * MULT
 Player_default_speed = Player_speed
+
+# Inizializzazione Vettore di animazione camminata
+PlayerWalkingO = []
+PlayerWalkingVD = []
+PlayerWalkingVU = []
+
 Background_Color = (12, 24, 36)
 
 # Dimensione Schermo
