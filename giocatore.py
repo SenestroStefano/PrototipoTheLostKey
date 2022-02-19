@@ -1,5 +1,5 @@
 import pygame, os
-import global_var as glob
+import global_var as GLOB
 
 # Creazione della classe Player ed è figlia di sprite +ottimizzata e veloce
 class Player(pygame.sprite.Sprite):
@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
         self.Last_keyPressed = "null"
 
         #hitbox del player
-        self.hitbox = (self.x + 15 * glob.MULT /glob.Player_proportion, self.y + 17 * glob.MULT /glob.Player_proportion, 24* glob.MULT /glob.Player_proportion, 43 * glob.MULT /glob.Player_proportion)
+        self.hitbox = (self.x + 15 * GLOB.MULT /GLOB.Player_proportion, self.y + 17 * GLOB.MULT /GLOB.Player_proportion, 24* GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion)
 
         # setta a video l'immagine del giocatore
         self.character = pygame.image.load(
@@ -119,9 +119,9 @@ class Player(pygame.sprite.Sprite):
         # Controlla se l'animazione è attiva
         if self.getIsWalking():
 
-            self.current_spriteWO += 0.2 / glob.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
-            self.current_spriteWVD += 0.2 / glob.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
-            self.current_spriteWVU += 0.2 / glob.Delta_Time
+            self.current_spriteWO += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
+            self.current_spriteWVD += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
+            self.current_spriteWVU += 0.2 / GLOB.Delta_Time
 
             # Controllo di non uscire dal range dei frames possibili
             if self.current_spriteWO >= len(self.animationWO):
@@ -166,22 +166,22 @@ class Player(pygame.sprite.Sprite):
             if value=="x":  # confronto il valore passato
 
                 if self.x >= object.x:  # confronto se la posizione del player delle x è maggiore o uguale della posizione delle x dell'oggetto di cui ho collisione
-                    self.x += glob.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
+                    self.x += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setLeftPress(False)    # ogni volta che collido dal lato sinistro non posso riandare a ricliccare il pulsante destro
                     return True # ritorno un valore perchè dopo lo vado ad utilizzare
                 else:
-                    self.x -= glob.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
+                    self.x -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setRightPress(False)    # ogni volta che collido dal lato destro non posso riandare a ricliccare il pulsante sinistro
                     return False # ritorno un valore perchè dopo lo vado ad utilizzare
 
             if value=="y":  # confronto il valore passato
 
                 if self.y >= object.y:  # confronto se la posizione del player delle y è maggiore o uguale della posizione delle y dell'oggetto di cui ho collisione
-                    self.y += glob.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
+                    self.y += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setUpPress(False)    # ogni volta che collido dal lato basso non posso riandare a ricliccare il pulsante alto
                     return True # ritorno un valore perchè dopo lo vado ad utilizzare
                 else:
-                    self.y -= glob.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
+                    self.y -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setDownPress(False)    # ogni volta che collido dal lato alto non posso riandare a ricliccare il pulsante basso
                     return False # ritorno un valore perchè dopo lo vado ad utilizzare
             
@@ -243,6 +243,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 Confronta("y")
                 Confronta("x")
+                self.setAllkeys(None)
                 
 
                     
@@ -255,22 +256,22 @@ class Player(pygame.sprite.Sprite):
         self.setVelocitaY(0)
 
         if (self.getLeftPress() and not self.getRightPress()):
-            self.setVelocitaX(-glob.Player_speed)
+            self.setVelocitaX(-GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(3) # richiamo la funzione di aggiorna l'animazione
         
         if (self.getRightPress() and not self.getLeftPress()):
-            self.setVelocitaX(glob.Player_speed)
+            self.setVelocitaX(GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(2) # richiamo la funzione di aggiorna l'animazione
 
         if (self.getUpPress() and not self.getDownPress()):
-            self.setVelocitaY(-glob.Player_speed)
+            self.setVelocitaY(-GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(1) # richiamo la funzione di aggiorna l'animazione
 
         if (self.getDownPress() and not self.getUpPress()):
-            self.setVelocitaY(glob.Player_speed)
+            self.setVelocitaY(GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(0) # richiamo la funzione di aggiorna l'animazione
 
@@ -281,9 +282,9 @@ class Player(pygame.sprite.Sprite):
 
         self.character = pygame.transform.scale(self.character, (self.width, self.height)) # ingrandisco (scalo) l'immagine presa dalle cartelle
 
-        glob.screen.blit(self.character, (self.x , self.y)) # indica che lo schermo fa nascere il giocatore
+        GLOB.screen.blit(self.character, (self.x , self.y)) # indica che lo schermo fa nascere il giocatore
         # self.hitbox = (self.x-60, self.y-55, 200, 180)
-        self.hitbox = (self.x + 15 * glob.MULT /glob.Player_proportion, self.y + 17 * glob.MULT /glob.Player_proportion, 24* glob.MULT /glob.Player_proportion, 43 * glob.MULT /glob.Player_proportion)
+        self.hitbox = (self.x + 15 * GLOB.MULT /GLOB.Player_proportion, self.y + 17 * GLOB.MULT /GLOB.Player_proportion, 24* GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion)
 
     # setta l'animazione della camminata a vera
     def animate(self):
