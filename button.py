@@ -6,7 +6,7 @@ class Button():
     	
 		if image != None:
 			image_w, image_h = image.get_width()*GLOB.MULT/2, image.get_height()*GLOB.MULT/2
-			self.image = pygame.transform.scale(image, (image_w, image_h))
+			self.image = pygame.transform.scale(image, (int(image_w), int(image_h)))
 		else:
 			self.image = image
 

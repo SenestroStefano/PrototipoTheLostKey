@@ -61,10 +61,10 @@ def inizializza():
     clock = pygame.time.Clock()
 
     # Fa Spawnare il giocatore e al centro dello schermo e con che velocità
-    player = giocatore.Player(GLOB.screen_width/2, GLOB.screen_height/2, sceltaG, Player_width, Player_height, character_image)
+    player = giocatore.Player(int(GLOB.screen_width/2), int(GLOB.screen_height/2), sceltaG, Player_width, Player_height, character_image)
 
     # Si consiglia di mettere una grandezza non minore di 18 w/h
-    obstacle = pygame.Rect(GLOB.screen_width/2-30*GLOB.MULT,GLOB.screen_height/2-75*GLOB.MULT, 50*GLOB.MULT, 50*GLOB.MULT)
+    obstacle = pygame.Rect(int(GLOB.screen_width/2)-30*GLOB.MULT,int(GLOB.screen_height/2)-75*GLOB.MULT, 50*GLOB.MULT, 50*GLOB.MULT)
 
     GLOB.Player_speed = 0.5 * GLOB.MULT
     GLOB.Player_default_speed = GLOB.Player_speed
@@ -93,16 +93,16 @@ def pausa():
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         PAUSE_TEXT = menu.get_font(10*int(GLOB.MULT)).render("MENU DI PAUSA", True, "#e9eef7")
-        PAUSE_RECT = PAUSE_TEXT.get_rect(center=(GLOB.screen_width/2, 50*GLOB.MULT))
+        PAUSE_RECT = PAUSE_TEXT.get_rect(center=(int(GLOB.screen_width/2), 50*GLOB.MULT))
 
 
-        PLAY_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 110*GLOB.MULT), 
+        PLAY_BUTTON = Button(image=None, pos=(int(GLOB.screen_width/2), 110*GLOB.MULT), 
                             text_input="PLAY", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
         
-        OPTIONS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 150*GLOB.MULT), 
+        OPTIONS_BUTTON = Button(image=None, pos=(int(GLOB.screen_width/2), 150*GLOB.MULT), 
                             text_input="OPTIONS", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
         
-        QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT), 
+        QUIT_BUTTON = Button(image=None, pos=(int(GLOB.screen_width/2), 190*GLOB.MULT), 
                             text_input="QUIT", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
 		
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:

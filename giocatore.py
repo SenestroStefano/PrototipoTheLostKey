@@ -280,7 +280,7 @@ class Player(pygame.sprite.Sprite):
 
         self.mesh = pygame.Rect(self.hitbox) # indico la hitbox (mesh) del Player
 
-        self.character = pygame.transform.scale(self.character, (self.width, self.height)) # ingrandisco (scalo) l'immagine presa dalle cartelle
+        self.character = pygame.transform.scale(self.character, (int(self.width), int(self.height))) # ingrandisco (scalo) l'immagine presa dalle cartelle
 
         GLOB.screen.blit(self.character, (self.x , self.y)) # indica che lo schermo fa nascere il giocatore
         # self.hitbox = (self.x-60, self.y-55, 200, 180)
