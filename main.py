@@ -23,7 +23,7 @@ def inizializza():
     else:
         sceltaG="/Senex"
 
-
+ 
     Folder_walkO = 'Characters'+sceltaG+'/WalkOrizontal'
     Folder_walkVD = 'Characters'+sceltaG+'/WalkVerticalD'
     Folder_walkVU = 'Characters'+sceltaG+'/WalkVerticalU'
