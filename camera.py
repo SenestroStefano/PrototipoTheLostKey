@@ -4,7 +4,7 @@ import global_var as GLOB
 
 # Creazione della classe Player ed è figlia di sprite +ottimizzata e veloce
 class Cam(pygame.sprite.Sprite):
-    def __init__(self, image, pos):
+    def __init__(self, image, pos, scala):
 
         #indico il giocatore impostato
         self.setPositionX(pos[0]) 
@@ -15,7 +15,7 @@ class Cam(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-        self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*5), (self.height*GLOB.MULT*5)))
+        self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*scala), (self.height*GLOB.MULT*scala)))
 
 
     def setPositionX(self, x):
@@ -40,27 +40,33 @@ class Cam(pygame.sprite.Sprite):
         c =  main.player.getPositionY() >= GLOB.screen_height - 80*GLOB.MULT
         d =  main.player.getPositionY() <= 20*GLOB.MULT
 
-        if a:
+        a1 = main.player.getRightPress()
+        b1 = main.player.getLeftPress()
+
+        c1 = main.player.getDownPress()
+        d1 = main.player.getUpPress()
+
+        if a and a1:
             main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
             self.x -= 1
-            print("A vero")
+            # print("A vero")
     
 
-        if b:
+        if b and b1:
             main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
             self.x += 1
-            print("B vero")
+            # print("B vero")
 
 
-        if c:
+        if c and c1:
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
             self.y -= 1
-            print("C vero")
+            # print("C vero")
     
 
-        if d:
+        if d and d1:
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
             self.y += 1
-            print("D vero")
+            # print("D vero")
         
-        print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))
+        #print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))

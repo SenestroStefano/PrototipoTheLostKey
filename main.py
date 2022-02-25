@@ -58,13 +58,10 @@ def inizializza():
     # Settaggio del Clock
     clock = pygame.time.Clock()
 
-    Background_width = pygame.image.load("assets/BackgroundCam.png").get_width()
-    Background_height = pygame.image.load("assets/BackgroundCam.png").get_height()
-
     # Fa Spawnare il giocatore e al centro dello schermo e con che velocità
     player = giocatore.Player(GLOB.screen_width/2, GLOB.screen_height/2, sceltaG, Player_width, Player_height, character_image)
 
-    cam = camera.Cam("assets/BackgroundCam.png", (0, 0))
+    cam = camera.Cam("assets/BackgroundCam.png", (0, 0), 2)
 
     GLOB.Player_speed = 0.5 * GLOB.MULT
     GLOB.Player_default_speed = GLOB.Player_speed
@@ -101,7 +98,7 @@ def pausa():
                             text_input="OPTIONS", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
         
         QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT), 
-                            text_input="QUIT", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
+                            text_input="BACK TO MENU", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
 		
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
