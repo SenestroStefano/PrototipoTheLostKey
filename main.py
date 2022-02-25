@@ -79,6 +79,9 @@ def pausa():
 
         player.setAllkeys(False)
 
+        cam.update()
+        obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
+        pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
         player.update() # richiama la funzione di aggiornamento del giocatore
 
 

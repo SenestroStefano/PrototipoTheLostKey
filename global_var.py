@@ -10,7 +10,7 @@ Player_proportion = 1 # Divisore della grandezza del giocatore
 FPS = 60 * Delta_Time
 
 # rapporto di proporzione allo schermo NON INFERIORE AD 1
-MULT = 3
+MULT = 4
 
 # print("Larghezza: "+str(Player_width)+" Altezza: "+str(Player_height))
 
@@ -32,4 +32,5 @@ screen_height = 270 * MULT
 
 # Configurazione Schermo
 screen = pygame.display.set_mode((screen_width,screen_height))
+# screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
 pygame.display.set_caption(TITLE)
