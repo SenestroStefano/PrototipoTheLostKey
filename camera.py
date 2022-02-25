@@ -48,25 +48,25 @@ class Cam(pygame.sprite.Sprite):
 
         if a and a1:
             main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
-            self.x -= 1
+            self.x -= main.player.getVelocitaX()
             # print("A vero")
     
 
         if b and b1:
             main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
-            self.x += 1
+            self.x += main.player.getVelocitaX()
             # print("B vero")
 
 
         if c and c1:
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
-            self.y -= 1
+            self.y -= main.player.getVelocitaY()
             # print("C vero")
     
 
         if d and d1:
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
-            self.y += 1
+            self.y += main.player.getVelocitaY()
             # print("D vero")
         
         #print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))
