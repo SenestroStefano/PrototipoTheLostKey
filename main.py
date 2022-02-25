@@ -1,13 +1,12 @@
 import pygame, os, sys
-import giocatore
-import menu
+import giocatore, menu, camera
 from button import Button
 
 import global_var as GLOB
 
 #funzione di default
 def inizializza():
-    global obstacle, player, clock, sceltaG
+    global obstacle, player, cam, clock, sceltaG
 
 
     if GLOB.Scelta==1:
@@ -22,7 +21,6 @@ def inizializza():
         sceltaG="/Giulio"
     else:
         sceltaG="/Senex"
-
 
     Folder_walkO = 'Characters'+sceltaG+'/WalkOrizontal'
     Folder_walkVD = 'Characters'+sceltaG+'/WalkVerticalD'
@@ -60,11 +58,13 @@ def inizializza():
     # Settaggio del Clock
     clock = pygame.time.Clock()
 
+    Background_width = pygame.image.load("assets/BackgroundCam.png").get_width()
+    Background_height = pygame.image.load("assets/BackgroundCam.png").get_height()
+
     # Fa Spawnare il giocatore e al centro dello schermo e con che velocità
     player = giocatore.Player(GLOB.screen_width/2, GLOB.screen_height/2, sceltaG, Player_width, Player_height, character_image)
 
-    # Si consiglia di mettere una grandezza non minore di 18 w/h
-    obstacle = pygame.Rect(GLOB.screen_width/2-30*GLOB.MULT,GLOB.screen_height/2-75*GLOB.MULT, 50*GLOB.MULT, 50*GLOB.MULT)
+    cam = camera.Cam("assets/BackgroundCam.png", (0, 0))
 
     GLOB.Player_speed = 0.5 * GLOB.MULT
     GLOB.Player_default_speed = GLOB.Player_speed
@@ -83,8 +83,6 @@ def pausa():
         player.setAllkeys(False)
 
         player.update() # richiama la funzione di aggiornamento del giocatore
-        
-        pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
 
 
         GLOB.screen.blit(BG_Seimi, (0, 0))
@@ -226,10 +224,14 @@ def main():
 
         #print(str(int(clock.get_GLOB.FPS()))) # Per mostrare gli GLOB.FPS
             
-        GLOB.screen.fill(GLOB.Background_Color) # colora lo sfondo con dei colori
-
+        #GLOB.screen.fill(GLOB.Background_Color) # colora lo sfondo con dei colori
+        GLOB.screen.fill((12,24,36))
+        cam.update()
         player.update() # richiama la funzione di aggiornamento del giocatore
         
+            # Si consiglia di mettere una grandezza non minore di 18 w/h
+        obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
+
         pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
         player.HasCollision(obstacle)
 
@@ -239,6 +241,7 @@ def main():
 
 
         pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione
+        pygame.display.update()
 
         clock.tick(GLOB.FPS) # setto gli FramesPerSecond
 

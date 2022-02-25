@@ -17,8 +17,8 @@ class Player(pygame.sprite.Sprite):
         self.Name_animationWVU = 'Characters'+self.Player_selected+"/WalkVerticalU"
 
         #indicazione posizione (dinamica)
-        self.x = int(x)
-        self.y = int(y)
+        self.setPositionX(int(x))
+        self.setPositionY(int(y))
 
         #indicazione grandezza (statica)
         self.width = width
@@ -58,6 +58,12 @@ class Player(pygame.sprite.Sprite):
 
 # ---------- self.set() ----------
 
+    def setPositionX(self, x):
+        self.x = x
+
+    def setPositionY(self, y):
+        self.y = y
+
     def setVelocitaX(self, x):
         self.__velX = x
 
@@ -91,6 +97,12 @@ class Player(pygame.sprite.Sprite):
 
 
 # ---------- self.get() ----------
+
+    def getPositionX(self):
+        return self.x
+
+    def getPositionY(self):
+        return self.y
 
     def getVelocitaX(self):
         return self.__velX
