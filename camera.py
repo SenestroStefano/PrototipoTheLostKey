@@ -34,11 +34,14 @@ class Cam(pygame.sprite.Sprite):
     def update(self):
         GLOB.screen.blit(self.image, (self.x, self.y))
 
-        a =  main.player.getPositionX() >= GLOB.screen_width - 80*GLOB.MULT
-        b =  main.player.getPositionX() <= 20*GLOB.MULT
+        Moff = 1
+        offset = (8 * Moff * GLOB.MULT, 4.5 * Moff * GLOB.MULT)
 
-        c =  main.player.getPositionY() >= GLOB.screen_height - 80*GLOB.MULT
-        d =  main.player.getPositionY() <= 20*GLOB.MULT
+        a =  main.player.getPositionX() >= GLOB.screen_width - offset[0] - main.player.width
+        b =  main.player.getPositionX() <= offset[1]
+
+        c =  main.player.getPositionY() >= GLOB.screen_height - offset[0] - main.player.height
+        d =  main.player.getPositionY() <= offset[1]
 
         a1 = main.player.getRightPress()
         b1 = main.player.getLeftPress()

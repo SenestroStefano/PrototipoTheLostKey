@@ -214,12 +214,12 @@ class Player(pygame.sprite.Sprite):
             c1 =  (self.getUpPress() and a or self.getDownPress() and a)
             d1 =  (self.getUpPress() and d or self.getDownPress() and d)
 
-            print("\n\nSinistro o Destro and Sù: ",str(a1))
-            print("Sinistro o Destro and Giù: ",str(b1))
-            print("Alto o Basso and Sinistra: ",str(c1))
-            print("Alto o Basso and Destra: ",str(d1))
+            # print("\n\nSinistro o Destro and Sù: ",str(a1))
+            # print("Sinistro o Destro and Giù: ",str(b1))
+            # print("Alto o Basso and Sinistra: ",str(c1))
+            # print("Alto o Basso and Destra: ",str(d1))
 
-            print("\nup: "+str(self.getUpPress())+" |down: "+str(self.getDownPress())+" |left: "+str(self.getLeftPress())+" |right: "+str(self.getRightPress())+"\n")
+            # print("\nup: "+str(self.getUpPress())+" |down: "+str(self.getDownPress())+" |left: "+str(self.getLeftPress())+" |right: "+str(self.getRightPress())+"\n")
             
             if self.Last_keyPressed != "Null":  # Confronto se il giocatore è fermo o si sta muovendo
 
