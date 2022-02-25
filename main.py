@@ -222,7 +222,7 @@ def main():
         #print(str(int(clock.get_GLOB.FPS()))) # Per mostrare gli GLOB.FPS
             
         #GLOB.screen.fill(GLOB.Background_Color) # colora lo sfondo con dei colori
-        GLOB.screen.fill((12,24,36))
+        GLOB.screen.fill(GLOB.Background_Color)
         cam.update()
         player.update() # richiama la funzione di aggiornamento del giocatore
         
