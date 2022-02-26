@@ -16,6 +16,9 @@ class Player(pygame.sprite.Sprite):
         self.Name_animationWVD = 'Characters'+self.Player_selected+"/WalkVerticalD"
         self.Name_animationWVU = 'Characters'+self.Player_selected+"/WalkVerticalU"
 
+        self.ombra = pygame.image.load("assets/ombra.png")
+        self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width()*GLOB.MULT,self.ombra.get_height()*GLOB.MULT))
+
         #indicazione posizione (dinamica)
         self.setPositionX(int(x))
         self.setPositionY(int(y))
@@ -294,6 +297,7 @@ class Player(pygame.sprite.Sprite):
 
         self.character = pygame.transform.scale(self.character, (self.width, self.height)) # ingrandisco (scalo) l'immagine presa dalle cartelle
 
+        GLOB.screen.blit(self.ombra, (self.x , self.y-10)) # indica che lo schermo fa nascere il giocatore
         GLOB.screen.blit(self.character, (self.x , self.y)) # indica che lo schermo fa nascere il giocatore
         # self.hitbox = (self.x-60, self.y-55, 200, 180)
         self.hitbox = (self.x + 15 * GLOB.MULT /GLOB.Player_proportion, self.y + 17 * GLOB.MULT /GLOB.Player_proportion, 24* GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion)
