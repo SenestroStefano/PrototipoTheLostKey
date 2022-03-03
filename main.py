@@ -11,16 +11,22 @@ def inizializza():
 
     if GLOB.Scelta==1:
         sceltaG="/Senex"
+        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
     elif GLOB.Scelta==2:
         sceltaG="/Seima"
+        GLOB.PlayerRun_speed = 1 + GLOB.Seima_Stat[0]/10
     elif GLOB.Scelta==3:
         sceltaG="/Alexandra"
+        GLOB.PlayerRun_speed = 1 + GLOB.Aleks_Stat[0]/10
     elif GLOB.Scelta==4:
         sceltaG="/XPeppoz"
+        GLOB.PlayerRun_speed = 1 + GLOB.Beppe_Stat[0]/10
     elif GLOB.Scelta==5:
         sceltaG="/Giulio"
+        GLOB.PlayerRun_speed = 1 + GLOB.Dark_Stat[0]/10
     else:
         sceltaG="/Senex"
+        GLOB.PlayerRun_speed = 1.5
 
     Folder_walkO = 'Characters'+sceltaG+'/WalkOrizontal'
     Folder_walkVD = 'Characters'+sceltaG+'/WalkVerticalD'
@@ -194,7 +200,7 @@ def main():
 
         if event.key == pygame.K_LSHIFT:
             if IsPressed:
-                GLOB.Player_speed = GLOB.Player_speed * 1.4 # GLOB.MULT non l'ho messo perchè lo ha gia'
+                GLOB.Player_speed = GLOB.Player_speed * GLOB.PlayerRun_speed # GLOB.MULT non l'ho messo perchè lo ha gia'
             else:
                 GLOB.Player_speed = GLOB.Player_default_speed
 
@@ -222,8 +228,11 @@ def main():
                 # menu.main_menu()
                 pausa()
 
-        #print(str(int(clock.get_GLOB.FPS()))) # Per mostrare gli GLOB.FPS
-            
+        # if int(clock.get_fps())<110:
+        #     print("| fps: "+str(int(clock.get_fps()))) # Per mostrare gli GLOB.FPS
+
+        #print("Player Speed: "+str(GLOB.PlayerRun_speed))
+        
         #GLOB.screen.fill(GLOB.Background_Color) # colora lo sfondo con dei colori
         GLOB.screen.fill(GLOB.Background_Color)
         cam.update()

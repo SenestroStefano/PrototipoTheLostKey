@@ -17,12 +17,24 @@ MULT = 4
 Scelta = 1
 
 Player_speed = 0.5 * MULT
+PlayerRun_speed = 1.4
+
 Player_default_speed = Player_speed
 
 # Inizializzazione lista di animazione camminata
 PlayerWalkingO = []
 PlayerWalkingVD = []
 PlayerWalkingVU = []
+
+# STATISTICHE
+# Vel - Chimica - Storia - Inglese - Fisica - Matematica - Informatica - Italiano - Sistemi - TPSIT
+Senex_Stat = [ 5, 8, 6, 7, 3, 6, 6, 5, 4, 10 ]
+Seima_Stat = [ 2, 8, 10, 8, 9, 10, 10, 8, 10, 10 ] # fai schifo
+Aleks_Stat = [ 5, 10, 10, 6, 2, 7, 8, 10, 7, 2 ]
+Beppe_Stat = [ 6, 2, 8, 4, 2, 6, 6, 5, 9, 7 ]
+Dark_Stat = [ 3, 8, 7, 9, 10, 8, 6, 7, 6, 2 ]
+
+Stats = ( Senex_Stat, Seima_Stat, Aleks_Stat, Beppe_Stat, Dark_Stat )
 
 Background_Color = (12, 24, 36)
 
