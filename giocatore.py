@@ -134,30 +134,26 @@ class Player(pygame.sprite.Sprite):
         # Controlla se l'animazione è attiva
         if self.getIsWalking():
 
-            if self.getUpPress():
-                self.current_spriteWVU += 0.2 / GLOB.Delta_Time
-                self.image = self.animationWVU[int(self.current_spriteWVU)]
+            self.current_spriteWO += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
+            self.current_spriteWVD += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
+            self.current_spriteWVU += 0.2 / GLOB.Delta_Time
 
-                if self.current_spriteWVU >= len(self.animationWVU):
-                    self.current_spriteWVU = 0
+            # Controllo di non uscire dal range dei frames possibili
+            if self.current_spriteWO >= len(self.animationWO):
+                self.current_spriteWO = 0
 
+            # setta l'immagine di animazione attuale di walking
+            self.image = self.animationWO[int(self.current_spriteWO)]
 
-            if self.getDownPress():
-                self.current_spriteWVD += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
-                self.image = self.animationWVD[int(self.current_spriteWVD)]
+            if self.current_spriteWVD >= len(self.animationWVD):
+                self.current_spriteWVD = 0
+            
+            self.image = self.animationWVD[int(self.current_spriteWVD)]
 
-                if self.current_spriteWVD >= len(self.animationWVD):
-                    self.current_spriteWVD = 0
-
-            if self.getLeftPress() or self.getRightPress():
-                self.current_spriteWO += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
-                
-                # setta l'immagine di animazione attuale di walking
-                self.image = self.animationWO[int(self.current_spriteWO)]
-
-                # Controllo di non uscire dal range dei frames possibili
-                if self.current_spriteWO >= len(self.animationWO):
-                    self.current_spriteWO = 0
+            if self.current_spriteWVU >= len(self.animationWVU):
+                self.current_spriteWVU = 0
+            
+            self.image = self.animationWVU[int(self.current_spriteWVU)]
 
             if var==0:
                 self.character = pygame.image.load(

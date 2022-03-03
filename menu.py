@@ -25,28 +25,26 @@ def options():
 
         if GLOB.Scelta==1:
             char = "Senex.png"
-            NAME_TEXT = get_font(12*int(GLOB.MULT)).render("Senex", True, "#e9eef7")
-            NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
+            name = "Senex"
         elif GLOB.Scelta==2:
             char = "Seima.png"
-            NAME_TEXT = get_font(12*int(GLOB.MULT)).render("Seima", True, "#e9eef7")
-            NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
+            name = "Seima"
         elif GLOB.Scelta==3:
             char = "Aleks.png"
-            NAME_TEXT = get_font(12*int(GLOB.MULT)).render("Aleks", True, "#e9eef7")
-            NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
+            name = "Aleks"
         elif GLOB.Scelta==4:
             char = "Beppe.png"
-            NAME_TEXT = get_font(12*int(GLOB.MULT)).render("Beppe", True, "#e9eef7")
-            NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
+            name = "Beppe"
         elif GLOB.Scelta==5:
             char = "Giulio.png"
-            NAME_TEXT = get_font(12*int(GLOB.MULT)).render("Dark Angel", True, "#e9eef7")
-            NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
+            name = "Dark Angel"
         else:
             char = "Senex.png"
-            NAME_TEXT = get_font(12*int(GLOB.MULT)).render("Senex", True, "#e9eef7")
-            NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
+            name = "Senex"
+
+
+        NAME_TEXT = get_font(12*int(GLOB.MULT)).render(name, True, "#e9eef7")
+        NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
 
 
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
