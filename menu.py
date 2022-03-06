@@ -195,36 +195,43 @@ def options():
         Lchange.update(screen)
 
 
-        Screen_480x270 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-70*GLOB.MULT), 
+        Screen_480x270 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-110*GLOB.MULT), 
                             text_input="480 x 270", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
 
         Screen_480x270.changeColor(OPTIONS_MOUSE_POS)
         Screen_480x270.update(screen)
 
-        Screen_960x540 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-30*GLOB.MULT), 
+        Screen_960x540 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-70*GLOB.MULT), 
                     text_input="960 x 540", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
 
         Screen_960x540.changeColor(OPTIONS_MOUSE_POS)
         Screen_960x540.update(screen)
 
-        Screen_1440x810 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+10*GLOB.MULT), 
+        Screen_1440x810 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-30*GLOB.MULT), 
                     text_input="1440 x 810", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
 
         Screen_1440x810.changeColor(OPTIONS_MOUSE_POS)
         Screen_1440x810.update(screen)
 
-        Screen_1920x1080 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+50*GLOB.MULT), 
+        Screen_1920x1080 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+10*GLOB.MULT), 
                     text_input="1920 x 1080", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
 
         Screen_1920x1080.changeColor(OPTIONS_MOUSE_POS)
         Screen_1920x1080.update(screen)
 
 
-        Screen_3840x2160 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+90*GLOB.MULT), 
+        Screen_3840x2160 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+50*GLOB.MULT), 
                     text_input="3840 x 2160", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
 
         Screen_3840x2160.changeColor(OPTIONS_MOUSE_POS)
         Screen_3840x2160.update(screen)
+
+
+        Screen_FULL = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+90*GLOB.MULT), 
+                    text_input="SET FULLSCREEN", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+
+        Screen_FULL.changeColor(OPTIONS_MOUSE_POS)
+        Screen_FULL.update(screen)
 
 
 
@@ -242,6 +249,7 @@ def options():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 flag_screen = False
+                flag_Fullscreen = False
 
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                     main_menu()
@@ -277,13 +285,19 @@ def options():
                 if Screen_3840x2160.checkForInput(OPTIONS_MOUSE_POS):
                     GLOB.MULT=5
                     flag_screen = True
+                
+                if Screen_FULL.checkForInput(OPTIONS_MOUSE_POS):
+                    flag_screen = True
+                    flag_Fullscreen = True
 
                 if flag_screen:
                     GLOB.screen_width = 480*GLOB.MULT
                     GLOB.screen_height = 270*GLOB.MULT
 
-                    GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height))
-
+                    if not flag_Fullscreen:
+                        GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height))
+                    else: 
+                        GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height),pygame.FULLSCREEN)
 
         CHARACTER = pygame.transform.scale(CHARACTER, (character_width, character_height))
                 

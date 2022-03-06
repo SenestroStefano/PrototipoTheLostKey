@@ -171,6 +171,8 @@ class Player(pygame.sprite.Sprite):
                 immagine = pygame.image.load(
                 os.path.join(self.Name_animationWO,self.image))
                 self.character = pygame.transform.flip(immagine, True, False) # specchia l'immagine dalle assi x
+            
+            #print("Sprite WO corrente: "+str(self.current_spriteWO)+" | Sprite WVD corrente: "+str(self.current_spriteWVD)+" | Sprite WVU corrente: "+str(int(self.current_spriteWVU)))
 
     def HasCollision(self, object):
 

@@ -4,6 +4,12 @@ from button import Button
 
 import global_var as GLOB
 
+
+
+def get_font(size): # Returns Press-Start-2P in the desired size
+    return pygame.font.Font("assets/font.ttf", size)
+
+
 #funzione di default
 def inizializza():
     global obstacle, player, cam, clock, sceltaG
@@ -58,8 +64,8 @@ def inizializza():
 
     # print(character_image)
 
-    Player_width = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).get_width() * GLOB.MULT / GLOB.Player_proportion
-    Player_height = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).get_height() * GLOB.MULT / GLOB.Player_proportion
+    Player_width = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).convert().get_width() * GLOB.MULT / GLOB.Player_proportion
+    Player_height = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).convert().get_height() * GLOB.MULT / GLOB.Player_proportion
 
     # Settaggio del Clock
     clock = pygame.time.Clock()
@@ -244,6 +250,14 @@ def main():
         pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
         player.HasCollision(obstacle)
 
+
+        FPS_TEXT = get_font(8*int(GLOB.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
+        FPS_RECT = FPS_TEXT.get_rect(center=(GLOB.screen_width-40*GLOB.MULT, 20*GLOB.MULT))
+
+        if int(clock.get_fps()) < 110:
+            print("Gli fps sono scesi: "+str(clock.get_fps()))
+
+        GLOB.screen.blit(FPS_TEXT, FPS_RECT)
 
         if keys_pressed[pygame.K_TAB]:
             pygame.draw.rect(GLOB.screen, (255,0,0), player.mesh, int(1*GLOB.MULT))
