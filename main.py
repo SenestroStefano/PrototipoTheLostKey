@@ -5,7 +5,6 @@ from button import Button
 import global_var as GLOB
 
 
-
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
@@ -41,6 +40,9 @@ def inizializza():
     # estrapolo tutti i file dalla cartella selezionata
     def riempi(percorso):
         FileNames = os.listdir(percorso)
+
+        FileNames.sort()
+        sorted(FileNames)
 
         for filename in FileNames:
             if percorso == Folder_walkO:
@@ -254,8 +256,8 @@ def main():
         FPS_TEXT = get_font(8*int(GLOB.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
         FPS_RECT = FPS_TEXT.get_rect(center=(GLOB.screen_width-40*GLOB.MULT, 20*GLOB.MULT))
 
-        if int(clock.get_fps()) < 110:
-            print("Gli fps sono scesi: "+str(clock.get_fps()))
+        #if int(clock.get_fps()) < GLOB.FPS-15:
+        #    print("Gli fps sono scesi: "+str(clock.get_fps()))
 
         GLOB.screen.blit(FPS_TEXT, FPS_RECT)
 
