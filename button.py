@@ -63,8 +63,9 @@ class Bar():
 		self.image = pygame.image.load("assets/BarraCompletamento.png")
 		self.image = pygame.transform.scale(self.image, (self.image.get_width()*GLOB.MULT/self.div, self.image.get_height()*GLOB.MULT/self.div))
 
-		self.BarGreen = pygame.image.load("assets/BarraVerde.png").convert()
-		self.BarGreen = pygame.transform.scale(self.BarGreen, (self.BarGreen.get_width()*self.number*GLOB.MULT/self.div, self.BarGreen.get_height()*GLOB.MULT/self.div))
+		if number != 0:
+			self.BarGreen = pygame.image.load("assets/BarraVerde.png").convert()
+			self.BarGreen = pygame.transform.scale(self.BarGreen, (self.BarGreen.get_width()*self.number*GLOB.MULT/self.div, self.BarGreen.get_height()*GLOB.MULT/self.div))
 
 		self.BarGrey = pygame.image.load("assets/BarraGrigia.png").convert()
 		self.BarGrey = pygame.transform.scale(self.BarGrey, (self.BarGrey.get_width()*GLOB.MULT/self.div, self.BarGrey.get_height()*GLOB.MULT/self.div))

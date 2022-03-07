@@ -16,8 +16,8 @@ MULT = 4
 
 Scelta = 1
 
-Player_speed = 0.5 * MULT
-PlayerRun_speed = 1.4
+Player_speed = 0.25 * MULT * Delta_Time
+PlayerRun_speed = 0.7 * MULT * Delta_Time
 
 Player_default_speed = Player_speed
 

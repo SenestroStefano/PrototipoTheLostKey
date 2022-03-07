@@ -143,7 +143,8 @@ class Player(pygame.sprite.Sprite):
                 self.current_spriteWO = 0
 
             # setta l'immagine di animazione attuale di walking
-            self.image = self.animationWO[int(self.current_spriteWO)]
+            if self.getLeftPress():
+                self.image = self.animationWO[int(self.current_spriteWO)]
 
             if self.current_spriteWVD >= len(self.animationWVD):
                 self.current_spriteWVD = 0

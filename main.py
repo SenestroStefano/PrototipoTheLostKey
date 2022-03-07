@@ -1,3 +1,4 @@
+from ast import Global
 import pygame, os, sys
 import giocatore, menu, camera
 from button import Button
@@ -16,22 +17,22 @@ def inizializza():
 
     if GLOB.Scelta==1:
         sceltaG="/Senex"
-        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
+        GLOB.PlayerRun_speed = 0 + GLOB.Senex_Stat[0]/10 * GLOB.Delta_Time
     elif GLOB.Scelta==2:
         sceltaG="/Seima"
-        GLOB.PlayerRun_speed = 1 + GLOB.Seima_Stat[0]/10
+        GLOB.PlayerRun_speed = 0 + GLOB.Seima_Stat[0]/10 * GLOB.Delta_Time
     elif GLOB.Scelta==3:
         sceltaG="/Alexandra"
-        GLOB.PlayerRun_speed = 1 + GLOB.Aleks_Stat[0]/10
+        GLOB.PlayerRun_speed = 0 + GLOB.Aleks_Stat[0]/10 * GLOB.Delta_Time
     elif GLOB.Scelta==4:
         sceltaG="/XPeppoz"
-        GLOB.PlayerRun_speed = 1 + GLOB.Beppe_Stat[0]/10
+        GLOB.PlayerRun_speed = 0 + GLOB.Beppe_Stat[0]/10 * GLOB.Delta_Time
     elif GLOB.Scelta==5:
         sceltaG="/Giulio"
-        GLOB.PlayerRun_speed = 1 + GLOB.Dark_Stat[0]/10
+        GLOB.PlayerRun_speed = 0 + GLOB.Dark_Stat[0]/10 * GLOB.Delta_Time
     else:
         sceltaG="/Senex"
-        GLOB.PlayerRun_speed = 1.5
+        GLOB.PlayerRun_speed = 2.6 / GLOB.Delta_Time
 
     Folder_walkO = 'Characters'+sceltaG+'/WalkOrizontal'
     Folder_walkVD = 'Characters'+sceltaG+'/WalkVerticalD'
@@ -76,9 +77,6 @@ def inizializza():
     player = giocatore.Player(GLOB.screen_width/2, GLOB.screen_height/2, sceltaG, Player_width, Player_height, character_image)
 
     cam = camera.Cam("assets/BackgroundCam.png", (0, 0), 2)
-
-    GLOB.Player_speed = 0.5 * GLOB.MULT
-    GLOB.Player_default_speed = GLOB.Player_speed
 
 
 def pausa():
@@ -263,6 +261,9 @@ def main():
 
         if keys_pressed[pygame.K_TAB]:
             pygame.draw.rect(GLOB.screen, (255,0,0), player.mesh, int(1*GLOB.MULT))
+
+
+        print("La VW: "+str(GLOB.Player_default_speed)+" | La VR: "+str(GLOB.PlayerRun_speed)+" | AV: "+str(GLOB.Player_speed))
 
 
         pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione
