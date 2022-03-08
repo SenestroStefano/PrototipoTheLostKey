@@ -3,11 +3,13 @@ import pygame, os, sys
 #Importo i vari file e classi necessarie
 import giocatore, menu, camera
 from button import Button
-from menu import get_font
 
 
 # Importo le variabili Globali
 import global_var as GLOB
+
+def get_font(size): # Returns Press-Start-2P in the desired size
+    return pygame.font.Font("assets/font.ttf", size)
 
 #funzione di default
 def inizializza():
