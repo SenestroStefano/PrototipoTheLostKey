@@ -45,9 +45,9 @@ class Cam():
         offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
 
         a =  main.player.getPositionX() >= GLOB.screen_width - offset[0] - main.player.width
-        b =  main.player.getPositionX() <= offset[1]
+        b =  main.player.getPositionX() <= offset[0]
 
-        c =  main.player.getPositionY() >= GLOB.screen_height - offset[0] - main.player.height
+        c =  main.player.getPositionY() >= GLOB.screen_height - offset[1] - main.player.height
         d =  main.player.getPositionY() <= offset[1]
 
         a1 = main.player.getRightPress()
