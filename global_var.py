@@ -13,7 +13,7 @@ FPS = 60 * Delta_Time
 MULT = 4
 
 # rapporto offset telecamera dello schermo
-Moff = 4
+Moff = 10
 
 Scelta = 0
 

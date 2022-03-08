@@ -46,7 +46,6 @@ def inizializza():
     else:
         sceltaG="/Senex"
         GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
-        GLOB.Scelta = 0
 
 
 

@@ -55,8 +55,6 @@ def options():
         else:
             char = "Senex.png"
             name = "Senex"
-            GLOB.Scelta = 0
-
 
         NAME_TEXT = get_font(12*int(GLOB.MULT)).render(name, True, "#e9eef7")
         NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
@@ -272,14 +270,14 @@ def options():
                 if Rchange.checkForInput(OPTIONS_MOUSE_POS):
                     GLOB.Scelta+=1
 
-                    if GLOB.Scelta>5:
-                        GLOB.Scelta=1
+                    if GLOB.Scelta>4:
+                        GLOB.Scelta=0
 
                 if Lchange.checkForInput(OPTIONS_MOUSE_POS):
                     GLOB.Scelta-=1
 
-                    if GLOB.Scelta<1:
-                        GLOB.Scelta=5
+                    if GLOB.Scelta<0:
+                        GLOB.Scelta=4
 
                 if Screen_480x270.checkForInput(OPTIONS_MOUSE_POS):
                     GLOB.MULT=1

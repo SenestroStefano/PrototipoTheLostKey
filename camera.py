@@ -78,5 +78,8 @@ class Cam():
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
             self.y += -main.player.getVelocitaY()
             # print("D vero")
+
+        #Offset_rect = pygame.Rect(offset[0]+main.player.width, offset[1]+main.player.height, GLOB.screen_width - offset[0], GLOB.screen_height - offset[1])
+        #pygame.draw.rect(GLOB.screen,(20,120,99), Offset_rect, 1*GLOB.MULT)
         
         #print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))
