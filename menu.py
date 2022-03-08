@@ -55,6 +55,7 @@ def options():
         else:
             char = "Senex.png"
             name = "Senex"
+            GLOB.Scelta = 0
 
 
         NAME_TEXT = get_font(12*int(GLOB.MULT)).render(name, True, "#e9eef7")

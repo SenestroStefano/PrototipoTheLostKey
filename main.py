@@ -19,30 +19,34 @@ def inizializza():
  ---   Cambio il personaggio in base alla scelta del giocatore ---
         
     """
-
+    
+    GLOB.Player_speed = 1 * GLOB.MULT / GLOB.Delta_Time
+    GLOB.Player_default_speed = GLOB.Player_speed
+    
     if GLOB.Scelta==0:
         
         # SceltaG è il percorso dove si trovano i sprite per le animazioni
         sceltaG="/Senex"
 
         # In base alla statistica della velolità del giocatore vado ad impostrare la velocità corrente che deve avere il player nel gioco
-        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
 
     elif GLOB.Scelta==1:
         sceltaG="/Seima"
-        GLOB.PlayerRun_speed = 1 + GLOB.Seima_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+        GLOB.PlayerRun_speed = 1 + GLOB.Seima_Stat[0]/10
     elif GLOB.Scelta==2:
         sceltaG="/Alexandra"
-        GLOB.PlayerRun_speed = 1 + GLOB.Aleks_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+        GLOB.PlayerRun_speed = 1 + GLOB.Aleks_Stat[0]/10
     elif GLOB.Scelta==3:
         sceltaG="/XPeppoz"
-        GLOB.PlayerRun_speed = 1 + GLOB.Beppe_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+        GLOB.PlayerRun_speed = 1 + GLOB.Beppe_Stat[0]/10
     elif GLOB.Scelta==4:
         sceltaG="/Giulio"
-        GLOB.PlayerRun_speed = 1 + GLOB.Dark_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+        GLOB.PlayerRun_speed = 1 + GLOB.Dark_Stat[0]/10
     else:
         sceltaG="/Senex"
-        GLOB.PlayerRun_speed = 1.5 / GLOB.Delta_Time * GLOB.MULT
+        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
+        GLOB.Scelta = 0
 
 
 
@@ -228,7 +232,7 @@ def main():
 
         if event.key == pygame.K_LSHIFT:
             if IsPressed:
-                GLOB.Player_speed = GLOB.Player_speed * GLOB.PlayerRun_speed # GLOB.MULT non l'ho messo perchè lo ha gia'
+                GLOB.Player_speed = GLOB.Player_speed * GLOB.PlayerRun_speed
             else:
                 GLOB.Player_speed = GLOB.Player_default_speed
 
@@ -283,8 +287,12 @@ def main():
             pygame.draw.rect(GLOB.screen, (0,255,255), player.mesh, int(1*GLOB.MULT))
 
 
-        print("La VW: "+str(GLOB.Player_default_speed)+" | La VR: "+str(GLOB.PlayerRun_speed)+" | AV: "+str(GLOB.Player_speed))
+        #print("La VW: "+str(GLOB.Player_default_speed)+" | La VR: "+str(GLOB.PlayerRun_speed)+" | AV: "+str(GLOB.Player_speed)+" | Scelta: "+str(GLOB.Scelta))
 
+        RUN_TEXT = get_font(8*int(GLOB.MULT)).render("V-A: "+str(GLOB.Player_speed), True, "white")
+        RUN_RECT = RUN_TEXT.get_rect(center=(40*GLOB.MULT, 20*GLOB.MULT))
+
+        GLOB.screen.blit(RUN_TEXT, RUN_RECT)
 
         pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione
         pygame.display.update()

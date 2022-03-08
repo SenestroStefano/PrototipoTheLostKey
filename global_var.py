@@ -3,7 +3,7 @@ TITLE = "The Lost Keys"
 
 # Valori di proporzione
 
-Delta_Time = 1 # Delta_Time (Congliabile 1/2)
+Delta_Time = 2 # Delta_Time (Congliabile 1/2)
 Player_proportion = 1 # Divisore della grandezza del giocatore
 
 #FPS
@@ -17,8 +17,8 @@ Moff = 4
 
 Scelta = 0
 
-Player_speed = 1 * MULT / Delta_Time
-PlayerRun_speed = 1.5 * MULT / Delta_Time
+Player_speed = 1 * MULT
+PlayerRun_speed = 1.5 * MULT
 
 Player_default_speed = Player_speed
 
