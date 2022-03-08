@@ -1,47 +1,64 @@
-from ast import Global
 import pygame, os, sys
+
+#Importo i vari file e classi necessarie
 import giocatore, menu, camera
 from button import Button
+from menu import get_font
 
+
+# Importo le variabili Globali
 import global_var as GLOB
-
-
-def get_font(size): # Returns Press-Start-2P in the desired size
-    return pygame.font.Font("assets/font.ttf", size)
-
 
 #funzione di default
 def inizializza():
     global obstacle, player, cam, clock, sceltaG
 
+    """
+ ---   Cambio il personaggio in base alla scelta del giocatore ---
+        
+    """
 
-    if GLOB.Scelta==1:
+    if GLOB.Scelta==0:
+        
+        # SceltaG è il percorso dove si trovano i sprite per le animazioni
         sceltaG="/Senex"
-        GLOB.PlayerRun_speed = 0 + GLOB.Senex_Stat[0]/10 * GLOB.Delta_Time
-    elif GLOB.Scelta==2:
+
+        # In base alla statistica della velolità del giocatore vado ad impostrare la velocità corrente che deve avere il player nel gioco
+        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+
+    elif GLOB.Scelta==1:
         sceltaG="/Seima"
-        GLOB.PlayerRun_speed = 0 + GLOB.Seima_Stat[0]/10 * GLOB.Delta_Time
-    elif GLOB.Scelta==3:
+        GLOB.PlayerRun_speed = 1 + GLOB.Seima_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+    elif GLOB.Scelta==2:
         sceltaG="/Alexandra"
-        GLOB.PlayerRun_speed = 0 + GLOB.Aleks_Stat[0]/10 * GLOB.Delta_Time
-    elif GLOB.Scelta==4:
+        GLOB.PlayerRun_speed = 1 + GLOB.Aleks_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+    elif GLOB.Scelta==3:
         sceltaG="/XPeppoz"
-        GLOB.PlayerRun_speed = 0 + GLOB.Beppe_Stat[0]/10 * GLOB.Delta_Time
-    elif GLOB.Scelta==5:
+        GLOB.PlayerRun_speed = 1 + GLOB.Beppe_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
+    elif GLOB.Scelta==4:
         sceltaG="/Giulio"
-        GLOB.PlayerRun_speed = 0 + GLOB.Dark_Stat[0]/10 * GLOB.Delta_Time
+        GLOB.PlayerRun_speed = 1 + GLOB.Dark_Stat[0]/10 / GLOB.Delta_Time * GLOB.MULT
     else:
         sceltaG="/Senex"
-        GLOB.PlayerRun_speed = 2.6 / GLOB.Delta_Time
+        GLOB.PlayerRun_speed = 1.5 / GLOB.Delta_Time * GLOB.MULT
 
+
+
+    """
+ ---   Setto il percorso degli sprite ---
+        
+    """
+    
+    #(0 => "/Senex" - 1 => "/Seima" - 2 => "/Alexandra" - 3 => "/XPeppoz" - 4 => "/Giulio" - Default => "/Senex")
     Folder_walkO = 'Characters'+sceltaG+'/WalkOrizontal'
     Folder_walkVD = 'Characters'+sceltaG+'/WalkVerticalD'
     Folder_walkVU = 'Characters'+sceltaG+'/WalkVerticalU'
 
-    # estrapolo tutti i file dalla cartella selezionata
+    # estrapolo tutti i file (sprite/immagini) dalla cartella selezionata
     def riempi(percorso):
         FileNames = os.listdir(percorso)
 
+        # Ordino i file e gli appendo ad una lista, in modo che le animazioni siano lineari e ordinate
         FileNames.sort()
         sorted(FileNames)
 
@@ -62,11 +79,10 @@ def inizializza():
     riempi(Folder_walkVD)
     riempi(Folder_walkVU)
 
-    # Inizializzazione Vettore di animazioni
+    # Inizializzazione Tupla di animazioni
     character_image = (GLOB.PlayerWalkingVD,GLOB.PlayerWalkingVU,GLOB.PlayerWalkingO)
 
-    # print(character_image)
-
+    # Ottengo la larghezza e l'altezza che ha il giocatore nell'immagine ( questo per evitare di allungarla in modo sbagliato e non proporzionale )
     Player_width = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).convert().get_width() * GLOB.MULT / GLOB.Player_proportion
     Player_height = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).convert().get_height() * GLOB.MULT / GLOB.Player_proportion
 
@@ -76,10 +92,13 @@ def inizializza():
     # Fa Spawnare il giocatore e al centro dello schermo e con che velocità
     player = giocatore.Player(GLOB.screen_width/2, GLOB.screen_height/2, sceltaG, Player_width, Player_height, character_image)
 
-    cam = camera.Cam("assets/BackgroundCam.png", (0, 0), 2)
+    # Faccio nascere l'oggetto "cam"
+    cam = camera.Cam()
 
-
+# Funzione Gioco in Pausa
 def pausa():
+
+    # Setto visibile il cursore del mouse
     pygame.mouse.set_visible(True)
 
     ricominciamo = False
@@ -99,7 +118,7 @@ def pausa():
 
         GLOB.screen.blit(BG_Seimi, (0, 0))
 
-        
+        # Ottengo la posizione corrente del cursore del mouse
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         PAUSE_TEXT = menu.get_font(10*int(GLOB.MULT)).render("MENU DI PAUSA", True, "#e9eef7")
@@ -126,7 +145,7 @@ def pausa():
             if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                 ricominciamo = True
                 player.finish()
-                main()	# mi riapplica le variabili di default quindi è come se riavviassi il gioco
+                main()
 
             if event_pausa.type == pygame.QUIT:
                 pygame.quit()
@@ -134,7 +153,8 @@ def pausa():
 
             if event_pausa.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
+                sys.exit()	# mi riapplica le variabili di default quindi è come se riavviassi il gioco
+
             if event_pausa.type == pygame.MOUSEBUTTONDOWN:
 
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -147,28 +167,28 @@ def pausa():
         GLOB.screen.blit(PAUSE_TEXT, PAUSE_RECT)
 
         pygame.display.flip()
-        clock.tick(GLOB.FPS) # setto gli FramesPerSecond
+        clock.tick(GLOB.FPS) # setto i FramesPerSecond
 
-
-        # print("Sono in pausa")
 
 #funzione principale
 def main():
 
+    # Setto il cursore del mouse a non visibile
     pygame.mouse.set_visible(False)
    
     run = True # funzione mainloop() principale
     
+    # Funzione che controlla se il tasto è stato premuto
     def key_pressed(event,IsPressed):
 
         # if event.key == pygame.K_s and event.key == pygame.K_w:
         #     player.setAllkeys(False)
         #     player.finish()
 
-        if event.key == pygame.K_a and event.key == pygame.K_d:
-            player.finish()
+        # if event.key == pygame.K_a and event.key == pygame.K_d:
+        #     player.finish()
         
-        if event.key == pygame.K_a:
+        if event.key == pygame.K_a or event.key == pygame.K_LEFT:
             player.setLeftPress(IsPressed)
 
             if IsPressed:
@@ -177,7 +197,7 @@ def main():
             else:
                 player.finish()
             
-        if event.key == pygame.K_d:
+        if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
             player.setRightPress(IsPressed)
 
             if IsPressed:
@@ -186,7 +206,7 @@ def main():
             else:
                 player.finish()
 
-        if event.key == pygame.K_w:
+        if event.key == pygame.K_w or event.key == pygame.K_UP:
             player.setUpPress(IsPressed)
 
             if IsPressed:
@@ -195,7 +215,7 @@ def main():
             else:
                 player.finish()
 
-        if event.key == pygame.K_s:
+        if event.key == pygame.K_s or event.key == pygame.K_DOWN:
             player.setDownPress(IsPressed)
 
             if IsPressed:
@@ -237,14 +257,12 @@ def main():
         # if int(clock.get_fps())<110:
         #     print("| fps: "+str(int(clock.get_fps()))) # Per mostrare gli GLOB.FPS
 
-        #print("Player Speed: "+str(GLOB.PlayerRun_speed))
         
-        #GLOB.screen.fill(GLOB.Background_Color) # colora lo sfondo con dei colori
         GLOB.screen.fill(GLOB.Background_Color)
         cam.update()
         player.update() # richiama la funzione di aggiornamento del giocatore
         
-            # Si consiglia di mettere una grandezza non minore di 18 w/h
+        # Si consiglia di mettere una grandezza non minore di 18 w/h
         obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
 
         pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
@@ -260,7 +278,7 @@ def main():
         GLOB.screen.blit(FPS_TEXT, FPS_RECT)
 
         if keys_pressed[pygame.K_TAB]:
-            pygame.draw.rect(GLOB.screen, (255,0,0), player.mesh, int(1*GLOB.MULT))
+            pygame.draw.rect(GLOB.screen, (0,255,255), player.mesh, int(1*GLOB.MULT))
 
 
         print("La VW: "+str(GLOB.Player_default_speed)+" | La VR: "+str(GLOB.PlayerRun_speed)+" | AV: "+str(GLOB.Player_speed))
@@ -269,14 +287,12 @@ def main():
         pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione
         pygame.display.update()
 
-        clock.tick(GLOB.FPS) # setto gli FramesPerSecond
+        clock.tick(GLOB.FPS) # setto i FramesPerSecond
 
         #print("La velocità attuale è :"+str(GLOB.Player_speed)+" | Mentre il MULT è : "+str(GLOB.MULT))
     
     pygame.quit() # per stoppare pygame in modo appropriato
     sys.exit()
-
-
 
 
 # se volessi importare il file non verrebbe autoeseguito automaticamente

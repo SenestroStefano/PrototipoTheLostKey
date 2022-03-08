@@ -3,7 +3,7 @@ TITLE = "The Lost Keys"
 
 # Valori di proporzione
 
-Delta_Time = 2 # Delta_Time (Congliabile 1/2)
+Delta_Time = 1 # Delta_Time (Congliabile 1/2)
 Player_proportion = 1 # Divisore della grandezza del giocatore
 
 #FPS
@@ -12,12 +12,13 @@ FPS = 60 * Delta_Time
 # rapporto di proporzione allo schermo NON INFERIORE AD 1
 MULT = 4
 
-# print("Larghezza: "+str(Player_width)+" Altezza: "+str(Player_height))
+# rapporto offset telecamera dello schermo
+Moff = 4
 
-Scelta = 1
+Scelta = 0
 
-Player_speed = 0.25 * MULT * Delta_Time
-PlayerRun_speed = 0.7 * MULT * Delta_Time
+Player_speed = 1 * MULT / Delta_Time
+PlayerRun_speed = 1.5 * MULT / Delta_Time
 
 Player_default_speed = Player_speed
 
@@ -44,5 +45,4 @@ screen_height = 270 * MULT
 
 # Configurazione Schermo
 screen = pygame.display.set_mode((screen_width,screen_height))
-# screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
 pygame.display.set_caption(TITLE)

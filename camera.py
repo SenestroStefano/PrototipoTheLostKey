@@ -1,21 +1,29 @@
-import pygame, os
+import pygame
 import main
 import global_var as GLOB
 
-# Creazione della classe Player ed è figlia di sprite +ottimizzata e veloce
-class Cam(pygame.sprite.Sprite):
-    def __init__(self, image, pos, scala):
+
+"""
+
+    ---  Classe che controlla la posizione attuale del giocatore dello schermo e aggiorna i contenuti dello schermo spostandoli 
+
+                In questo modo ferma anche il giocatore e da' l'illusione che tutto si sta muovendo
+
+"""
+
+class Cam():
+    def __init__(self):
 
         #indico il giocatore impostato
-        self.setPositionX(pos[0]) 
-        self.setPositionY(pos[1])
+        self.setPositionX(0) 
+        self.setPositionY(0)
 
-        self.image = pygame.image.load(image).convert()
+        self.image = pygame.image.load("assets/BackgroundCam.png").convert()
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-        self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*scala), (self.height*GLOB.MULT*scala)))
+        self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*1), (self.height*GLOB.MULT*1)))
 
 
     def setPositionX(self, x):
@@ -34,8 +42,7 @@ class Cam(pygame.sprite.Sprite):
     def update(self):
         GLOB.screen.blit(self.image, (self.x, self.y))
 
-        Moff = 1
-        offset = (8 * Moff * GLOB.MULT, 4.5 * Moff * GLOB.MULT)
+        offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
 
         a =  main.player.getPositionX() >= GLOB.screen_width - offset[0] - main.player.width
         b =  main.player.getPositionX() <= offset[1]

@@ -1,6 +1,14 @@
 import pygame, os
 import global_var as GLOB
 
+
+"""
+
+    ---  Classe che genera il giocatore e ne controlla i pulsanti cliccati, gli sprite e le collisioni  ---
+
+"""
+
+
 # Creazione della classe Player ed è figlia di sprite +ottimizzata e veloce
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, selected, width, height, char_image):

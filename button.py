@@ -1,6 +1,12 @@
 import global_var as GLOB
 import pygame
 
+"""
+
+    ---  Classe genera un pulsante a schermo un pulsante cliccabile	---
+
+"""
+
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
     	
@@ -37,6 +43,11 @@ class Button():
 		else:
 			self.text = self.font.render(self.text_input, True, self.base_color)
 
+"""
+
+    ---  Classe genera una barra (usata per le statistiche)	e ne imposta il riempimento ---
+
+"""
 
 class Bar():
 	def __init__(self, pos, number, div):
@@ -54,11 +65,10 @@ class Bar():
 
 		if div == None:
 			self.div = 1
-		else:
-			if div > 8:
-				self.div = 8
-			elif div < 1:
-				self.div = 1
+		elif div > 8:
+			self.div = 8
+		elif div < 1:
+			self.div = 1
 
 		self.image = pygame.image.load("assets/BarraCompletamento.png")
 		self.image = pygame.transform.scale(self.image, (self.image.get_width()*GLOB.MULT/self.div, self.image.get_height()*GLOB.MULT/self.div))
@@ -72,9 +82,10 @@ class Bar():
 
 		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
 
-#(GLOB.screen_width/2-image.get_width()/2,GLOB.screen_height/2+70*GLOB.MULT)
-
 	def update(self, screen):
 		screen.blit(self.BarGrey, self.rect)
-		screen.blit(self.BarGreen, self.rect)
+
+		if self.number != 0:
+			screen.blit(self.BarGreen, self.rect)
+		
 		screen.blit(self.image, self.rect)

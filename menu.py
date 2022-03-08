@@ -8,6 +8,12 @@ from global_var import screen
 
 pygame.init()
 
+"""
+
+    ---  FILE DEL MENU PRINCIPALE DELl'AVVIO DEL GIOCO	---
+
+"""
+
 pygame.display.set_caption(GLOB.TITLE)
 
 def get_font(size): # Returns Press-Start-2P in the desired size
@@ -18,24 +24,32 @@ def play():
     main.main()
     
 def options():
+    
+    flag_Fullscreen = False
+
     while True:
+
+        if flag_Fullscreen == False:
+            TEXT_FULLSCREEN = "SET FULLSCREEN"
+        else:
+            TEXT_FULLSCREEN = "TOGGLE FULLSCREEN"
 
         BG_Option = pygame.image.load("assets/Background.png")
         BG_Option = pygame.transform.scale(BG_Option, (GLOB.screen_width, GLOB.screen_height))
 
-        if GLOB.Scelta==1:
+        if GLOB.Scelta==0:
             char = "Senex.png"
             name = "Senex"
-        elif GLOB.Scelta==2:
+        elif GLOB.Scelta==1:
             char = "Seima.png"
             name = "Seima"
-        elif GLOB.Scelta==3:
+        elif GLOB.Scelta==2:
             char = "Aleks.png"
             name = "Aleks"
-        elif GLOB.Scelta==4:
+        elif GLOB.Scelta==3:
             char = "Beppe.png"
             name = "Beppe"
-        elif GLOB.Scelta==5:
+        elif GLOB.Scelta==4:
             char = "Giulio.png"
             name = "Dark Angel"
         else:
@@ -81,7 +95,7 @@ def options():
         screen.blit(Velocita_TEXT, Velocita_RECT)
 
         #BARRA
-        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+85*GLOB.MULT), GLOB.Stats[GLOB.Scelta-1][0], None)
+        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+85*GLOB.MULT), GLOB.Stats[GLOB.Scelta][0], None)
         Velocita.update(screen)
 
 
@@ -89,41 +103,42 @@ def options():
 
         posX_tabella = GLOB.screen_width-80*GLOB.MULT
         posY_tabella = GLOB.MULT*45
+        scala_tabella = 1.5
 
         #BARRA Chimica
-        Chimica = Bar((posX_tabella, posY_tabella*1.2), GLOB.Stats[GLOB.Scelta-1][1], 1.5)
+        Chimica = Bar((posX_tabella, posY_tabella*1.2), GLOB.Stats[GLOB.Scelta][1], scala_tabella)
         Chimica.update(screen)
 
         #BARRA Storia
-        Storia = Bar((posX_tabella, posY_tabella*1.7), GLOB.Stats[GLOB.Scelta-1][2], 1.5)
+        Storia = Bar((posX_tabella, posY_tabella*1.7), GLOB.Stats[GLOB.Scelta][2], scala_tabella)
         Storia.update(screen)
 
         #BARRA Inglese
-        Inglese = Bar((posX_tabella, posY_tabella*2.2), GLOB.Stats[GLOB.Scelta-1][3], 1.5)
+        Inglese = Bar((posX_tabella, posY_tabella*2.2), GLOB.Stats[GLOB.Scelta][3], scala_tabella)
         Inglese.update(screen)
 
         #BARRA Fisica
-        Fisica = Bar((posX_tabella, posY_tabella*2.7), GLOB.Stats[GLOB.Scelta-1][4], 1.5)
+        Fisica = Bar((posX_tabella, posY_tabella*2.7), GLOB.Stats[GLOB.Scelta][4], scala_tabella)
         Fisica.update(screen)
 
         #BARRA Matematica
-        Matematica = Bar((posX_tabella, posY_tabella*3.2), GLOB.Stats[GLOB.Scelta-1][5], 1.5)
+        Matematica = Bar((posX_tabella, posY_tabella*3.2), GLOB.Stats[GLOB.Scelta][5], scala_tabella)
         Matematica.update(screen)
 
         #BARRA Informatica
-        Informatica = Bar((posX_tabella, posY_tabella*3.7), GLOB.Stats[GLOB.Scelta-1][6], 1.5)
+        Informatica = Bar((posX_tabella, posY_tabella*3.7), GLOB.Stats[GLOB.Scelta][6], scala_tabella)
         Informatica.update(screen)
 
         #BARRA Italiano
-        Italiano = Bar((posX_tabella, posY_tabella*4.2), GLOB.Stats[GLOB.Scelta-1][7], 1.5)
+        Italiano = Bar((posX_tabella, posY_tabella*4.2), GLOB.Stats[GLOB.Scelta][7], scala_tabella)
         Italiano.update(screen)
 
         #BARRA Sistemi
-        Sistemi = Bar((posX_tabella, posY_tabella*4.7), GLOB.Stats[GLOB.Scelta-1][8], 1.5)
+        Sistemi = Bar((posX_tabella, posY_tabella*4.7), GLOB.Stats[GLOB.Scelta][8], scala_tabella)
         Sistemi.update(screen)
 
         #BARRA TPSIT
-        TPSIT = Bar((posX_tabella, posY_tabella*5.2), GLOB.Stats[GLOB.Scelta-1][9], 1.5)
+        TPSIT = Bar((posX_tabella, posY_tabella*5.2), GLOB.Stats[GLOB.Scelta][9], scala_tabella)
         TPSIT.update(screen)
 
         #TESTO
@@ -134,7 +149,7 @@ def options():
 
         #TESTO
         Storia_TEXT = get_font(8*int(GLOB.MULT)).render("Storia", True, "#e9eef7")
-        Storia_RECT = Storia_TEXT.get_rect(center=(posX_tabella, posY_tabella*1.5))
+        Storia_RECT = Storia_TEXT.get_rect(center=(posX_tabella, posY_tabella*scala_tabella))
 
         screen.blit(Storia_TEXT, Storia_RECT)
 
@@ -228,7 +243,7 @@ def options():
 
 
         Screen_FULL = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+90*GLOB.MULT), 
-                    text_input="SET FULLSCREEN", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+                    text_input=TEXT_FULLSCREEN, font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
 
         Screen_FULL.changeColor(OPTIONS_MOUSE_POS)
         Screen_FULL.update(screen)
@@ -249,7 +264,6 @@ def options():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 flag_screen = False
-                flag_Fullscreen = False
 
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                     main_menu()
@@ -288,7 +302,11 @@ def options():
                 
                 if Screen_FULL.checkForInput(OPTIONS_MOUSE_POS):
                     flag_screen = True
-                    flag_Fullscreen = True
+                    
+                    if flag_Fullscreen == False:
+                        flag_Fullscreen = True
+                    else:
+                        flag_Fullscreen = False
 
                 if flag_screen:
                     GLOB.screen_width = 480*GLOB.MULT
