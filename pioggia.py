@@ -7,7 +7,7 @@ SCREENSIZE = GLOB.screen_width, GLOB.screen_height
 
 class Rain(object):
 
-    def __init__(self, screen, height = 160, speed = 9, color = (120, 120, 255, 255), numdrops = 160):
+    def __init__(self, screen, height = 160, speed = 12, color = (152, 164, 184, 255), numdrops = 260):
         'Create and reuse raindrop particles'
         self.screen     = screen
         self.drops      = []
@@ -93,7 +93,7 @@ class Rain(object):
             r = oldrect.union(newrect)
             screen.blit(self.pic, self.pos)
             self.currentspeed += self.velocity
-            if self.pos[1] > SCREENSIZE[1]:
+            if self.pos[1] > SCREENSIZE[1]-40*GLOB.MULT:
                 self.Reset()
             return r
 

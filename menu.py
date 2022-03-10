@@ -337,7 +337,7 @@ def main_menu():
 
         #time.sleep(.01)
 
-        BG_Menu = pygame.image.load("assets/Background.png")
+        BG_Menu = pygame.image.load("assets/sfondo.png")
         BG_Menu = pygame.transform.scale(BG_Menu, (GLOB.screen_width, GLOB.screen_height))
 
         screen.blit(BG_Menu, (0, 0))
