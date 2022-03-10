@@ -3,7 +3,7 @@ TITLE = "The Lost Keys"
 
 # Valori di proporzione
 
-Delta_Time = 2 # Delta_Time (Congliabile 1/2)
+Delta_Time = 1 # Delta_Time (Congliabile 1/2)
 Player_proportion = 1 # Divisore della grandezza del giocatore
 
 #FPS
@@ -12,10 +12,11 @@ FPS = 60 * Delta_Time
 # rapporto di proporzione allo schermo NON INFERIORE AD 1
 MULT = 4
 
-# rapporto offset telecamera dello schermo
-Moff = 10
+# rapporto offset telecamera dello schermo MAX 40
+Moff = 20
 
 Scelta = 0
+Cam_visible = False
 
 Player_speed = 1 * MULT
 PlayerRun_speed = 1.5 * MULT
@@ -30,7 +31,7 @@ PlayerWalkingVU = []
 # STATISTICHE
 # Vel - Chimica - Storia - Inglese - Fisica - Matematica - Informatica - Italiano - Sistemi - TPSIT
 Senex_Stat = [ 5, 8, 6, 7, 3, 6, 6, 5, 4, 10 ]
-Seima_Stat = [ 2, 8, 10, 8, 9, 10, 10, 8, 10, 10 ] # fai schifo
+Seima_Stat = [ 2, 8, 10, 8, 9, 10, 10, 8, 10, 10 ]
 Aleks_Stat = [ 5, 10, 10, 6, 2, 7, 8, 10, 7, 2 ]
 Beppe_Stat = [ 6, 2, 8, 4, 2, 6, 6, 5, 9, 7 ]
 Dark_Stat = [ 3, 8, 7, 9, 10, 8, 6, 7, 6, 2 ]

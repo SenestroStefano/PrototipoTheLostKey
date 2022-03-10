@@ -1,10 +1,11 @@
-import pygame, sys, os
+import pygame, sys, os, time
 from button import Button
 from button import Bar
 import global_var as GLOB
 
 import main
 from global_var import screen
+from pioggia import Rain
 
 pygame.init()
 
@@ -30,9 +31,9 @@ def options():
     while True:
 
         if flag_Fullscreen == False:
-            TEXT_FULLSCREEN = "SET FULLSCREEN"
+            TEXT_FULLSCREEN = "FULLSCREEN ON"
         else:
-            TEXT_FULLSCREEN = "TOGGLE FULLSCREEN"
+            TEXT_FULLSCREEN = "FULLSCREEN OFF"
 
         BG_Option = pygame.image.load("assets/Background.png")
         BG_Option = pygame.transform.scale(BG_Option, (GLOB.screen_width, GLOB.screen_height))
@@ -197,52 +198,52 @@ def options():
 
 
         Rchange = Button(image=None, pos=(GLOB.screen_width/2+50*GLOB.MULT, GLOB.screen_height/2), 
-                            text_input=">", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="red")
+                            text_input=">", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="red", scale=2)
 
         Rchange.changeColor(OPTIONS_MOUSE_POS)
         Rchange.update(screen)
 
         Lchange = Button(image=None, pos=(GLOB.screen_width/2-50*GLOB.MULT, GLOB.screen_height/2), 
-                            text_input="<", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="red")
+                            text_input="<", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="red", scale=2)
 
         Lchange.changeColor(OPTIONS_MOUSE_POS)
         Lchange.update(screen)
 
 
         Screen_480x270 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-110*GLOB.MULT), 
-                            text_input="480 x 270", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+                            text_input="480 x 270", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
 
         Screen_480x270.changeColor(OPTIONS_MOUSE_POS)
         Screen_480x270.update(screen)
 
         Screen_960x540 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-70*GLOB.MULT), 
-                    text_input="960 x 540", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+                    text_input="960 x 540", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
 
         Screen_960x540.changeColor(OPTIONS_MOUSE_POS)
         Screen_960x540.update(screen)
 
         Screen_1440x810 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-30*GLOB.MULT), 
-                    text_input="1440 x 810", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+                    text_input="1440 x 810", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
 
         Screen_1440x810.changeColor(OPTIONS_MOUSE_POS)
         Screen_1440x810.update(screen)
 
         Screen_1920x1080 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+10*GLOB.MULT), 
-                    text_input="1920 x 1080", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+                    text_input="1920 x 1080", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
 
         Screen_1920x1080.changeColor(OPTIONS_MOUSE_POS)
         Screen_1920x1080.update(screen)
 
 
         Screen_3840x2160 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+50*GLOB.MULT), 
-                    text_input="3840 x 2160", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+                    text_input="3840 x 2160", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
 
         Screen_3840x2160.changeColor(OPTIONS_MOUSE_POS)
         Screen_3840x2160.update(screen)
 
 
         Screen_FULL = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+90*GLOB.MULT), 
-                    text_input=TEXT_FULLSCREEN, font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131")
+                    text_input=TEXT_FULLSCREEN, font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
 
         Screen_FULL.changeColor(OPTIONS_MOUSE_POS)
         Screen_FULL.update(screen)
@@ -251,7 +252,7 @@ def options():
 
 
         OPTIONS_BACK = Button(image=None, pos=(GLOB.screen_width/2, 250*GLOB.MULT), 
-                            text_input="BACK", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="Green")
+                            text_input="BACK", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="Green", scale=2)
 
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(screen)
@@ -323,7 +324,18 @@ def options():
 
 def main_menu():
     pygame.mouse.set_visible(True)
+
+    BG_School = pygame.image.load("assets/ScuolaHorror.png").convert()
+    BG_School = pygame.transform.scale(BG_School, (BG_School.get_width()*GLOB.MULT/4,BG_School.get_height()*GLOB.MULT/4))
+
+    BG_Cloud = pygame.image.load("assets/Nuvola.png")
+    BG_Cloud = pygame.transform.scale(BG_Cloud, (BG_Cloud.get_width()*GLOB.MULT/4,BG_Cloud.get_height()*GLOB.MULT/4))
+    
+    rain = Rain(screen)
+
     while True:
+
+        #time.sleep(.01)
 
         BG_Menu = pygame.image.load("assets/Background.png")
         BG_Menu = pygame.transform.scale(BG_Menu, (GLOB.screen_width, GLOB.screen_height))
@@ -332,19 +344,30 @@ def main_menu():
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(25*int(GLOB.MULT)).render("MENU PRINCIPALE", True, "#e9eef7")
-        MENU_RECT = MENU_TEXT.get_rect(center=(GLOB.screen_width/2, 20*GLOB.MULT))
+        MENU_TEXT = get_font(12*int(GLOB.MULT)).render("THE LOST KEY", True, "#e9eef7")
+        MENU_RECT = MENU_TEXT.get_rect(center=(GLOB.screen_width/6, 70*GLOB.MULT))
 
-        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(GLOB.screen_width/2, 80*GLOB.MULT), 
-                            text_input="PLAY", font=get_font(20*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(GLOB.screen_width/6, 110*GLOB.MULT), 
+                            text_input="PLAY", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=4)
         
-        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(GLOB.screen_width/2, 150*GLOB.MULT), 
-                            text_input="OPTIONS", font=get_font(20*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
+        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(GLOB.screen_width/6, 150*GLOB.MULT), 
+                            text_input="OPTIONS", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=4)
         
-        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(GLOB.screen_width/2, 220*GLOB.MULT), 
-                            text_input="QUIT", font=get_font(20*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(GLOB.screen_width/6, 190*GLOB.MULT), 
+                            text_input="QUIT", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=4)
 
         screen.blit(MENU_TEXT, MENU_RECT)
+
+        #screen.blit(BG_School, (GLOB.screen_width/3-5*GLOB.MULT, GLOB.screen_height-BG_School.get_height()))
+        screen.blit(BG_School, (GLOB.screen_width/3, 0))
+
+        # Draw rain
+        dirtyrects = rain.Timer(time.time())
+
+        # Update the screen for the dirty rectangles only
+        pygame.display.update(dirtyrects)
+
+        screen.blit(BG_Cloud, (GLOB.screen_width/3, 0))
 
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)

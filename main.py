@@ -16,7 +16,7 @@ def inizializza():
     global obstacle, player, cam, clock, sceltaG
 
     """
- ---   Cambio il personaggio in base alla scelta del giocatore ---
+ --- Cambio il personaggio in base alla scelta del giocatore ---
         
     """
     
@@ -95,7 +95,7 @@ def inizializza():
     clock = pygame.time.Clock()
 
     # Fa Spawnare il giocatore e al centro dello schermo e con che velocità
-    player = giocatore.Player(GLOB.screen_width/2, GLOB.screen_height/2, sceltaG, Player_width, Player_height, character_image)
+    player = giocatore.Player(GLOB.screen_width/2-Player_width/2, GLOB.screen_height/2-Player_height/2, sceltaG, Player_width, Player_height, character_image)
 
     # Faccio nascere l'oggetto "cam"
     cam = camera.Cam()
@@ -115,7 +115,7 @@ def pausa():
 
         player.setAllkeys(False)
 
-        cam.update()
+        cam.update(GLOB.Cam_visible)
         obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
         pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
         player.update() # richiama la funzione di aggiornamento del giocatore
@@ -131,13 +131,13 @@ def pausa():
 
 
         PLAY_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 110*GLOB.MULT), 
-                            text_input="PLAY", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
+                            text_input="PLAY", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
         
         OPTIONS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 150*GLOB.MULT), 
-                            text_input="OPTIONS", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
+                            text_input="OPTIONS", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
         
         QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT), 
-                            text_input="BACK TO MENU", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White")
+                            text_input="BACK TO MENU", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
 		
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
@@ -264,7 +264,7 @@ def main():
 
         
         GLOB.screen.fill(GLOB.Background_Color)
-        cam.update()
+        cam.update(GLOB.Cam_visible)
         player.update() # richiama la funzione di aggiornamento del giocatore
         
         # Si consiglia di mettere una grandezza non minore di 18 w/h
@@ -292,6 +292,12 @@ def main():
         RUN_RECT = RUN_TEXT.get_rect(center=(40*GLOB.MULT, 20*GLOB.MULT))
 
         GLOB.screen.blit(RUN_TEXT, RUN_RECT)
+
+
+        POS_TEXT = get_font(8*int(GLOB.MULT)).render("x/y: "+str(int(player.getPositionX()-cam.getPositionX()))+" | "+str(int(player.getPositionY()-cam.getPositionY())), True, "white")
+        POS_RECT = POS_TEXT.get_rect(center=(200*GLOB.MULT, 20*GLOB.MULT))
+
+        GLOB.screen.blit(POS_TEXT, POS_RECT)
 
         pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione
         pygame.display.update()

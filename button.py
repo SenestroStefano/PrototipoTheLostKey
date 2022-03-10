@@ -8,10 +8,10 @@ import pygame
 """
 
 class Button():
-	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
+	def __init__(self, image, pos, text_input, font, base_color, hovering_color, scale):
     	
 		if image != None:
-			image_w, image_h = image.get_width()*GLOB.MULT/2, image.get_height()*GLOB.MULT/2
+			image_w, image_h = image.get_width()*GLOB.MULT/scale, image.get_height()*GLOB.MULT/scale
 			self.image = pygame.transform.scale(image, (image_w, image_h))
 		else:
 			self.image = image
