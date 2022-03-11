@@ -18,12 +18,12 @@ class Cam():
         self.setPositionX(0) 
         self.setPositionY(0)
 
-        #self.image = pygame.image.load("assets/BackgroundCam.png").convert()
+        self.image = pygame.image.load("assets/BackgroundCam.png").convert()
 
-        #self.width = self.image.get_width()
-        #self.height = self.image.get_height()
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
-        #self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*1), (self.height*GLOB.MULT*1)))
+        self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*1), (self.height*GLOB.MULT*1)))
 
 
     def setPositionX(self, x):
@@ -40,7 +40,7 @@ class Cam():
 
         
     def update(self, visibility):
-        #GLOB.screen.blit(self.image, (self.x, self.y))
+        GLOB.screen.blit(self.image, (self.x, self.y))
 
         offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
 
@@ -56,25 +56,27 @@ class Cam():
         c1 = main.player.getDownPress()
         d1 = main.player.getUpPress()
 
-        if a and a1:
+        ln = main.player.Last_keyPressed=="Null"
+
+        if a and a1 or ln and a:
             main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
             self.x -= main.player.getVelocitaX()
             # print("A vero")
     
 
-        if b and b1:
+        if b and b1 or ln and b:
             main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
             self.x += -main.player.getVelocitaX()
             # print("B vero")
 
 
-        if c and c1:
+        if c and c1 or ln and c:
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
             self.y -= main.player.getVelocitaY()
             # print("C vero")
     
 
-        if d and d1:
+        if d and d1 or ln and d:
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
             self.y += -main.player.getVelocitaY()
             # print("D vero")

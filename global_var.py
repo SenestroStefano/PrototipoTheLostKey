@@ -7,7 +7,7 @@ Delta_Time = 1 # Delta_Time (Congliabile 1/2)
 Player_proportion = 1 # Divisore della grandezza del giocatore
 
 #FPS
-FPS = 60 * Delta_Time
+FPS = 30 * Delta_Time
 
 # rapporto di proporzione allo schermo NON INFERIORE AD 1
 MULT = 4
@@ -16,10 +16,10 @@ MULT = 4
 Moff = 20
 
 Scelta = 0
-Cam_visible = False
+Cam_visible = True
 
-Player_speed = 1 * MULT
-PlayerRun_speed = 1.5 * MULT
+Player_speed = 2 * MULT
+PlayerRun_speed = 3 * MULT
 
 Player_default_speed = Player_speed
 

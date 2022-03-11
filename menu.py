@@ -1,3 +1,4 @@
+from ast import Global
 import pygame, sys, os, time
 from button import Button
 from button import Bar
@@ -331,7 +332,7 @@ def main_menu():
     BG_Cloud = pygame.image.load("assets/Nuvola.png")
     BG_Cloud = pygame.transform.scale(BG_Cloud, (BG_Cloud.get_width()*GLOB.MULT/4,BG_Cloud.get_height()*GLOB.MULT/4))
     
-    rain = Rain(screen)
+    rain = Rain(screen, height = 160, speed = 5 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
 
     while True:
 
@@ -348,18 +349,21 @@ def main_menu():
         MENU_RECT = MENU_TEXT.get_rect(center=(GLOB.screen_width/6, 70*GLOB.MULT))
 
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(GLOB.screen_width/6, 110*GLOB.MULT), 
-                            text_input="PLAY", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=4)
+                            text_input="PLAY", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=5)
         
         OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(GLOB.screen_width/6, 150*GLOB.MULT), 
-                            text_input="OPTIONS", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=4)
+                            text_input="OPTIONS", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=5)
         
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(GLOB.screen_width/6, 190*GLOB.MULT), 
-                            text_input="QUIT", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=4)
+                            text_input="QUIT", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=5)
 
         screen.blit(MENU_TEXT, MENU_RECT)
 
         #screen.blit(BG_School, (GLOB.screen_width/3-5*GLOB.MULT, GLOB.screen_height-BG_School.get_height()))
         screen.blit(BG_School, (GLOB.screen_width/3, 0))
+
+
+        screen.blit(BG_Cloud, (GLOB.screen_width/3, 0))
 
         # Draw rain
         dirtyrects = rain.Timer(time.time())

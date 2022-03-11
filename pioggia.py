@@ -1,5 +1,5 @@
 import pygame
-import random
+import random, time
 
 import global_var as GLOB
 
@@ -7,7 +7,7 @@ SCREENSIZE = GLOB.screen_width, GLOB.screen_height
 
 class Rain(object):
 
-    def __init__(self, screen, height = 160, speed = 12, color = (152, 164, 184, 255), numdrops = 260):
+    def __init__(self, screen, height, speed, color, numdrops):
         'Create and reuse raindrop particles'
         self.screen     = screen
         self.drops      = []
@@ -69,7 +69,7 @@ class Rain(object):
             self.pic = pic
             self.size = pic.get_size()
             self.SetSpeed(speed)
-            self.pos = [random.random() * SCREENSIZE[0] + GLOB.screen_width/3, -random.randint(-SCREENSIZE[1], SCREENSIZE[1])]
+            self.pos = [random.random() * SCREENSIZE[0] + GLOB.screen_width/3, -random.randint(-SCREENSIZE[1], SCREENSIZE[1]) + 80 * GLOB.MULT]
             self.currentspeed = speed
 
         def SetSpeed(self, speed):
@@ -79,7 +79,7 @@ class Rain(object):
 
         def Reset(self):
             ' Restart the drop at the top of the screen.'
-            self.pos = [random.random() * SCREENSIZE[0] + GLOB.screen_width/3, -random.random() * self.size[1] - self.size[1]]
+            self.pos = [random.random() * SCREENSIZE[0] + GLOB.screen_width/3, -random.random() * self.size[1] - self.size[1] + 80 * GLOB.MULT]
             self.currentspeed = self.speed
 
         def Render(self, screen, now):
@@ -97,14 +97,14 @@ class Rain(object):
                 self.Reset()
             return r
 
-"""def main():
+def main():
     # Initialize pygame
     pygame.init()
     pygame.key.set_repeat(500, 30)
     screen = pygame.display.set_mode(SCREENSIZE, 0, 32)
 
     # Create rain generator
-    rain = Rain(screen)
+    rain = Rain(screen, height = 160, speed = 12, color = (152, 164, 184, 255), numdrops = 260)
     print ('right arrow to increase speed, left arrow to decrease speed.')
 
     # Main loop
@@ -145,4 +145,4 @@ class Rain(object):
     pygame.quit()
 
 if __name__ == "__main__":
-    main()"""
+    main()

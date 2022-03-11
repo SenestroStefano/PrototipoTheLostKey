@@ -142,9 +142,9 @@ class Player(pygame.sprite.Sprite):
         # Controlla se l'animazione è attiva
         if self.getIsWalking():
 
-            self.current_spriteWO += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
-            self.current_spriteWVD += 0.2 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
-            self.current_spriteWVU += 0.2 / GLOB.Delta_Time
+            self.current_spriteWO += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
+            self.current_spriteWVD += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
+            self.current_spriteWVU += 0.4 / GLOB.Delta_Time
 
             # Controllo di non uscire dal range dei frames possibili
             if self.current_spriteWO >= len(self.animationWO):

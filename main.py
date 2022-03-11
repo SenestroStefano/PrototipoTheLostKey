@@ -20,7 +20,7 @@ def inizializza():
         
     """
     
-    GLOB.Player_speed = 1 * GLOB.MULT / GLOB.Delta_Time
+    GLOB.Player_speed = 2 * GLOB.MULT / GLOB.Delta_Time
     GLOB.Player_default_speed = GLOB.Player_speed
     
     if GLOB.Scelta==0:
