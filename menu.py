@@ -339,7 +339,10 @@ def main_menu():
     BG_Cloud = pygame.image.load("assets/Nuvola.png")
     BG_Cloud = pygame.transform.scale(BG_Cloud, (BG_Cloud.get_width()*GLOB.MULT/4,BG_Cloud.get_height()*GLOB.MULT/4))
     
-    rain = Rain(screen, height = 160, speed = 10 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
+    rain = Rain(screen, height = 160, speed = 12 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
+
+    # Settaggio del Clock
+    clock = pygame.time.Clock()
 
     while True:
 
@@ -413,6 +416,8 @@ def main_menu():
             tuonoSound.play()
 
             screen.blit(tuono, (0, 0))
+        
+        clock.tick(GLOB.FPS) # setto i FramesPerSecond
 
         pygame.display.flip()
         pygame.display.update()
