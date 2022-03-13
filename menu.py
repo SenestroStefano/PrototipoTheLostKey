@@ -1,7 +1,8 @@
-from ast import Global
+import random
 import pygame, sys, os, time
 from button import Button
 from button import Bar
+from pygame import mixer
 import global_var as GLOB
 
 import main
@@ -22,11 +23,12 @@ def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
 def play():
+    mixer.music.stop()
     main.inizializza()
     main.main()
     
 def options():
-    
+    mixer.music.stop()
     flag_Fullscreen = False
 
     while True:
@@ -325,6 +327,11 @@ def options():
 
 def main_menu():
     pygame.mouse.set_visible(True)
+    
+    # Imposto una musica di background
+    mixer.music.load("suoni/Rain-sound.wav")
+    mixer.music.set_volume(0.1)
+    mixer.music.play(-1)	# La setto a -1 che indica un loop quindi a infinito
 
     BG_School = pygame.image.load("assets/ScuolaHorror.png").convert()
     BG_School = pygame.transform.scale(BG_School, (BG_School.get_width()*GLOB.MULT/4,BG_School.get_height()*GLOB.MULT/4))
@@ -332,7 +339,7 @@ def main_menu():
     BG_Cloud = pygame.image.load("assets/Nuvola.png")
     BG_Cloud = pygame.transform.scale(BG_Cloud, (BG_Cloud.get_width()*GLOB.MULT/4,BG_Cloud.get_height()*GLOB.MULT/4))
     
-    rain = Rain(screen, height = 160, speed = 5 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
+    rain = Rain(screen, height = 160, speed = 10 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
 
     while True:
 
@@ -349,13 +356,13 @@ def main_menu():
         MENU_RECT = MENU_TEXT.get_rect(center=(GLOB.screen_width/6, 70*GLOB.MULT))
 
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(GLOB.screen_width/6, 110*GLOB.MULT), 
-                            text_input="PLAY", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=5)
+                            text_input="", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1.5)
         
         OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(GLOB.screen_width/6, 150*GLOB.MULT), 
-                            text_input="OPTIONS", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=5)
+                            text_input="", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1.5)
         
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(GLOB.screen_width/6, 190*GLOB.MULT), 
-                            text_input="QUIT", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=5)
+                            text_input="", font=get_font(10*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1.5)
 
         screen.blit(MENU_TEXT, MENU_RECT)
 
@@ -375,6 +382,7 @@ def main_menu():
 
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
+            button.changeScale(MENU_MOUSE_POS, 1.1)
             button.update(screen)
         
         for event in pygame.event.get():
@@ -389,6 +397,22 @@ def main_menu():
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
+
+        # TUONO
+
+        if random.randint(1, 1000) > 995:
+            tuono = pygame.image.load("assets/tuono.png").convert()
+
+            if random.randint(1, 100) > 50:
+                tuonoSound = mixer.Sound("suoni/thunder-sound.wav")
+            else:
+                 tuonoSound = mixer.Sound("suoni/thunder-sound2.wav")
+
+            tuonoSound.set_volume(0.8)
+
+            tuonoSound.play()
+
+            screen.blit(tuono, (0, 0))
 
         pygame.display.flip()
         pygame.display.update()

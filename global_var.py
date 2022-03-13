@@ -3,7 +3,7 @@ TITLE = "The Lost Keys"
 
 # Valori di proporzione
 
-Delta_Time = 1 # Delta_Time (Congliabile 1/2)
+Delta_Time = 2 # Delta_Time (Congliabile 1/2)
 Player_proportion = 1 # Divisore della grandezza del giocatore
 
 #FPS
@@ -13,7 +13,7 @@ FPS = 30 * Delta_Time
 MULT = 4
 
 # rapporto offset telecamera dello schermo MAX 40
-Moff = 20
+Moff = 30
 
 Scelta = 0
 Cam_visible = True
