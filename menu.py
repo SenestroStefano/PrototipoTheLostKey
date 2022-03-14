@@ -97,7 +97,7 @@ def options():
         screen.blit(Velocita_TEXT, Velocita_RECT)
 
         #BARRA
-        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+85*GLOB.MULT), GLOB.Stats[GLOB.Scelta][0], None)
+        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+85*GLOB.MULT), GLOB.Stats[GLOB.Scelta][0], None, 1)
         Velocita.update(screen)
 
 
@@ -108,39 +108,39 @@ def options():
         scala_tabella = 1.5
 
         #BARRA Chimica
-        Chimica = Bar((posX_tabella, posY_tabella*1.2), GLOB.Stats[GLOB.Scelta][1], scala_tabella)
+        Chimica = Bar((posX_tabella, posY_tabella*1.2), GLOB.Stats[GLOB.Scelta][1], scala_tabella, 1)
         Chimica.update(screen)
 
         #BARRA Storia
-        Storia = Bar((posX_tabella, posY_tabella*1.7), GLOB.Stats[GLOB.Scelta][2], scala_tabella)
+        Storia = Bar((posX_tabella, posY_tabella*1.7), GLOB.Stats[GLOB.Scelta][2], scala_tabella, 1)
         Storia.update(screen)
 
         #BARRA Inglese
-        Inglese = Bar((posX_tabella, posY_tabella*2.2), GLOB.Stats[GLOB.Scelta][3], scala_tabella)
+        Inglese = Bar((posX_tabella, posY_tabella*2.2), GLOB.Stats[GLOB.Scelta][3], scala_tabella, 1)
         Inglese.update(screen)
 
         #BARRA Fisica
-        Fisica = Bar((posX_tabella, posY_tabella*2.7), GLOB.Stats[GLOB.Scelta][4], scala_tabella)
+        Fisica = Bar((posX_tabella, posY_tabella*2.7), GLOB.Stats[GLOB.Scelta][4], scala_tabella, 1)
         Fisica.update(screen)
 
         #BARRA Matematica
-        Matematica = Bar((posX_tabella, posY_tabella*3.2), GLOB.Stats[GLOB.Scelta][5], scala_tabella)
+        Matematica = Bar((posX_tabella, posY_tabella*3.2), GLOB.Stats[GLOB.Scelta][5], scala_tabella, 1)
         Matematica.update(screen)
 
         #BARRA Informatica
-        Informatica = Bar((posX_tabella, posY_tabella*3.7), GLOB.Stats[GLOB.Scelta][6], scala_tabella)
+        Informatica = Bar((posX_tabella, posY_tabella*3.7), GLOB.Stats[GLOB.Scelta][6], scala_tabella, 1)
         Informatica.update(screen)
 
         #BARRA Italiano
-        Italiano = Bar((posX_tabella, posY_tabella*4.2), GLOB.Stats[GLOB.Scelta][7], scala_tabella)
+        Italiano = Bar((posX_tabella, posY_tabella*4.2), GLOB.Stats[GLOB.Scelta][7], scala_tabella, 1)
         Italiano.update(screen)
 
         #BARRA Sistemi
-        Sistemi = Bar((posX_tabella, posY_tabella*4.7), GLOB.Stats[GLOB.Scelta][8], scala_tabella)
+        Sistemi = Bar((posX_tabella, posY_tabella*4.7), GLOB.Stats[GLOB.Scelta][8], scala_tabella, 1)
         Sistemi.update(screen)
 
         #BARRA TPSIT
-        TPSIT = Bar((posX_tabella, posY_tabella*5.2), GLOB.Stats[GLOB.Scelta][9], scala_tabella)
+        TPSIT = Bar((posX_tabella, posY_tabella*5.2), GLOB.Stats[GLOB.Scelta][9], scala_tabella, 1)
         TPSIT.update(screen)
 
         #TESTO
@@ -151,7 +151,7 @@ def options():
 
         #TESTO
         Storia_TEXT = get_font(8*int(GLOB.MULT)).render("Storia", True, "#e9eef7")
-        Storia_RECT = Storia_TEXT.get_rect(center=(posX_tabella, posY_tabella*scala_tabella))
+        Storia_RECT = Storia_TEXT.get_rect(center=(posX_tabella, posY_tabella*1.5))
 
         screen.blit(Storia_TEXT, Storia_RECT)
 

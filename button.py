@@ -61,7 +61,7 @@ class Button():
 """
 
 class Bar():
-	def __init__(self, pos, number, div):
+	def __init__(self, pos, number, div, type):
 
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
@@ -85,8 +85,13 @@ class Bar():
 		self.image = pygame.transform.scale(self.image, (self.image.get_width()*GLOB.MULT/self.div, self.image.get_height()*GLOB.MULT/self.div))
 
 		if number != 0:
-			self.BarGreen = pygame.image.load("assets/BarraVerde.png").convert()
-			self.BarGreen = pygame.transform.scale(self.BarGreen, (self.BarGreen.get_width()*self.number*GLOB.MULT/self.div, self.BarGreen.get_height()*GLOB.MULT/self.div))
+			
+			if type == 1:
+				self.BarScore = pygame.image.load("assets/BarraVerde.png").convert()
+			else:
+				self.BarScore = pygame.image.load("assets/BarraBlu.png").convert()
+			
+			self.BarScore = pygame.transform.scale(self.BarScore, (self.BarScore.get_width()*self.number*GLOB.MULT/self.div, self.BarScore.get_height()*GLOB.MULT/self.div))
 
 		self.BarGrey = pygame.image.load("assets/BarraGrigia.png").convert()
 		self.BarGrey = pygame.transform.scale(self.BarGrey, (self.BarGrey.get_width()*GLOB.MULT/self.div, self.BarGrey.get_height()*GLOB.MULT/self.div))
@@ -97,6 +102,6 @@ class Bar():
 		screen.blit(self.BarGrey, self.rect)
 
 		if self.number != 0:
-			screen.blit(self.BarGreen, self.rect)
+			screen.blit(self.BarScore, self.rect)
 		
 		screen.blit(self.image, self.rect)
