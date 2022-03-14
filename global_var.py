@@ -1,4 +1,5 @@
 import pygame
+from screeninfo import get_monitors
 TITLE = "The Lost Keys"
 
 # Valori di proporzione
@@ -45,6 +46,14 @@ Background_Color = (12, 24, 36)
 # Dimensione Schermo
 DF_width = 480
 DF_height = 270
+
+for monitor in get_monitors():
+    width = monitor.width
+    height = monitor.height
+ 
+    #print(str(width/screen_width) + 'x' + str(height/screen_height))
+
+MULT = width/DF_width
 
 screen_width = DF_width * MULT
 screen_height = DF_height * MULT
