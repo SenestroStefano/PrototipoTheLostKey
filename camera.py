@@ -86,6 +86,6 @@ class Cam():
             Player_hitbox = [ 15 * GLOB.MULT /GLOB.Player_proportion, 17 * GLOB.MULT /GLOB.Player_proportion, 24 * GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion]
 
             Offset_rect = pygame.Rect(offset[0] + Player_hitbox[0], offset[1] + Player_hitbox[1], GLOB.screen_width - offset[0]*2 - Player_hitbox[0]*2, GLOB.screen_height - offset[1]*2 - Player_hitbox[1]*2)
-            pygame.draw.rect(GLOB.screen,(255,255,255), Offset_rect, 1*GLOB.MULT)
+            pygame.draw.rect(GLOB.screen, (255,255,255), Offset_rect, int(GLOB.MULT))
         
         #print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))

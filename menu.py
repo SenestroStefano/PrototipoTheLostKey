@@ -329,7 +329,7 @@ def main_menu():
     
     # Imposto una musica di background
     mixer.music.load("suoni/Rain-sound.wav")
-    mixer.music.set_volume(0.1)
+    mixer.music.set_volume(0.02*GLOB.AU)
     mixer.music.play(-1)	# La setto a -1 che indica un loop quindi a infinito
 
     BG_School = pygame.image.load("assets/ScuolaHorror.png").convert()
@@ -408,9 +408,9 @@ def main_menu():
             if random.randint(0, 100) >= 50:
                 tuonoSound = mixer.Sound("suoni/thunder-sound.wav")
             else:
-                 tuonoSound = mixer.Sound("suoni/thunder-sound2.wav")
+                tuonoSound = mixer.Sound("suoni/thunder-sound2.wav")
 
-            tuonoSound.set_volume(0.8)
+            tuonoSound.set_volume(0.16*GLOB.AU)
 
             tuonoSound.play()
 

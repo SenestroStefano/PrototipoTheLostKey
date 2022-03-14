@@ -2,6 +2,7 @@ import pygame, os, sys
 
 #Importo i vari file e classi necessarie
 import giocatore, menu, camera
+from button import Bar
 from button import Button
 
 
@@ -100,6 +101,84 @@ def inizializza():
     # Faccio nascere l'oggetto "cam"
     cam = camera.Cam()
 
+
+#Funzione Volume e Audio del gioco
+def options_audio():
+    # Setto visibile il cursore del mouse
+    pygame.mouse.set_visible(True)
+
+    indietro = False
+
+    BG_Seimi = pygame.image.load("assets/BG_semitransparent.png")
+    BG_Seimi = pygame.transform.scale(BG_Seimi, (GLOB.screen_width, GLOB.screen_height))
+
+    while not indietro:
+
+        cam.update(GLOB.Cam_visible)
+        obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
+        pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
+        player.update() # richiama la funzione di aggiornamento del giocatore
+
+
+        GLOB.screen.blit(BG_Seimi, (0, 0))
+
+        # Ottengo la posizione corrente del cursore del mouse
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+        PAUSE_TEXT = menu.get_font(10*int(GLOB.MULT)).render("AUDIO", True, "#e9eef7")
+        PAUSE_RECT = PAUSE_TEXT.get_rect(center=(GLOB.screen_width/2, 50*GLOB.MULT))
+
+
+        #BARRA TPSIT
+        AUDIO = Bar((GLOB.screen_width/2, 100*GLOB.MULT), GLOB.AU, 1)
+        AUDIO.update(GLOB.screen)
+
+
+        AUDIOPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 120*GLOB.MULT), 
+                            text_input="+", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        AUDIOLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 120*GLOB.MULT), 
+                            text_input="-", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT), 
+                            text_input="BACK", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
+		
+        for button in [AUDIOPLUS_BUTTON, AUDIOLESS_BUTTON, QUIT_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(GLOB.screen)
+
+        for event_pausa in pygame.event.get():
+			
+            keys_pressed = pygame.key.get_pressed()
+
+            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOPLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                GLOB.AU += 1
+
+                if GLOB.AU > 10:
+                    GLOB.AU = 10
+
+            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOLESS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                GLOB.AU -= 1
+
+                if GLOB.AU < 0:
+                    GLOB.AU = 0
+
+            if event_pausa.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()	# mi riapplica le variabili di default quindi è come se riavviassi il gioco
+
+            
+            if event_pausa.type == pygame.MOUSEBUTTONDOWN:
+
+                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    indietro = True
+                    pausa()
+
+        GLOB.screen.blit(PAUSE_TEXT, PAUSE_RECT)
+
+        pygame.display.flip()
+        clock.tick(GLOB.FPS) # setto i FramesPerSecond
+
 # Funzione Gioco in Pausa
 def pausa():
 
@@ -134,7 +213,7 @@ def pausa():
                             text_input="PLAY", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
         
         OPTIONS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 150*GLOB.MULT), 
-                            text_input="OPTIONS", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
+                            text_input="AUDIO SETTINGS", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
         
         QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT), 
                             text_input="BACK TO MENU", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
@@ -154,16 +233,12 @@ def pausa():
 
             if event_pausa.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
-
-            if event_pausa.type == pygame.QUIT:
-                pygame.quit()
                 sys.exit()	# mi riapplica le variabili di default quindi è come se riavviassi il gioco
 
             if event_pausa.type == pygame.MOUSEBUTTONDOWN:
 
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                     #options()
+                     options_audio()
                      print("Per ora non faccio ancora nulla")
 
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -235,15 +310,6 @@ def main():
             else:
                 GLOB.Player_speed = GLOB.Player_default_speed
 
-        if event.key == pygame.K_F12:
-
-            if not GLOB.Debug:
-                GLOB.Debug = True
-                GLOB.Cam_visible = True
-            elif GLOB.Debug:
-                GLOB.Debug = False
-                GLOB.Cam_visible = False
-
 
 
     while run:
@@ -270,7 +336,14 @@ def main():
 
         # if int(clock.get_fps())<110:
         #     print("| fps: "+str(int(clock.get_fps()))) # Per mostrare gli GLOB.FPS
-
+            if keys_pressed[pygame.K_F12]:
+        
+                if not GLOB.Debug:
+                    GLOB.Debug = True
+                    GLOB.Cam_visible = True
+                elif GLOB.Debug:
+                    GLOB.Debug = False
+                    GLOB.Cam_visible = False
         
         GLOB.screen.fill(GLOB.Background_Color)
         cam.update(GLOB.Cam_visible)
@@ -284,13 +357,14 @@ def main():
 
 
         # print("DEBUG: "+str(GLOB.Debug))
+        
                 
         if GLOB.Debug:
             
             FPS_TEXT = get_font(8*int(GLOB.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
             FPS_RECT = FPS_TEXT.get_rect(center=(GLOB.screen_width-40*GLOB.MULT, 20*GLOB.MULT))
 
-            if int(clock.get_fps()) < (GLOB.FPS-(GLOB.FPS/100*15)):
+            if int(clock.get_fps()) <= (GLOB.FPS-(GLOB.FPS/100*10)):
                 print("Gli fps sono scesi: "+str(clock.get_fps()))
 
             GLOB.screen.blit(FPS_TEXT, FPS_RECT)

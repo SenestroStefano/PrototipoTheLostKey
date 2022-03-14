@@ -16,6 +16,9 @@ MULT = 4
 # rapporto offset telecamera dello schermo MAX 40
 Moff = 30
 
+# rapporto audio del gioco
+AU = 5
+
 Scelta = 0
 Cam_visible = False
 
