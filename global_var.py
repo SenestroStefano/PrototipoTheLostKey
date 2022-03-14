@@ -16,7 +16,9 @@ MULT = 4
 Moff = 30
 
 Scelta = 0
-Cam_visible = True
+Cam_visible = False
+
+Debug = False
 
 Player_speed = 2 * MULT
 PlayerRun_speed = 3 * MULT
@@ -41,8 +43,11 @@ Stats = ( Senex_Stat, Seima_Stat, Aleks_Stat, Beppe_Stat, Dark_Stat )
 Background_Color = (12, 24, 36)
 
 # Dimensione Schermo
-screen_width = 480 * MULT
-screen_height = 270 * MULT
+DF_width = 480
+DF_height = 270
+
+screen_width = DF_width * MULT
+screen_height = DF_height * MULT
 
 # Configurazione Schermo
 screen = pygame.display.set_mode((screen_width,screen_height))

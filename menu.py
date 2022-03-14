@@ -1,5 +1,4 @@
-import random
-import pygame, sys, os, time
+import pygame, sys, os, time, random
 from button import Button
 from button import Bar
 from pygame import mixer
@@ -401,12 +400,12 @@ def main_menu():
                     pygame.quit()
                     sys.exit()
 
-        # TUONO
-
-        if random.randint(1, 1000) > 995:
+        # TUONO evento randomico
+        if random.randint(0, (100 * GLOB.FPS)) >= (98 * GLOB.FPS):
             tuono = pygame.image.load("assets/tuono.png").convert()
+            tuono = pygame.transform.scale(tuono, (tuono.get_width()*GLOB.MULT, tuono.get_height()*GLOB.MULT))
 
-            if random.randint(1, 100) > 50:
+            if random.randint(0, 100) >= 50:
                 tuonoSound = mixer.Sound("suoni/thunder-sound.wav")
             else:
                  tuonoSound = mixer.Sound("suoni/thunder-sound2.wav")

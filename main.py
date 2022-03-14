@@ -235,6 +235,15 @@ def main():
             else:
                 GLOB.Player_speed = GLOB.Player_default_speed
 
+        if event.key == pygame.K_F12:
+
+            if not GLOB.Debug:
+                GLOB.Debug = True
+                GLOB.Cam_visible = True
+            elif GLOB.Debug:
+                GLOB.Debug = False
+                GLOB.Cam_visible = False
+
 
 
     while run:
@@ -274,37 +283,37 @@ def main():
         player.HasCollision(obstacle)
 
 
-        FPS_TEXT = get_font(8*int(GLOB.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
-        FPS_RECT = FPS_TEXT.get_rect(center=(GLOB.screen_width-40*GLOB.MULT, 20*GLOB.MULT))
+        # print("DEBUG: "+str(GLOB.Debug))
+                
+        if GLOB.Debug:
+            
+            FPS_TEXT = get_font(8*int(GLOB.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
+            FPS_RECT = FPS_TEXT.get_rect(center=(GLOB.screen_width-40*GLOB.MULT, 20*GLOB.MULT))
 
-        #if int(clock.get_fps()) < GLOB.FPS-15:
-        #    print("Gli fps sono scesi: "+str(clock.get_fps()))
+            if int(clock.get_fps()) < (GLOB.FPS-(GLOB.FPS/100*15)):
+                print("Gli fps sono scesi: "+str(clock.get_fps()))
 
-        GLOB.screen.blit(FPS_TEXT, FPS_RECT)
+            GLOB.screen.blit(FPS_TEXT, FPS_RECT)
 
-        if keys_pressed[pygame.K_TAB]:
-            pygame.draw.rect(GLOB.screen, (0,255,255), player.mesh, int(1*GLOB.MULT))
+            if keys_pressed[pygame.K_TAB]:
+                pygame.draw.rect(GLOB.screen, (0,255,255), player.mesh, int(1*GLOB.MULT))
+                pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
 
+            RUN_TEXT = get_font(8*int(GLOB.MULT)).render("V-A: "+str(GLOB.Player_speed), True, "white")
+            RUN_RECT = RUN_TEXT.get_rect(center=(40*GLOB.MULT, 20*GLOB.MULT))
 
-        #print("La VW: "+str(GLOB.Player_default_speed)+" | La VR: "+str(GLOB.PlayerRun_speed)+" | AV: "+str(GLOB.Player_speed)+" | Scelta: "+str(GLOB.Scelta))
+            GLOB.screen.blit(RUN_TEXT, RUN_RECT)
 
-        RUN_TEXT = get_font(8*int(GLOB.MULT)).render("V-A: "+str(GLOB.Player_speed), True, "white")
-        RUN_RECT = RUN_TEXT.get_rect(center=(40*GLOB.MULT, 20*GLOB.MULT))
+            POS_TEXT = get_font(8*int(GLOB.MULT)).render("x/y: "+str(int(player.getPositionX()-cam.getPositionX()))+" | "+str(int(player.getPositionY()-cam.getPositionY())), True, "white")
+            POS_RECT = POS_TEXT.get_rect(center=(200*GLOB.MULT, 20*GLOB.MULT))
 
-        GLOB.screen.blit(RUN_TEXT, RUN_RECT)
+            GLOB.screen.blit(POS_TEXT, POS_RECT)
 
-
-        POS_TEXT = get_font(8*int(GLOB.MULT)).render("x/y: "+str(int(player.getPositionX()-cam.getPositionX()))+" | "+str(int(player.getPositionY()-cam.getPositionY())), True, "white")
-        POS_RECT = POS_TEXT.get_rect(center=(200*GLOB.MULT, 20*GLOB.MULT))
-
-        GLOB.screen.blit(POS_TEXT, POS_RECT)
-
+        
         pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione
         pygame.display.update()
 
         clock.tick(GLOB.FPS) # setto i FramesPerSecond
-
-        #print("La velocità attuale è :"+str(GLOB.Player_speed)+" | Mentre il MULT è : "+str(GLOB.MULT))
     
     pygame.quit() # per stoppare pygame in modo appropriato
     sys.exit()
