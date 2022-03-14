@@ -19,6 +19,9 @@ Moff = 30
 # rapporto audio del gioco
 AU = 5
 
+# rapporto musica del gioco
+MU = 5
+
 Scelta = 0
 Cam_visible = False
 

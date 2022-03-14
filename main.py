@@ -4,6 +4,7 @@ import pygame, os, sys
 import giocatore, menu, camera
 from button import Bar
 from button import Button
+from pygame import mixer
 
 
 # Importo le variabili Globali
@@ -129,26 +130,38 @@ def options_audio():
         PAUSE_RECT = PAUSE_TEXT.get_rect(center=(GLOB.screen_width/2, 50*GLOB.MULT))
 
 
-        #BARRA TPSIT
+        #BARRA AUDIO
         AUDIO = Bar((GLOB.screen_width/2, 100*GLOB.MULT), GLOB.AU, 1)
         AUDIO.update(GLOB.screen)
 
 
-        AUDIOPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 120*GLOB.MULT), 
+        #BARRA MUSICA
+        MUSICA = Bar((GLOB.screen_width/2, 140*GLOB.MULT), GLOB.MU, 1)
+        MUSICA.update(GLOB.screen)
+
+
+        AUDIOPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 110*GLOB.MULT), 
                             text_input="+", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        AUDIOLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 120*GLOB.MULT), 
+        AUDIOLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 110*GLOB.MULT), 
+                            text_input="-", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        MUSICPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 150*GLOB.MULT), 
+                            text_input="+", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        MUSICLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 150*GLOB.MULT), 
                             text_input="-", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
         QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT), 
                             text_input="BACK", font=menu.get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
 		
-        for button in [AUDIOPLUS_BUTTON, AUDIOLESS_BUTTON, QUIT_BUTTON]:
+        for button in [AUDIOPLUS_BUTTON, AUDIOLESS_BUTTON, MUSICPLUS_BUTTON, MUSICLESS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(GLOB.screen)
 
         for event_pausa in pygame.event.get():
-			
+
+            button_sound = mixer.Sound("suoni/option-sound.wav")
             keys_pressed = pygame.key.get_pressed()
 
             if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOPLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -157,11 +170,35 @@ def options_audio():
                 if GLOB.AU > 10:
                     GLOB.AU = 10
 
+                button_sound.set_volume(0.16*GLOB.AU)
+                button_sound.play()
+
             if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOLESS_BUTTON.checkForInput(MENU_MOUSE_POS):
                 GLOB.AU -= 1
 
                 if GLOB.AU < 0:
                     GLOB.AU = 0
+                
+                button_sound.set_volume(0.16*GLOB.AU)
+                button_sound.play()
+
+            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and MUSICPLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                GLOB.MU += 1
+
+                if GLOB.MU > 10:
+                    GLOB.MU = 10
+
+                button_sound.set_volume(0.16*GLOB.MU)
+                button_sound.play()
+
+            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and MUSICLESS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                GLOB.MU -= 1
+
+                if GLOB.MU < 0:
+                    GLOB.MU = 0
+                
+                button_sound.set_volume(0.16*GLOB.MU)
+                button_sound.play()
 
             if event_pausa.type == pygame.QUIT:
                 pygame.quit()
@@ -336,7 +373,7 @@ def main():
 
         # if int(clock.get_fps())<110:
         #     print("| fps: "+str(int(clock.get_fps()))) # Per mostrare gli GLOB.FPS
-            if keys_pressed[pygame.K_F12]:
+            if keys_pressed[pygame.K_F3]:
         
                 if not GLOB.Debug:
                     GLOB.Debug = True

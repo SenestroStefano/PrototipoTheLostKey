@@ -267,17 +267,26 @@ def options():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 flag_screen = False
 
+                option_sound = mixer.Sound("suoni/char-sound.wav")
+                option_sound.set_volume(0.16*GLOB.AU)
+
+                back_sound = mixer.Sound("suoni/back-sound.wav")
+                back_sound.set_volume(0.16*GLOB.AU)
+
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                    back_sound.play()
                     main_menu()
 
                 if Rchange.checkForInput(OPTIONS_MOUSE_POS):
                     GLOB.Scelta+=1
+                    option_sound.play()
 
                     if GLOB.Scelta>4:
                         GLOB.Scelta=0
 
                 if Lchange.checkForInput(OPTIONS_MOUSE_POS):
                     GLOB.Scelta-=1
+                    option_sound.play()
 
                     if GLOB.Scelta<0:
                         GLOB.Scelta=4
@@ -392,9 +401,14 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                button_sound = mixer.Sound("suoni/menu-sound.wav")
+                button_sound.set_volume(0.16*GLOB.AU)
+                
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    button_sound.play()
                     play()
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    button_sound.play()
                     options()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
