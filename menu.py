@@ -212,6 +212,7 @@ def options():
         Lchange.update(screen)
 
 
+
         AUDIO_TEXT = get_font(10*int(GLOB.MULT)).render("EFFETTI SONORI: ", True, "#e9eef7")
         AUDIO_RECT = AUDIO_TEXT.get_rect(center=(90*GLOB.MULT, 90*GLOB.MULT))
 
@@ -232,22 +233,29 @@ def options():
         GLOB.screen.blit(MUSICA_TEXT, MUSICA_RECT)
 
 
-        AUDIOPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 110*GLOB.MULT), 
+        AUDIOPLUS_BUTTON = Button(image=None, pos=(70*GLOB.MULT, 110*GLOB.MULT), 
                             text_input="+", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        AUDIOLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 110*GLOB.MULT), 
+        AUDIOLESS_BUTTON = Button(image=None, pos=(80*GLOB.MULT, 110*GLOB.MULT), 
                             text_input="-", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        MUSICPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 150*GLOB.MULT), 
+        MUSICPLUS_BUTTON = Button(image=None, pos=(70*GLOB.MULT, 150*GLOB.MULT), 
                             text_input="+", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        MUSICLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 150*GLOB.MULT), 
+        MUSICLESS_BUTTON = Button(image=None, pos=(80*GLOB.MULT, 150*GLOB.MULT), 
                             text_input="-", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT),  
-                            text_input="BACK", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
+        AUDIOPLUS_BUTTON.changeColor(OPTIONS_MOUSE_POS)
+        AUDIOPLUS_BUTTON.update(screen)
 
+        AUDIOLESS_BUTTON.changeColor(OPTIONS_MOUSE_POS)
+        AUDIOLESS_BUTTON.update(screen)
 
+        MUSICPLUS_BUTTON.changeColor(OPTIONS_MOUSE_POS)
+        MUSICPLUS_BUTTON.update(screen)
+
+        MUSICLESS_BUTTON.changeColor(OPTIONS_MOUSE_POS)
+        MUSICLESS_BUTTON.update(screen)
 
 
         Screen_960x540 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(50*GLOB.MULT, GLOB.screen_height/2+75*GLOB.MULT), 
@@ -355,6 +363,46 @@ def options():
                         GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height))
                     else: 
                         GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height),pygame.FULLSCREEN)
+
+
+            button_sound = mixer.Sound("suoni/option-sound.wav")
+            keys_pressed = pygame.key.get_pressed()
+
+            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and AUDIOPLUS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+                GLOB.AU += 1
+
+                if GLOB.AU > 10:
+                    GLOB.AU = 10
+
+                button_sound.set_volume(0.16*GLOB.AU)
+                button_sound.play()
+
+            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and AUDIOLESS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+                GLOB.AU -= 1
+
+                if GLOB.AU < 0:
+                    GLOB.AU = 0
+                
+                button_sound.set_volume(0.16*GLOB.AU)
+                button_sound.play()
+
+            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and MUSICPLUS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+                GLOB.MU += 1
+
+                if GLOB.MU > 10:
+                    GLOB.MU = 10
+
+                button_sound.set_volume(0.16*GLOB.MU)
+                button_sound.play()
+
+            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and MUSICLESS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+                GLOB.MU -= 1
+
+                if GLOB.MU < 0:
+                    GLOB.MU = 0
+                
+                button_sound.set_volume(0.16*GLOB.MU)
+                button_sound.play()
 
         CHARACTER = pygame.transform.scale(CHARACTER, (character_width, character_height))
                 
