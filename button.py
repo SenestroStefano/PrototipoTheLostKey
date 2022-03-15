@@ -92,18 +92,12 @@ class Bar():
 			
 			self.BarScore = pygame.Rect(self.x_pos-85*GLOB.MULT/self.div, self.y_pos-3*GLOB.MULT/self.div, 17*GLOB.MULT*self.number/self.div, 6*GLOB.MULT/self.div)
 			
-			# self.BarScore = pygame.transform.scale(self.BarScore, (self.BarScore.get_width()*self.number*GLOB.MULT/self.div, self.BarScore.get_height()*GLOB.MULT/self.div))
-
-		# self.BarGrey = pygame.image.load("assets/BarraGrigia.png").convert()
-		# self.BarGrey = pygame.transform.scale(self.BarGrey, (self.BarGrey.get_width()*GLOB.MULT/self.div, self.BarGrey.get_height()*GLOB.MULT/self.div))
 		self.BarGrey = pygame.Rect(self.x_pos-85*GLOB.MULT/self.div, self.y_pos-3*GLOB.MULT/self.div, 170*GLOB.MULT/self.div, 6*GLOB.MULT/self.div)
 
 	def update(self, screen):
-		# screen.blit(self.BarGrey, self.rect)
 		pygame.draw.rect(GLOB.screen, "Grey", self.BarGrey)
 
 		if self.number != 0:
-			# screen.blit(self.BarScore, self.rect)
 			pygame.draw.rect(GLOB.screen, self.color, self.BarScore)
 		
 		screen.blit(self.image, self.rect)

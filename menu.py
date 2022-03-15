@@ -37,7 +37,7 @@ def options():
         else:
             TEXT_FULLSCREEN = "FULLSCREEN OFF"
 
-        BG_Option = pygame.image.load("assets/Background.png")
+        BG_Option = pygame.image.load("assets/Menu.png")
         BG_Option = pygame.transform.scale(BG_Option, (GLOB.screen_width, GLOB.screen_height))
 
         if GLOB.Scelta==0:
@@ -75,10 +75,6 @@ def options():
 
         CHARACTER = pygame.image.load(os.path.join("Characters_Image",char))
 
-        BG_Menu = pygame.image.load("assets/Background.png")
-        BG_Menu = pygame.transform.scale(BG_Menu, (GLOB.screen_width, GLOB.screen_height))
-
-
         Scala = 2.5 * GLOB.MULT
 
         character_width = CHARACTER.get_width() * Scala
@@ -92,12 +88,12 @@ def options():
 
         #TESTO
         Velocita_TEXT = get_font(8*int(GLOB.MULT)).render("Velocita'", True, "#e9eef7")
-        Velocita_RECT = Velocita_TEXT.get_rect(center=(GLOB.screen_width/2, GLOB.screen_height/2+75*GLOB.MULT))
+        Velocita_RECT = Velocita_TEXT.get_rect(center=(GLOB.screen_width/2, GLOB.screen_height/2+80*GLOB.MULT))
 
         screen.blit(Velocita_TEXT, Velocita_RECT)
 
         #BARRA
-        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+85*GLOB.MULT), "Green", GLOB.Stats[GLOB.Scelta][0], None)
+        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+95*GLOB.MULT), "Green", GLOB.Stats[GLOB.Scelta][0], None)
         Velocita.update(screen)
 
 
@@ -108,39 +104,39 @@ def options():
         scala_tabella = 1.5
 
         #BARRA Chimica
-        Chimica = Bar((posX_tabella, posY_tabella*1.2), "Green" ,GLOB.Stats[GLOB.Scelta][1], scala_tabella,)
+        Chimica = Bar((posX_tabella, posY_tabella*1.2), "Green", GLOB.Stats[GLOB.Scelta][1], scala_tabella)
         Chimica.update(screen)
 
         #BARRA Storia
-        Storia = Bar((posX_tabella, posY_tabella*1.7), "Green" ,GLOB.Stats[GLOB.Scelta][2], scala_tabella,)
+        Storia = Bar((posX_tabella, posY_tabella*1.7), "Green", GLOB.Stats[GLOB.Scelta][2], scala_tabella)
         Storia.update(screen)
 
         #BARRA Inglese
-        Inglese = Bar((posX_tabella, posY_tabella*2.2), "Green" ,GLOB.Stats[GLOB.Scelta][3], scala_tabella,)
+        Inglese = Bar((posX_tabella, posY_tabella*2.2), "Green", GLOB.Stats[GLOB.Scelta][3], scala_tabella)
         Inglese.update(screen)
 
         #BARRA Fisica
-        Fisica = Bar((posX_tabella, posY_tabella*2.7), "Green" ,GLOB.Stats[GLOB.Scelta][4], scala_tabella,)
+        Fisica = Bar((posX_tabella, posY_tabella*2.7), "Green", GLOB.Stats[GLOB.Scelta][4], scala_tabella)
         Fisica.update(screen)
 
         #BARRA Matematica
-        Matematica = Bar((posX_tabella, posY_tabella*3.2), "Green" ,GLOB.Stats[GLOB.Scelta][5], scala_tabella,)
+        Matematica = Bar((posX_tabella, posY_tabella*3.2), "Green", GLOB.Stats[GLOB.Scelta][5], scala_tabella)
         Matematica.update(screen)
 
         #BARRA Informatica
-        Informatica = Bar((posX_tabella, posY_tabella*3.7), "Green" ,GLOB.Stats[GLOB.Scelta][6], scala_tabella,)
+        Informatica = Bar((posX_tabella, posY_tabella*3.7), "Green", GLOB.Stats[GLOB.Scelta][6], scala_tabella)
         Informatica.update(screen)
 
         #BARRA Italiano
-        Italiano = Bar((posX_tabella, posY_tabella*4.2), "Green" ,GLOB.Stats[GLOB.Scelta][7], scala_tabella,)
+        Italiano = Bar((posX_tabella, posY_tabella*4.2), "Green", GLOB.Stats[GLOB.Scelta][7], scala_tabella)
         Italiano.update(screen)
 
         #BARRA Sistemi
-        Sistemi = Bar((posX_tabella, posY_tabella*4.7), "Green" ,GLOB.Stats[GLOB.Scelta][8], scala_tabella,)
+        Sistemi = Bar((posX_tabella, posY_tabella*4.7), "Green", GLOB.Stats[GLOB.Scelta][8], scala_tabella)
         Sistemi.update(screen)
 
         #BARRA TPSIT
-        TPSIT = Bar((posX_tabella, posY_tabella*5.2), "Green" ,GLOB.Stats[GLOB.Scelta][9], scala_tabella,)
+        TPSIT = Bar((posX_tabella, posY_tabella*5.2), "Green", GLOB.Stats[GLOB.Scelta][9], scala_tabella)
         TPSIT.update(screen)
 
         #TESTO
@@ -199,13 +195,13 @@ def options():
 
 
 
-        Rchange = Button(image=None, pos=(GLOB.screen_width/2+50*GLOB.MULT, GLOB.screen_height/2), 
+        Rchange = Button(image=None, pos=(GLOB.screen_width/2+50*GLOB.MULT, GLOB.screen_height/2+15*GLOB.MULT), 
                             text_input=">", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="red", scale=2)
 
         Rchange.changeColor(OPTIONS_MOUSE_POS)
         Rchange.update(screen)
 
-        Lchange = Button(image=None, pos=(GLOB.screen_width/2-50*GLOB.MULT, GLOB.screen_height/2), 
+        Lchange = Button(image=None, pos=(GLOB.screen_width/2-50*GLOB.MULT, GLOB.screen_height/2+15*GLOB.MULT), 
                             text_input="<", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="red", scale=2)
 
         Lchange.changeColor(OPTIONS_MOUSE_POS)
@@ -213,19 +209,19 @@ def options():
 
 
 
-        AUDIO_TEXT = get_font(10*int(GLOB.MULT)).render("EFFETTI SONORI: ", True, "#e9eef7")
-        AUDIO_RECT = AUDIO_TEXT.get_rect(center=(90*GLOB.MULT, 90*GLOB.MULT))
+        AUDIO_TEXT = get_font(10*int(GLOB.MULT)).render("EFFETTI SONORI", True, "#e9eef7")
+        AUDIO_RECT = AUDIO_TEXT.get_rect(center=(80*GLOB.MULT, posY_tabella))
 
-        MUSICA_TEXT = get_font(10*int(GLOB.MULT)).render("MUSICA: ", True, "#e9eef7")
-        MUSICA_RECT = MUSICA_TEXT.get_rect(center=(80*GLOB.MULT, 130*GLOB.MULT))
+        MUSICA_TEXT = get_font(10*int(GLOB.MULT)).render("MUSICA", True, "#e9eef7")
+        MUSICA_RECT = MUSICA_TEXT.get_rect(center=(80*GLOB.MULT, posY_tabella*2))
 
         #BARRA AUDIO
-        AUDIO = Bar((80*GLOB.MULT, 100*GLOB.MULT), "Blue", GLOB.AU, 1.2)
+        AUDIO = Bar((80*GLOB.MULT, posY_tabella*1.3), "#4287f5", GLOB.AU, 1.2)
         AUDIO.update(GLOB.screen)
 
 
         #BARRA MUSICA
-        MUSICA = Bar((80*GLOB.MULT, 140*GLOB.MULT), "Blue", GLOB.MU, 1.2)
+        MUSICA = Bar((80*GLOB.MULT, posY_tabella*2.3), "#4287f5", GLOB.MU, 1.2)
         MUSICA.update(GLOB.screen)
 
 
@@ -233,16 +229,16 @@ def options():
         GLOB.screen.blit(MUSICA_TEXT, MUSICA_RECT)
 
 
-        AUDIOPLUS_BUTTON = Button(image=None, pos=(70*GLOB.MULT, 110*GLOB.MULT), 
+        AUDIOPLUS_BUTTON = Button(image=None, pos=(93*GLOB.MULT, posY_tabella*1.5), 
                             text_input="+", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        AUDIOLESS_BUTTON = Button(image=None, pos=(80*GLOB.MULT, 110*GLOB.MULT), 
+        AUDIOLESS_BUTTON = Button(image=None, pos=(63*GLOB.MULT, posY_tabella*1.5), 
                             text_input="-", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        MUSICPLUS_BUTTON = Button(image=None, pos=(70*GLOB.MULT, 150*GLOB.MULT), 
+        MUSICPLUS_BUTTON = Button(image=None, pos=(93*GLOB.MULT, posY_tabella*2.5), 
                             text_input="+", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
-        MUSICLESS_BUTTON = Button(image=None, pos=(80*GLOB.MULT, 150*GLOB.MULT), 
+        MUSICLESS_BUTTON = Button(image=None, pos=(63*GLOB.MULT, posY_tabella*2.5), 
                             text_input="-", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
 
         AUDIOPLUS_BUTTON.changeColor(OPTIONS_MOUSE_POS)
@@ -293,8 +289,8 @@ def options():
 
 
 
-        OPTIONS_BACK = Button(image=None, pos=(GLOB.screen_width/2, 250*GLOB.MULT), 
-                            text_input="BACK", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="Green", scale=2)
+        OPTIONS_BACK = Button(image=None, pos=(GLOB.screen_width/2, 255*GLOB.MULT), 
+                            text_input="BACK", font=get_font(20*int(GLOB.MULT)), base_color="White", hovering_color="Grey", scale=2)
 
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(screen)

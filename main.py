@@ -136,12 +136,12 @@ def options_audio():
         MUSICA_RECT = MUSICA_TEXT.get_rect(center=(GLOB.screen_width/2, 130*GLOB.MULT))
 
         #BARRA AUDIO
-        AUDIO = Bar((GLOB.screen_width/2, 100*GLOB.MULT), "Blue", GLOB.AU, 1)
+        AUDIO = Bar((GLOB.screen_width/2, 100*GLOB.MULT), "#4287f5", GLOB.AU, 1)
         AUDIO.update(GLOB.screen)
 
 
         #BARRA MUSICA
-        MUSICA = Bar((GLOB.screen_width/2, 140*GLOB.MULT), "Blue", GLOB.MU, 1)
+        MUSICA = Bar((GLOB.screen_width/2, 140*GLOB.MULT), "#4287f5", GLOB.MU, 1)
         MUSICA.update(GLOB.screen)
 
 
