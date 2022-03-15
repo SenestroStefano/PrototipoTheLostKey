@@ -130,18 +130,18 @@ def options_audio():
         PAUSE_RECT = PAUSE_TEXT.get_rect(center=(GLOB.screen_width/2, 50*GLOB.MULT))
 
         AUDIO_TEXT = menu.get_font(10*int(GLOB.MULT)).render("EFFETTI SONORI: ", True, "#e9eef7")
-        AUDIO_RECT = PAUSE_TEXT.get_rect(center=(GLOB.screen_width/2, 90*GLOB.MULT))
+        AUDIO_RECT = AUDIO_TEXT.get_rect(center=(GLOB.screen_width/2, 90*GLOB.MULT))
 
         MUSICA_TEXT = menu.get_font(10*int(GLOB.MULT)).render("MUSICA: ", True, "#e9eef7")
-        MUSICA_RECT = PAUSE_TEXT.get_rect(center=(GLOB.screen_width/2, 130*GLOB.MULT))
+        MUSICA_RECT = MUSICA_TEXT.get_rect(center=(GLOB.screen_width/2, 130*GLOB.MULT))
 
         #BARRA AUDIO
-        AUDIO = Bar((GLOB.screen_width/2, 100*GLOB.MULT), GLOB.AU, 1, 2)
+        AUDIO = Bar((GLOB.screen_width/2, 100*GLOB.MULT), "Blue", GLOB.AU, 1)
         AUDIO.update(GLOB.screen)
 
 
         #BARRA MUSICA
-        MUSICA = Bar((GLOB.screen_width/2, 140*GLOB.MULT), GLOB.MU, 1, 2)
+        MUSICA = Bar((GLOB.screen_width/2, 140*GLOB.MULT), "Blue", GLOB.MU, 1)
         MUSICA.update(GLOB.screen)
 
 

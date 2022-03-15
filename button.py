@@ -1,3 +1,4 @@
+from turtle import color
 import global_var as GLOB
 import pygame
 
@@ -61,11 +62,12 @@ class Button():
 """
 
 class Bar():
-	def __init__(self, pos, number, div, type):
+	def __init__(self, pos, color, number, div):
 
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
 
+		self.color = color
 		self.number = number
 		self.div = div
 
@@ -83,25 +85,25 @@ class Bar():
 
 		self.image = pygame.image.load("assets/BarraCompletamento.png")
 		self.image = pygame.transform.scale(self.image, (self.image.get_width()*GLOB.MULT/self.div, self.image.get_height()*GLOB.MULT/self.div))
+		
+		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
 
 		if number != 0:
 			
-			if type == 1:
-				self.BarScore = pygame.image.load("assets/BarraVerde.png").convert()
-			else:
-				self.BarScore = pygame.image.load("assets/BarraBlu.png").convert()
+			self.BarScore = pygame.Rect(self.x_pos-85*GLOB.MULT/self.div, self.y_pos-3*GLOB.MULT/self.div, 17*GLOB.MULT*self.number/self.div, 6*GLOB.MULT/self.div)
 			
-			self.BarScore = pygame.transform.scale(self.BarScore, (self.BarScore.get_width()*self.number*GLOB.MULT/self.div, self.BarScore.get_height()*GLOB.MULT/self.div))
+			# self.BarScore = pygame.transform.scale(self.BarScore, (self.BarScore.get_width()*self.number*GLOB.MULT/self.div, self.BarScore.get_height()*GLOB.MULT/self.div))
 
-		self.BarGrey = pygame.image.load("assets/BarraGrigia.png").convert()
-		self.BarGrey = pygame.transform.scale(self.BarGrey, (self.BarGrey.get_width()*GLOB.MULT/self.div, self.BarGrey.get_height()*GLOB.MULT/self.div))
-
-		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
+		# self.BarGrey = pygame.image.load("assets/BarraGrigia.png").convert()
+		# self.BarGrey = pygame.transform.scale(self.BarGrey, (self.BarGrey.get_width()*GLOB.MULT/self.div, self.BarGrey.get_height()*GLOB.MULT/self.div))
+		self.BarGrey = pygame.Rect(self.x_pos-85*GLOB.MULT/self.div, self.y_pos-3*GLOB.MULT/self.div, 170*GLOB.MULT/self.div, 6*GLOB.MULT/self.div)
 
 	def update(self, screen):
-		screen.blit(self.BarGrey, self.rect)
+		# screen.blit(self.BarGrey, self.rect)
+		pygame.draw.rect(GLOB.screen, "Grey", self.BarGrey)
 
 		if self.number != 0:
-			screen.blit(self.BarScore, self.rect)
+			# screen.blit(self.BarScore, self.rect)
+			pygame.draw.rect(GLOB.screen, self.color, self.BarScore)
 		
 		screen.blit(self.image, self.rect)

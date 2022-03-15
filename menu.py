@@ -97,7 +97,7 @@ def options():
         screen.blit(Velocita_TEXT, Velocita_RECT)
 
         #BARRA
-        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+85*GLOB.MULT), GLOB.Stats[GLOB.Scelta][0], None, 1)
+        Velocita = Bar((GLOB.screen_width/2, GLOB.screen_height/2+85*GLOB.MULT), "Green", GLOB.Stats[GLOB.Scelta][0], None)
         Velocita.update(screen)
 
 
@@ -108,39 +108,39 @@ def options():
         scala_tabella = 1.5
 
         #BARRA Chimica
-        Chimica = Bar((posX_tabella, posY_tabella*1.2), GLOB.Stats[GLOB.Scelta][1], scala_tabella, 1)
+        Chimica = Bar((posX_tabella, posY_tabella*1.2), "Green" ,GLOB.Stats[GLOB.Scelta][1], scala_tabella,)
         Chimica.update(screen)
 
         #BARRA Storia
-        Storia = Bar((posX_tabella, posY_tabella*1.7), GLOB.Stats[GLOB.Scelta][2], scala_tabella, 1)
+        Storia = Bar((posX_tabella, posY_tabella*1.7), "Green" ,GLOB.Stats[GLOB.Scelta][2], scala_tabella,)
         Storia.update(screen)
 
         #BARRA Inglese
-        Inglese = Bar((posX_tabella, posY_tabella*2.2), GLOB.Stats[GLOB.Scelta][3], scala_tabella, 1)
+        Inglese = Bar((posX_tabella, posY_tabella*2.2), "Green" ,GLOB.Stats[GLOB.Scelta][3], scala_tabella,)
         Inglese.update(screen)
 
         #BARRA Fisica
-        Fisica = Bar((posX_tabella, posY_tabella*2.7), GLOB.Stats[GLOB.Scelta][4], scala_tabella, 1)
+        Fisica = Bar((posX_tabella, posY_tabella*2.7), "Green" ,GLOB.Stats[GLOB.Scelta][4], scala_tabella,)
         Fisica.update(screen)
 
         #BARRA Matematica
-        Matematica = Bar((posX_tabella, posY_tabella*3.2), GLOB.Stats[GLOB.Scelta][5], scala_tabella, 1)
+        Matematica = Bar((posX_tabella, posY_tabella*3.2), "Green" ,GLOB.Stats[GLOB.Scelta][5], scala_tabella,)
         Matematica.update(screen)
 
         #BARRA Informatica
-        Informatica = Bar((posX_tabella, posY_tabella*3.7), GLOB.Stats[GLOB.Scelta][6], scala_tabella, 1)
+        Informatica = Bar((posX_tabella, posY_tabella*3.7), "Green" ,GLOB.Stats[GLOB.Scelta][6], scala_tabella,)
         Informatica.update(screen)
 
         #BARRA Italiano
-        Italiano = Bar((posX_tabella, posY_tabella*4.2), GLOB.Stats[GLOB.Scelta][7], scala_tabella, 1)
+        Italiano = Bar((posX_tabella, posY_tabella*4.2), "Green" ,GLOB.Stats[GLOB.Scelta][7], scala_tabella,)
         Italiano.update(screen)
 
         #BARRA Sistemi
-        Sistemi = Bar((posX_tabella, posY_tabella*4.7), GLOB.Stats[GLOB.Scelta][8], scala_tabella, 1)
+        Sistemi = Bar((posX_tabella, posY_tabella*4.7), "Green" ,GLOB.Stats[GLOB.Scelta][8], scala_tabella,)
         Sistemi.update(screen)
 
         #BARRA TPSIT
-        TPSIT = Bar((posX_tabella, posY_tabella*5.2), GLOB.Stats[GLOB.Scelta][9], scala_tabella, 1)
+        TPSIT = Bar((posX_tabella, posY_tabella*5.2), "Green" ,GLOB.Stats[GLOB.Scelta][9], scala_tabella,)
         TPSIT.update(screen)
 
         #TESTO
@@ -212,39 +212,71 @@ def options():
         Lchange.update(screen)
 
 
-        Screen_480x270 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-110*GLOB.MULT), 
-                            text_input="480 x 270", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
+        AUDIO_TEXT = get_font(10*int(GLOB.MULT)).render("EFFETTI SONORI: ", True, "#e9eef7")
+        AUDIO_RECT = AUDIO_TEXT.get_rect(center=(90*GLOB.MULT, 90*GLOB.MULT))
 
-        Screen_480x270.changeColor(OPTIONS_MOUSE_POS)
-        Screen_480x270.update(screen)
+        MUSICA_TEXT = get_font(10*int(GLOB.MULT)).render("MUSICA: ", True, "#e9eef7")
+        MUSICA_RECT = MUSICA_TEXT.get_rect(center=(80*GLOB.MULT, 130*GLOB.MULT))
 
-        Screen_960x540 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-70*GLOB.MULT), 
-                    text_input="960 x 540", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
+        #BARRA AUDIO
+        AUDIO = Bar((80*GLOB.MULT, 100*GLOB.MULT), "Blue", GLOB.AU, 1.2)
+        AUDIO.update(GLOB.screen)
+
+
+        #BARRA MUSICA
+        MUSICA = Bar((80*GLOB.MULT, 140*GLOB.MULT), "Blue", GLOB.MU, 1.2)
+        MUSICA.update(GLOB.screen)
+
+
+        GLOB.screen.blit(AUDIO_TEXT, AUDIO_RECT)
+        GLOB.screen.blit(MUSICA_TEXT, MUSICA_RECT)
+
+
+        AUDIOPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 110*GLOB.MULT), 
+                            text_input="+", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        AUDIOLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 110*GLOB.MULT), 
+                            text_input="-", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        MUSICPLUS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2+20*GLOB.MULT, 150*GLOB.MULT), 
+                            text_input="+", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        MUSICLESS_BUTTON = Button(image=None, pos=(GLOB.screen_width/2-20*GLOB.MULT, 150*GLOB.MULT), 
+                            text_input="-", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=1)
+
+        QUIT_BUTTON = Button(image=None, pos=(GLOB.screen_width/2, 190*GLOB.MULT),  
+                            text_input="BACK", font=get_font(8*int(GLOB.MULT)), base_color="#d7fcd4", hovering_color="White", scale=2)
+
+
+
+
+        Screen_960x540 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(50*GLOB.MULT, GLOB.screen_height/2+75*GLOB.MULT), 
+                    text_input="960 x 540", font=get_font(4*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=4)
 
         Screen_960x540.changeColor(OPTIONS_MOUSE_POS)
         Screen_960x540.update(screen)
 
-        Screen_1440x810 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2-30*GLOB.MULT), 
-                    text_input="1440 x 810", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
+        Screen_1440x810 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(110*GLOB.MULT, GLOB.screen_height/2+75*GLOB.MULT), 
+                    text_input="1440 x 810", font=get_font(4*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=4)
 
         Screen_1440x810.changeColor(OPTIONS_MOUSE_POS)
         Screen_1440x810.update(screen)
 
-        Screen_1920x1080 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+10*GLOB.MULT), 
-                    text_input="1920 x 1080", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
+        Screen_1920x1080 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(50*GLOB.MULT, GLOB.screen_height/2+90*GLOB.MULT), 
+                    text_input="1920 x 1080", font=get_font(4*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=4)
 
         Screen_1920x1080.changeColor(OPTIONS_MOUSE_POS)
         Screen_1920x1080.update(screen)
 
 
-        Screen_3840x2160 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+50*GLOB.MULT), 
-                    text_input="3840 x 2160", font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
+        Screen_3840x2160 = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(110*GLOB.MULT, GLOB.screen_height/2+90*GLOB.MULT), 
+                    text_input="3840 x 2160", font=get_font(4*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=4)
 
         Screen_3840x2160.changeColor(OPTIONS_MOUSE_POS)
         Screen_3840x2160.update(screen)
 
 
-        Screen_FULL = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+90*GLOB.MULT), 
+        Screen_FULL = Button(image=pygame.image.load("assets/Select Rect.png"), pos=(80*GLOB.MULT, GLOB.screen_height/2+110*GLOB.MULT), 
                     text_input=TEXT_FULLSCREEN, font=get_font(8*int(GLOB.MULT)), base_color="White", hovering_color="#2f3131", scale=2)
 
         Screen_FULL.changeColor(OPTIONS_MOUSE_POS)
@@ -290,10 +322,6 @@ def options():
 
                     if GLOB.Scelta<0:
                         GLOB.Scelta=4
-
-                if Screen_480x270.checkForInput(OPTIONS_MOUSE_POS):
-                    GLOB.MULT=1
-                    flag_screen = True
 
                 if Screen_960x540.checkForInput(OPTIONS_MOUSE_POS):
                     GLOB.MULT=2
