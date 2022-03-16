@@ -195,7 +195,7 @@ class Player(pygame.sprite.Sprite):
                     self.x += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setLeftPress(False)    # ogni volta che collido dal lato sinistro non posso riandare a ricliccare il pulsante destro
                     return True # ritorno un valore perchè dopo lo vado ad utilizzare
-                else:
+                elif self.x <= object.x:
                     self.x -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setRightPress(False)    # ogni volta che collido dal lato destro non posso riandare a ricliccare il pulsante sinistro
                     return False # ritorno un valore perchè dopo lo vado ad utilizzare
@@ -206,7 +206,7 @@ class Player(pygame.sprite.Sprite):
                     self.y += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setUpPress(False)    # ogni volta che collido dal lato basso non posso riandare a ricliccare il pulsante alto
                     return True # ritorno un valore perchè dopo lo vado ad utilizzare
-                else:
+                elif self.y <= object.y:
                     self.y -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setDownPress(False)    # ogni volta che collido dal lato alto non posso riandare a ricliccare il pulsante basso
                     return False # ritorno un valore perchè dopo lo vado ad utilizzare

@@ -402,21 +402,75 @@ def main():
 
 
         # print("DEBUG: "+str(GLOB.Debug))
+
+        if keys_pressed[pygame.K_k]:
+            testo = pygame.image.load("assets/Dialoghi.png").convert()
+            testo = pygame.transform.scale(testo, (testo.get_width()*GLOB.MULT, testo.get_height()*GLOB.MULT))
+
+            mo = 2
+
+            immagine = pygame.image.load("Characters_Image/ASenex.png")
+            immagine = pygame.transform.scale(immagine, (immagine.get_width()*GLOB.MULT * mo, immagine.get_height()*GLOB.MULT * mo))
+
+            Nome_TEXT = get_font(8*int(GLOB.MULT)).render("Stefano", True, "Black")
+            Nome_RECT = Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
+
+            Descrizione_TEXT = get_font(8*int(GLOB.MULT)).render("Questa è una schermata di dialogo", True, "White")
+            Descrizione_RECT = Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-40*GLOB.MULT))
+
+            GLOB.screen.blit(testo, (0, GLOB.screen_height-testo.get_height()))
+            GLOB.screen.blit(immagine, (45*GLOB.MULT, GLOB.screen_height-immagine.get_height()-16*GLOB.MULT))
+
+            GLOB.screen.blit(Nome_TEXT, Nome_RECT)
+            GLOB.screen.blit(Descrizione_TEXT, Descrizione_RECT)
         
                 
         if GLOB.Debug:
             
+            sprint = GLOB.Player_speed > GLOB.Player_default_speed
+
+            key = "0"
+
+            if player.getUpPress():
+                key = "↑"
+            elif player.getDownPress():
+                key = "↓"
+            elif player.getLeftPress():
+                key = "←"
+            elif player.getRightPress():
+                key = "→"
+
+            if sprint:
+                key = "|"+key+"|"
+            
             FPS_TEXT = get_font(8*int(GLOB.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
             FPS_RECT = FPS_TEXT.get_rect(center=(GLOB.screen_width-40*GLOB.MULT, 20*GLOB.MULT))
 
-            if int(clock.get_fps()) <= (GLOB.FPS-(GLOB.FPS/100*10)):
-                print("Gli fps sono scesi: "+str(clock.get_fps()))
+            DROP_TEXT = get_font(5*int(GLOB.MULT)).render("DROP "+str(100-int(clock.get_fps()*100/GLOB.FPS))+"%", True, "red")
+            DROP_RECT = DROP_TEXT.get_rect(center=(GLOB.screen_width-95*GLOB.MULT, 20*GLOB.MULT))
+
+            KEY_TEXT = get_font(10*int(GLOB.MULT)).render(key, True, "blue")
+            KEY_RECT = KEY_TEXT.get_rect(center=(GLOB.screen_width-140*GLOB.MULT, 20*GLOB.MULT))
+
+            if player.Last_keyPressed != "Null":
+                GLOB.screen.blit(KEY_TEXT, KEY_RECT)
+
+            if int(clock.get_fps()) <= (GLOB.FPS-(GLOB.FPS/20)):
+                #print("Gli fps sono scesi: "+str(clock.get_fps()))
+                GLOB.screen.blit(DROP_TEXT, DROP_RECT)
+                
 
             GLOB.screen.blit(FPS_TEXT, FPS_RECT)
 
             if keys_pressed[pygame.K_TAB]:
                 pygame.draw.rect(GLOB.screen, (0,255,255), player.mesh, int(1*GLOB.MULT))
                 pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
+
+            if keys_pressed[pygame.K_o]:
+                GLOB.Moff -= 1
+
+            if keys_pressed[pygame.K_p]:
+                GLOB.Moff += 1
 
             RUN_TEXT = get_font(8*int(GLOB.MULT)).render("V-A: "+str(GLOB.Player_speed), True, "white")
             RUN_RECT = RUN_TEXT.get_rect(center=(40*GLOB.MULT, 20*GLOB.MULT))

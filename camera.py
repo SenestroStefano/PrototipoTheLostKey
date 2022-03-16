@@ -18,12 +18,12 @@ class Cam():
         self.setPositionX(0) 
         self.setPositionY(0)
 
-        #self.image = pygame.image.load("assets/BackgroundCam.png").convert()
+        self.image = pygame.image.load("assets/BackgroundCam.png").convert()
 
-        #self.width = self.image.get_width()
-        #self.height = self.image.get_height()
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
-        #self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*1), (self.height*GLOB.MULT*1)))
+        self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*3), (self.height*GLOB.MULT*3)))
 
 
     def setPositionX(self, x):
@@ -40,7 +40,7 @@ class Cam():
 
         
     def update(self, visibility):
-        #GLOB.screen.blit(self.image, (self.x, self.y))
+        GLOB.screen.blit(self.image, (self.x, self.y))
 
         offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
 
@@ -57,6 +57,18 @@ class Cam():
         d1 = main.player.getUpPress()
 
         ln = main.player.Last_keyPressed=="Null"
+
+        if a and ln and not (main.player.getLeftPress() or main.player.getRightPress()):
+            main.player.x -= GLOB.Player_default_speed
+
+        if b and ln and not (main.player.getLeftPress() or main.player.getRightPress()):
+            main.player.x += GLOB.Player_default_speed
+
+        if c and ln and not (main.player.getUpPress() or main.player.getDownPress()):
+            main.player.y -= GLOB.Player_default_speed
+
+        if d and ln and not (main.player.getUpPress() or main.player.getDownPress()):
+            main.player.y += GLOB.Player_default_speed
 
         if a and a1 or ln and a:
             main.player.setPositionX(main.player.getPositionX()-main.player.getVelocitaX())
