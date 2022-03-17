@@ -2,8 +2,7 @@ import pygame, os, sys
 
 #Importo i vari file e classi necessarie
 import giocatore, menu, camera
-from button import Bar
-from button import Button
+from button import Bar, Button, Dialoghi
 from pygame import mixer
 
 
@@ -355,7 +354,12 @@ def main():
             else:
                 GLOB.Player_speed = GLOB.Player_default_speed
 
-
+    """
+    
+        ---- Indico la classe dialoghi ----
+    
+    """
+    Saluto = Dialoghi(personaggio = "Dark Angel", descrizione = "Questo messaggio, è un messaggio di prova.")
 
     while run:
         keys_pressed = pygame.key.get_pressed()
@@ -403,26 +407,9 @@ def main():
 
         # print("DEBUG: "+str(GLOB.Debug))
 
-        if keys_pressed[pygame.K_k]:
-            testo = pygame.image.load("assets/Dialoghi.png").convert()
-            testo = pygame.transform.scale(testo, (testo.get_width()*GLOB.MULT, testo.get_height()*GLOB.MULT))
-
-            mo = 2
-
-            immagine = pygame.image.load("Characters_Image/ASenex.png")
-            immagine = pygame.transform.scale(immagine, (immagine.get_width()*GLOB.MULT * mo, immagine.get_height()*GLOB.MULT * mo))
-
-            Nome_TEXT = get_font(8*int(GLOB.MULT)).render("Stefano", True, "Black")
-            Nome_RECT = Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
-
-            Descrizione_TEXT = get_font(8*int(GLOB.MULT)).render("Questa è una schermata di dialogo", True, "White")
-            Descrizione_RECT = Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-40*GLOB.MULT))
-
-            GLOB.screen.blit(testo, (0, GLOB.screen_height-testo.get_height()))
-            GLOB.screen.blit(immagine, (45*GLOB.MULT, GLOB.screen_height-immagine.get_height()-16*GLOB.MULT))
-
-            GLOB.screen.blit(Nome_TEXT, Nome_RECT)
-            GLOB.screen.blit(Descrizione_TEXT, Descrizione_RECT)
+        Saluto.effetto_testo()
+        Saluto.stampa()
+            
         
                 
         if GLOB.Debug:

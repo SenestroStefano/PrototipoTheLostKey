@@ -1,3 +1,4 @@
+from posixpath import split
 from turtle import color
 import global_var as GLOB
 import pygame
@@ -101,3 +102,50 @@ class Bar():
 			pygame.draw.rect(GLOB.screen, self.color, self.BarScore)
 		
 		screen.blit(self.image, self.rect)
+
+
+def get_font(size): # Returns Press-Start-2P in the desired size
+	return pygame.font.Font("assets/font.ttf", size)
+
+class Dialoghi():
+	def __init__(self, personaggio, descrizione):
+		
+		self.personaggio = personaggio
+		self.descr = descrizione
+
+		self.delay = 0
+		self.descrizione = ""
+
+		n = 1
+		self.descr = [self.descr[i:i+n] for i in range(0, len(self.descr), n)]
+
+		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.personaggio, True, "Black")
+		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
+
+		self.vignetta = pygame.image.load("Dialoghi/"+self.personaggio+".png")
+		self.vignetta = pygame.transform.scale(self.vignetta, (self.vignetta.get_width()*GLOB.MULT*2, self.vignetta.get_height()*GLOB.MULT*2))
+
+		self.sfondo = pygame.image.load("assets/Dialoghi.png")
+		self.sfondo = pygame.transform.scale(self.sfondo, (self.sfondo.get_width()*GLOB.MULT, self.sfondo.get_height()*GLOB.MULT))
+
+	def effetto_testo(self):
+		#print(self.descr)
+
+		if int(self.delay+0.1) == round(self.delay, 1) and not int((self.delay+1)) > len(self.descr):
+			#print(len(self.descr))
+			#print(int(self.delay))
+			self.descrizione = self.descrizione + self.descr[int(round(self.delay, 1))]
+			#print("Descrizione: "+str(self.descrizione)+" | Delay: "+str(int(self.delay))+" | Max: "+str(len(self.descr*self.text_speed)))
+
+		self.delay += + 0.2
+		#print("Delay: "+str(round(self.delay, 1))+" | Intero: "+str(int(self.delay+0.1))+" | Lunghezza: "+str(len(self.descr))+" | Descrizione: "+str(self.descrizione)+" | Max: "+str((self.delay+1)))
+
+		self.Descrizione_TEXT = get_font(6*int(GLOB.MULT)).render(self.descrizione, True, "White")
+		self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-50*GLOB.MULT))
+
+	def stampa(self):
+
+		GLOB.screen.blit(self.sfondo, (0, GLOB.screen_height-self.sfondo.get_height()))
+		GLOB.screen.blit(self.vignetta, (45*GLOB.MULT, GLOB.screen_height-self.vignetta.get_height()-18*GLOB.MULT))
+		GLOB.screen.blit(self.Nome_TEXT, self.Nome_RECT)
+		GLOB.screen.blit(self.Descrizione_TEXT, self.Descrizione_RECT)
