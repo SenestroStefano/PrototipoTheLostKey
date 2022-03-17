@@ -359,7 +359,11 @@ def main():
         ---- Indico la classe dialoghi ----
     
     """
-    Saluto = Dialoghi(personaggio = "Dark Angel", descrizione = "Questo messaggio, è un messaggio di prova.")
+
+    testo = "Ciao come stai? Sono Giulia bye ... bye .."
+
+    # personaggi Senex/Seima/Aleks/Beppe/Dark Angel | Limite testo 192 caratteri | velocità minima/massima 1/5
+    Saluto = Dialoghi(personaggio = "Aleks", descrizione = testo, text_speed = 3)
 
     while run:
         keys_pressed = pygame.key.get_pressed()
@@ -406,15 +410,12 @@ def main():
 
 
         # print("DEBUG: "+str(GLOB.Debug))
-
-        Saluto.effetto_testo()
-        Saluto.stampa()
             
-        
-                
         if GLOB.Debug:
             
             sprint = GLOB.Player_speed > GLOB.Player_default_speed
+
+            Saluto.stampa()
 
             key = "0"
 

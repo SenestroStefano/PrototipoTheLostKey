@@ -1,7 +1,6 @@
-from posixpath import split
-from turtle import color
 import global_var as GLOB
 import pygame
+from pygame import mixer
 
 """
 
@@ -114,10 +113,36 @@ class Dialoghi():
 		self.descr = descrizione
 
 		self.delay = 0
-		self.descrizione = ""
 
-		self.speed = text_speed
-		self.descr = [self.descr[i:i+self.speed] for i in range(0, len(self.descr), self.speed)]
+		self.descrizione = ""
+		self.descrizione1 = ""
+		self.descrizione2 = ""
+
+		self.r0 = False
+		self.r1 = False
+		self.r2 = False
+
+		if text_speed == 1:
+			self.text_speed = 0.1
+		elif text_speed == 2:
+			self.text_speed = 0.2
+		elif text_speed == 3:
+			self.text_speed = 0.25
+		elif text_speed == 4:
+			self.text_speed = 0.5
+		elif text_speed == 5:
+			self.text_speed = 1
+		elif text_speed < 5:
+			self.text_speed = 5
+		else:
+			self.text_speed = 0.1
+
+		self.contatore = 0
+
+		self.ritardo = 0
+
+		n = 1
+		self.descr = [self.descr[i:i+n] for i in range(0, len(self.descr), n)]
 
 		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.personaggio, True, "Black")
 		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
@@ -128,30 +153,72 @@ class Dialoghi():
 		self.sfondo = pygame.image.load("assets/Dialoghi.png")
 		self.sfondo = pygame.transform.scale(self.sfondo, (self.sfondo.get_width()*GLOB.MULT, self.sfondo.get_height()*GLOB.MULT))
 
-	def effetto_testo(self):
-		#print(self.descr)
+		self.keySound = mixer.Sound("suoni/char-sound.wav")
+		self.keySound.set_volume(0.02*GLOB.AU)
+
+	def __effetto_testo(self):
+    		
+		self.condition0 = self.contatore < 64
+		self.condition1 = self.contatore >= 64 and self.contatore < 128
+		self.condition2 = self.contatore >= 128 and self.contatore < 192
+    		
+		max = not int((self.delay+1)) > len(self.descr)
 		
-		if self.speed > 1:
-			val = 2
+		if int(self.delay+0.1) == round(self.delay, 1) and max and self.ritardo == 0:
+			self.keySound.play()
+
+			if self.condition0:
+				#print("prima condizione")
+				self.descrizione = self.descrizione + self.descr[int(round(self.delay, 1))]
+
+				self.Descrizione_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione, True, "White")
+				self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-50*GLOB.MULT))
+
+				self.r0 = True
+
+			elif self.condition1:
+				#print("seconda condizione")
+				self.descrizione1 = self.descrizione1 + self.descr[int(round(self.delay, 1))]
+
+				self.Descrizione1_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione1, True, "White")
+				self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-35*GLOB.MULT))
+
+				self.r1 = True
+
+			elif self.condition2:
+				#print("terza condizione")
+				self.descrizione2 = self.descrizione2 + self.descr[int(round(self.delay, 1))]
+
+				self.Descrizione2_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione2, True, "White")
+				self.Descrizione2_RECT = self.Descrizione2_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-20*GLOB.MULT))
+
+				self.r2 = True
+
+			self.contatore += 1
+			
+		
+		if max and self.descr[int(round(self.delay, 1))] != "." and self.descr[int(round(self.delay, 1))] != "?" and self.descr[int(round(self.delay, 1))] != "!" or self.ritardo == 2:
+			self.delay += + self.text_speed
+			self.ritardo = 0
 		else:
-			val = 1
+			self.ritardo += self.text_speed
 
-		if int(self.delay+0.1) == round(self.delay, 1) and not int((self.delay+val)) > len(self.descr):
-			#print(len(self.descr))
-			#print(int(self.delay))
-
-			self.descrizione = self.descrizione + self.descr[int(round(self.delay, 1))]
 		
-		print("Descrizione: "+str(self.descrizione)+" | Delay: "+str(int(self.delay))+" | Max: "+str(len(self.descr))+" | Testo: "+str(int((self.delay+self.speed))))
-		self.delay += + 0.2
-		#print("Delay: "+str(round(self.delay, 1))+" | Intero: "+str(int(self.delay+0.1))+" | Lunghezza: "+str(len(self.descr))+" | Descrizione: "+str(self.descrizione)+" | Max: "+str((self.delay+1)))
-
-		self.Descrizione_TEXT = get_font(6*int(GLOB.MULT)).render(self.descrizione, True, "White")
-		self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-50*GLOB.MULT))
+		#print("Delay: "+str(round(self.delay, 1))+" | Intero: "+str(int(self.delay+0.1))+" | Lunghezza: "+str(len(self.descr))+" | Contatore: "+str(self.contatore)+" | Max: "+str((self.delay+1)))
 
 	def stampa(self):
+    		
+		self.__effetto_testo()
 
 		GLOB.screen.blit(self.sfondo, (0, GLOB.screen_height-self.sfondo.get_height()))
 		GLOB.screen.blit(self.vignetta, (45*GLOB.MULT, GLOB.screen_height-self.vignetta.get_height()-18*GLOB.MULT))
 		GLOB.screen.blit(self.Nome_TEXT, self.Nome_RECT)
-		GLOB.screen.blit(self.Descrizione_TEXT, self.Descrizione_RECT)
+		
+		if self.r0:
+			GLOB.screen.blit(self.Descrizione_TEXT, self.Descrizione_RECT)
+
+		if self.r1:
+			GLOB.screen.blit(self.Descrizione1_TEXT, self.Descrizione1_RECT)
+
+		if self.r2:
+			GLOB.screen.blit(self.Descrizione2_TEXT, self.Descrizione2_RECT)
