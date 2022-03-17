@@ -108,7 +108,7 @@ def get_font(size): # Returns Press-Start-2P in the desired size
 	return pygame.font.Font("assets/font.ttf", size)
 
 class Dialoghi():
-	def __init__(self, personaggio, descrizione):
+	def __init__(self, personaggio, descrizione, text_speed):
 		
 		self.personaggio = personaggio
 		self.descr = descrizione
@@ -116,8 +116,8 @@ class Dialoghi():
 		self.delay = 0
 		self.descrizione = ""
 
-		n = 1
-		self.descr = [self.descr[i:i+n] for i in range(0, len(self.descr), n)]
+		self.speed = text_speed
+		self.descr = [self.descr[i:i+self.speed] for i in range(0, len(self.descr), self.speed)]
 
 		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.personaggio, True, "Black")
 		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
@@ -130,13 +130,19 @@ class Dialoghi():
 
 	def effetto_testo(self):
 		#print(self.descr)
+		
+		if self.speed > 1:
+			val = 2
+		else:
+			val = 1
 
-		if int(self.delay+0.1) == round(self.delay, 1) and not int((self.delay+1)) > len(self.descr):
+		if int(self.delay+0.1) == round(self.delay, 1) and not int((self.delay+val)) > len(self.descr):
 			#print(len(self.descr))
 			#print(int(self.delay))
-			self.descrizione = self.descrizione + self.descr[int(round(self.delay, 1))]
-			#print("Descrizione: "+str(self.descrizione)+" | Delay: "+str(int(self.delay))+" | Max: "+str(len(self.descr*self.text_speed)))
 
+			self.descrizione = self.descrizione + self.descr[int(round(self.delay, 1))]
+		
+		print("Descrizione: "+str(self.descrizione)+" | Delay: "+str(int(self.delay))+" | Max: "+str(len(self.descr))+" | Testo: "+str(int((self.delay+self.speed))))
 		self.delay += + 0.2
 		#print("Delay: "+str(round(self.delay, 1))+" | Intero: "+str(int(self.delay+0.1))+" | Lunghezza: "+str(len(self.descr))+" | Descrizione: "+str(self.descrizione)+" | Max: "+str((self.delay+1)))
 
