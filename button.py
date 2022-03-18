@@ -132,8 +132,6 @@ class Dialoghi():
 			self.text_speed = 0.5
 		elif text_speed == 5:
 			self.text_speed = 1
-		elif text_speed < 5:
-			self.text_speed = 5
 		else:
 			self.text_speed = 0.1
 
@@ -141,8 +139,11 @@ class Dialoghi():
 
 		self.ritardo = 0
 
-		n = 1
-		self.descr = [self.descr[i:i+n] for i in range(0, len(self.descr), n)]
+		self.play_sound = False
+		self.cooldown_suono = 0
+		self.MaxCooldwon_suono = 1
+
+		self.descr = [self.descr[i:i+1] for i in range(0, len(self.descr), 1)]
 
 		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.personaggio, True, "Black")
 		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
@@ -158,14 +159,34 @@ class Dialoghi():
 
 	def __effetto_testo(self):
     		
+		# Elenco le varie condizioni (limite massimo di caratteri)
+    		
 		self.condition0 = self.contatore < 64
 		self.condition1 = self.contatore >= 64 and self.contatore < 128
 		self.condition2 = self.contatore >= 128 and self.contatore < 192
     		
 		max = not int((self.delay+1)) > len(self.descr)
 		
+
+		# vado a confrontare se il delay corisponde ad un numero intero e non decimale e anche se non ha superato il valore massimo della lista
+
 		if int(self.delay+0.1) == round(self.delay, 1) and max and self.ritardo == 0:
-			self.keySound.play()
+
+			# CoolDown indicato per eseguire il suono		
+			if self.MaxCooldwon_suono != 0:
+				if self.cooldown_suono >= 0 and self.cooldown_suono <= self.MaxCooldwon_suono:
+					self.cooldown_suono +=1
+					self.play_sound = False
+				else:
+					self.play_sound = True
+					self.cooldown_suono = 0
+			else:
+				self.play_sound = True
+
+			if self.play_sound:
+				self.keySound.play()
+
+			# Prima riga
 
 			if self.condition0:
 				#print("prima condizione")
@@ -176,6 +197,8 @@ class Dialoghi():
 
 				self.r0 = True
 
+			# Seconda riga
+			
 			elif self.condition1:
 				#print("seconda condizione")
 				self.descrizione1 = self.descrizione1 + self.descr[int(round(self.delay, 1))]
@@ -184,6 +207,8 @@ class Dialoghi():
 				self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-35*GLOB.MULT))
 
 				self.r1 = True
+
+			# Terza riga
 
 			elif self.condition2:
 				#print("terza condizione")
@@ -194,9 +219,10 @@ class Dialoghi():
 
 				self.r2 = True
 
+			# contatore che serve a controllare quanti caratteri sono stati inseriti
 			self.contatore += 1
 			
-		
+		# Delay aggiuntivo per dei caratteri particolari indicati
 		if max and self.descr[int(round(self.delay, 1))] != "." and self.descr[int(round(self.delay, 1))] != "?" and self.descr[int(round(self.delay, 1))] != "!" or self.ritardo == 2:
 			self.delay += + self.text_speed
 			self.ritardo = 0

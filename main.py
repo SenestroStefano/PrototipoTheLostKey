@@ -360,10 +360,10 @@ def main():
     
     """
 
-    testo = "Ciao come stai? Sono Giulia bye ... bye .."
+    testo = "Ecco un esempio di dialogo... che ve ne pare? figo!"
 
     # personaggi Senex/Seima/Aleks/Beppe/Dark Angel | Limite testo 192 caratteri | velocità minima/massima 1/5
-    Saluto = Dialoghi(personaggio = "Aleks", descrizione = testo, text_speed = 3)
+    Saluto = Dialoghi(personaggio = "Seima", descrizione = testo, text_speed = 3)
 
     while run:
         keys_pressed = pygame.key.get_pressed()
