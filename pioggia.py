@@ -19,7 +19,7 @@ class Rain(object):
         for i in range(self.numdrops):
             # Randomize the size of the raindrop.
             raindropscale = random.randint(5*GLOB.MULT, 15*GLOB.MULT) / 100.0
-            w, h = 0.8*GLOB.MULT, int(raindropscale * self.height)
+            w, h = 0.9*GLOB.MULT, int(raindropscale * self.height)
             # The bigger the raindrop, the faster it moves.
             velocity = raindropscale * self.speed/10.0
             pic = pygame.Surface((w, h), pygame.SRCALPHA, 32).convert_alpha()

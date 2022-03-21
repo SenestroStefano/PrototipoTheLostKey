@@ -19,7 +19,7 @@ pygame.init()
 pygame.display.set_caption(GLOB.TITLE)
 
 def get_font(size): # Returns Press-Start-2P in the desired size
-    return pygame.font.Font("assets/font.ttf", size)
+    return pygame.font.Font("font/font.ttf", size)
 
 def play():
     mixer.music.stop()
@@ -364,7 +364,10 @@ def options():
             button_sound = mixer.Sound("suoni/option-sound.wav")
             keys_pressed = pygame.key.get_pressed()
 
-            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and AUDIOPLUS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+            if keys_pressed[pygame.K_ESCAPE]:
+                main_menu()
+
+            if event.type == pygame.MOUSEBUTTONDOWN and AUDIOPLUS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
                 GLOB.AU += 1
 
                 if GLOB.AU > 10:
@@ -373,7 +376,7 @@ def options():
                 button_sound.set_volume(0.16*GLOB.AU)
                 button_sound.play()
 
-            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and AUDIOLESS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+            if event.type == pygame.MOUSEBUTTONDOWN and AUDIOLESS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
                 GLOB.AU -= 1
 
                 if GLOB.AU < 0:
@@ -382,7 +385,7 @@ def options():
                 button_sound.set_volume(0.16*GLOB.AU)
                 button_sound.play()
 
-            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and MUSICPLUS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+            if event.type == pygame.MOUSEBUTTONDOWN and MUSICPLUS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
                 GLOB.MU += 1
 
                 if GLOB.MU > 10:
@@ -391,7 +394,7 @@ def options():
                 button_sound.set_volume(0.16*GLOB.MU)
                 button_sound.play()
 
-            if keys_pressed[pygame.K_ESCAPE] or event.type == pygame.MOUSEBUTTONDOWN and MUSICLESS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
+            if event.type == pygame.MOUSEBUTTONDOWN and MUSICLESS_BUTTON.checkForInput(OPTIONS_MOUSE_POS):
                 GLOB.MU -= 1
 
                 if GLOB.MU < 0:
@@ -419,7 +422,7 @@ def main_menu():
     BG_Cloud = pygame.image.load("assets/Nuvola.png")
     BG_Cloud = pygame.transform.scale(BG_Cloud, (BG_Cloud.get_width()*GLOB.MULT/4,BG_Cloud.get_height()*GLOB.MULT/4))
     
-    rain = Rain(screen, height = 160, speed = 12 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
+    rain = Rain(screen, height = 60 * GLOB.MULT, speed = 12 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
 
     # Settaggio del Clock
     clock = pygame.time.Clock()

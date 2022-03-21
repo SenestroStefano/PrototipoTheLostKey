@@ -1,7 +1,8 @@
+import pandas as pd
 import pygame, os, sys
 
 #Importo i vari file e classi necessarie
-import giocatore, menu, camera
+import giocatore, menu, camera, debug
 from button import Bar, Button, Dialoghi
 from pygame import mixer
 
@@ -10,18 +11,18 @@ from pygame import mixer
 import global_var as GLOB
 
 def get_font(size): # Returns Press-Start-2P in the desired size
-    return pygame.font.Font("assets/font.ttf", size)
+    return pygame.font.Font("font/font.ttf", size)
 
 #funzione di default
 def inizializza():
-    global obstacle, player, cam, clock, sceltaG
+    global player, cam, clock
 
     """
  --- Cambio il personaggio in base alla scelta del giocatore ---
         
     """
     
-    GLOB.Player_speed = 2 * GLOB.MULT / GLOB.Delta_Time
+    GLOB.Player_speed = 2 * GLOB.MULT / GLOB.Delta_Time / GLOB.Player_proportion
     GLOB.Player_default_speed = GLOB.Player_speed
     
     if GLOB.Scelta==0:
@@ -101,6 +102,36 @@ def inizializza():
     # Faccio nascere l'oggetto "cam"
     cam = camera.Cam()
 
+def disegna():
+
+        val = 2
+
+        mappa = pygame.image.load("mappa/TIleset/img/mappa.png").convert()
+        mappa = pygame.transform.scale(mappa, (mappa.get_width()*GLOB.MULT*val, mappa.get_height()*GLOB.MULT*val))
+        
+        GLOB.screen.fill(GLOB.Background_Color)
+        GLOB.screen.blit(mappa, (cam.getPositionX(),cam.getPositionY()))
+
+        cam.update(GLOB.Cam_visible)
+
+        player.update() # richiama la funzione di aggiornamento del giocatore
+        
+        # Si consiglia di mettere una grandezza non minore di 18 w/h
+        # obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
+
+        # pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
+        # player.HasCollision(obstacle)
+
+
+        #  # Si consiglia di mettere una grandezza non minore di 18 w/h
+        # obstacle1 = pygame.Rect((GLOB.screen_width/2+90*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
+
+        # pygame.draw.rect(GLOB.screen, (250, 150, 20), obstacle1)
+        # player.HasCollision(obstacle1)
+
+        # if GLOB.Debug:
+        #     pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
+        #     pygame.draw.rect(GLOB.screen, (255,0,0), obstacle1, int(1*GLOB.MULT))
 
 #Funzione Volume e Audio del gioco
 def options_audio():
@@ -114,10 +145,7 @@ def options_audio():
 
     while not indietro:
 
-        cam.update(GLOB.Cam_visible)
-        obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
-        pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
-        player.update() # richiama la funzione di aggiornamento del giocatore
+        disegna()
 
 
         GLOB.screen.blit(BG_Seimi, (0, 0))
@@ -237,11 +265,8 @@ def pausa():
     while not ricominciamo:
 
         player.setAllkeys(False)
-
-        cam.update(GLOB.Cam_visible)
-        obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
-        pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
-        player.update() # richiama la funzione di aggiornamento del giocatore
+    
+        disegna()
 
 
         GLOB.screen.blit(BG_Seimi, (0, 0))
@@ -305,11 +330,10 @@ def main():
     # Funzione che controlla se il tasto è stato premuto
     def key_pressed(event,IsPressed):
 
-        # if event.key == pygame.K_s and event.key == pygame.K_w:
-        #     player.setAllkeys(False)
+        # if player.getDownPress() and player.getUpPress():
         #     player.finish()
 
-        # if event.key == pygame.K_a and event.key == pygame.K_d:
+        # if player.getLeftPress() and player.getRightPress():
         #     player.finish()
         
         if event.key == pygame.K_a or event.key == pygame.K_LEFT:
@@ -360,10 +384,11 @@ def main():
     
     """
 
-    testo = "Ecco un esempio di dialogo... che ve ne pare? figo!"
-
     # personaggi Senex/Seima/Aleks/Beppe/Dark Angel | Limite testo 192 caratteri | velocità minima/massima 1/5
-    Saluto = Dialoghi(personaggio = "Seima", descrizione = testo, text_speed = 3)
+
+    df = pd.read_csv('Dialoghi/dialogo.csv')
+
+    # print(df[df['Personaggi']])
 
     while run:
         keys_pressed = pygame.key.get_pressed()
@@ -397,78 +422,30 @@ def main():
                 elif GLOB.Debug:
                     GLOB.Debug = False
                     GLOB.Cam_visible = False
+
+            if keys_pressed[pygame.K_k]:
+            
+                if not GLOB.Dialogo:
+                    GLOB.Dialogo = True
+                elif GLOB.Debug:
+                    GLOB.Dialogo = False
+
+        disegna()
+
+
+        if GLOB.Dialogo:
+            #print(len(df.values))
+            for row in range(len(df.values)):
+                Racconto = Dialoghi(personaggio = df.values[row][0], descrizione = df.values[row][1], text_speed = 3)
+                player.setAllkeys(False)
+                player.finish()
+                Racconto.stampa()
+            GLOB.Dialogo = False
         
-        GLOB.screen.fill(GLOB.Background_Color)
-        cam.update(GLOB.Cam_visible)
-        player.update() # richiama la funzione di aggiornamento del giocatore
+        # Debugging
+        console = debug.Debug()
         
-        # Si consiglia di mettere una grandezza non minore di 18 w/h
-        obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
-
-        pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
-        player.HasCollision(obstacle)
-
-
-        # print("DEBUG: "+str(GLOB.Debug))
-            
-        if GLOB.Debug:
-            
-            sprint = GLOB.Player_speed > GLOB.Player_default_speed
-
-            Saluto.stampa()
-
-            key = "0"
-
-            if player.getUpPress():
-                key = "↑"
-            elif player.getDownPress():
-                key = "↓"
-            elif player.getLeftPress():
-                key = "←"
-            elif player.getRightPress():
-                key = "→"
-
-            if sprint:
-                key = "|"+key+"|"
-            
-            FPS_TEXT = get_font(8*int(GLOB.MULT)).render("FPS: "+str(int(clock.get_fps())), True, "white")
-            FPS_RECT = FPS_TEXT.get_rect(center=(GLOB.screen_width-40*GLOB.MULT, 20*GLOB.MULT))
-
-            DROP_TEXT = get_font(5*int(GLOB.MULT)).render("DROP "+str(100-int(clock.get_fps()*100/GLOB.FPS))+"%", True, "red")
-            DROP_RECT = DROP_TEXT.get_rect(center=(GLOB.screen_width-95*GLOB.MULT, 20*GLOB.MULT))
-
-            KEY_TEXT = get_font(10*int(GLOB.MULT)).render(key, True, "blue")
-            KEY_RECT = KEY_TEXT.get_rect(center=(GLOB.screen_width-140*GLOB.MULT, 20*GLOB.MULT))
-
-            if player.Last_keyPressed != "Null":
-                GLOB.screen.blit(KEY_TEXT, KEY_RECT)
-
-            if int(clock.get_fps()) <= (GLOB.FPS-(GLOB.FPS/20)):
-                #print("Gli fps sono scesi: "+str(clock.get_fps()))
-                GLOB.screen.blit(DROP_TEXT, DROP_RECT)
-                
-
-            GLOB.screen.blit(FPS_TEXT, FPS_RECT)
-
-            if keys_pressed[pygame.K_TAB]:
-                pygame.draw.rect(GLOB.screen, (0,255,255), player.mesh, int(1*GLOB.MULT))
-                pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
-
-            if keys_pressed[pygame.K_o]:
-                GLOB.Moff -= 1
-
-            if keys_pressed[pygame.K_p]:
-                GLOB.Moff += 1
-
-            RUN_TEXT = get_font(8*int(GLOB.MULT)).render("V-A: "+str(GLOB.Player_speed), True, "white")
-            RUN_RECT = RUN_TEXT.get_rect(center=(40*GLOB.MULT, 20*GLOB.MULT))
-
-            GLOB.screen.blit(RUN_TEXT, RUN_RECT)
-
-            POS_TEXT = get_font(8*int(GLOB.MULT)).render("x/y: "+str(int(player.getPositionX()-cam.getPositionX()))+" | "+str(int(player.getPositionY()-cam.getPositionY())), True, "white")
-            POS_RECT = POS_TEXT.get_rect(center=(200*GLOB.MULT, 20*GLOB.MULT))
-
-            GLOB.screen.blit(POS_TEXT, POS_RECT)
+        console.log(GLOB.Debug)
 
         
         pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione

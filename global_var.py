@@ -26,6 +26,8 @@ Cam_visible = False
 
 Debug = False
 
+Dialogo = False
+
 Player_speed = 2 * MULT
 PlayerRun_speed = 3 * MULT
 

@@ -48,8 +48,8 @@ class Player(pygame.sprite.Sprite):
         self.Last_keyPressed = "Null"
 
         #hitbox del player
-        self.hitbox = (self.x + 15 * GLOB.MULT /GLOB.Player_proportion, self.y + 17 * GLOB.MULT /GLOB.Player_proportion, 24* GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion)
-
+        self.setHitbox()
+        
         # setta a video l'immagine del giocatore
         self.character = pygame.image.load(
         os.path.join(self.Name_animationWVD,char_image[0][0]))
@@ -142,8 +142,8 @@ class Player(pygame.sprite.Sprite):
         # Controlla se l'animazione è attiva
         if self.getIsWalking():
 
-            self.current_spriteWO += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
-            self.current_spriteWVD += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un deelay
+            self.current_spriteWO += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
+            self.current_spriteWVD += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
             self.current_spriteWVU += 0.4 / GLOB.Delta_Time
 
             # Controllo di non uscire dal range dei frames possibili
@@ -237,7 +237,7 @@ class Player(pygame.sprite.Sprite):
             
             if self.Last_keyPressed != "Null":  # Confronto se il giocatore è fermo o si sta muovendo
 
-                if (a1 or b1) and (not c1 and not d1):  # se è stato premuto il pulsante destro/sinistro in contemporanea con quello alto o basso mentre si ha una collisione allora:
+                if (a1 or b1) and (not c1 and not d1):  # se è stato premuto il pulsante destro/sinistro e NON quello alto o basso mentre si ha una collisione allora:
 
                     Confronta("x")  # richiamo la funzione
 
@@ -249,7 +249,7 @@ class Player(pygame.sprite.Sprite):
                     self.Last_keyPressed = "Null"   # Variabile usata per non dare errori dato che l'ultimo pulsante cliccato sono l'insieme di due in contemporanea
 
                     
-                if (c1 or d1) and (not a1 and not b1):  # se è stato premuto il pulsante alto/basso in contemporanea con quello sinistro o destro mentre si ha una collisione allora:
+                if (c1 or d1) and (not a1 and not b1):  # se è stato premuto il pulsante alto/basso e NON con quello sinistro o destro mentre si ha una collisione allora:
 
                     Confronta("y")  # richiamo la funzione
 
@@ -269,7 +269,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 Confronta("y")
                 Confronta("x")
-                self.setAllkeys(None)
+                #self.setAllkeys(None)
                 
 
                     
@@ -311,6 +311,9 @@ class Player(pygame.sprite.Sprite):
         GLOB.screen.blit(self.ombra, (self.x , self.y-2.5*GLOB.MULT/GLOB.Player_proportion)) # indica che lo schermo fa nascere il giocatore
         GLOB.screen.blit(self.character, (self.x , self.y)) # indica che lo schermo fa nascere il giocatore
         # self.hitbox = (self.x-60, self.y-55, 200, 180)
+        self.setHitbox()
+
+    def setHitbox(self):
         self.hitbox = (self.x + 15 * GLOB.MULT /GLOB.Player_proportion, self.y + 17 * GLOB.MULT /GLOB.Player_proportion, 24* GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion)
 
     # setta l'animazione della camminata a vera

@@ -40,7 +40,7 @@ class Cam():
 
         
     def update(self, visibility):
-        GLOB.screen.blit(self.image, (self.x, self.y))
+        #GLOB.screen.blit(self.image, (self.x, self.y))
 
         offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
 

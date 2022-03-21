@@ -1,5 +1,5 @@
 import global_var as GLOB
-import pygame
+import pygame, sys
 from pygame import mixer
 
 """
@@ -104,23 +104,37 @@ class Bar():
 
 
 def get_font(size): # Returns Press-Start-2P in the desired size
-	return pygame.font.Font("assets/font.ttf", size)
+	return pygame.font.Font("font/font.ttf", size)
 
 class Dialoghi():
 	def __init__(self, personaggio, descrizione, text_speed):
 		
 		self.personaggio = personaggio
 		self.descr = descrizione
+		self.descr = self.descr.split("\n")
+		self.descr = "".join(self.descr)
 
 		self.delay = 0
 
 		self.descrizione = ""
 		self.descrizione1 = ""
 		self.descrizione2 = ""
+		self.descrizione3 = ""
+
+		# print(self.descr.split(" "))
+		# print(len(self.descr.split(" ")))
+
+		# self.lunghezza = self.descr.split(" ")
 
 		self.r0 = False
 		self.r1 = False
 		self.r2 = False
+		self.r3 = False
+
+		self.value = 64
+
+		self.cooldown_interm = 0
+		self.interm = 0
 
 		if text_speed == 1:
 			self.text_speed = 0.1
@@ -139,16 +153,18 @@ class Dialoghi():
 
 		self.ritardo = 0
 
+		self.CanIplay_sound = False
 		self.play_sound = False
 		self.cooldown_suono = 0
-		self.MaxCooldwon_suono = 1
+		self.MaxCooldwon_suono = 3
 
 		self.descr = [self.descr[i:i+1] for i in range(0, len(self.descr), 1)]
-
+		#print(self.descr)
+    		
 		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.personaggio, True, "Black")
 		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
 
-		self.vignetta = pygame.image.load("Dialoghi/"+self.personaggio+".png")
+		self.vignetta = pygame.image.load("Dialoghi/Characters/"+self.personaggio+".png")
 		self.vignetta = pygame.transform.scale(self.vignetta, (self.vignetta.get_width()*GLOB.MULT*2, self.vignetta.get_height()*GLOB.MULT*2))
 
 		self.sfondo = pygame.image.load("assets/Dialoghi.png")
@@ -160,10 +176,17 @@ class Dialoghi():
 	def __effetto_testo(self):
     		
 		# Elenco le varie condizioni (limite massimo di caratteri)
+
+		# if self.descrizione.split(" ") == self.lunghezza[0]:
+		# 	pass
+		
+		# self.value = int((len(self.lunghezza)*len(self.descr))/192)
+		# print(self.value)
     		
-		self.condition0 = self.contatore < 64
-		self.condition1 = self.contatore >= 64 and self.contatore < 128
-		self.condition2 = self.contatore >= 128 and self.contatore < 192
+		self.condition0 = self.contatore < self.value
+		self.condition1 = self.contatore >= self.value and self.contatore < self.value * 2
+		self.condition2 = self.contatore >= self.value * 2 and self.contatore < self.value * 3
+		self.condition3 = self.contatore >= self.value * 3 and self.contatore < self.value * 4
     		
 		max = not int((self.delay+1)) > len(self.descr)
 		
@@ -183,17 +206,21 @@ class Dialoghi():
 			else:
 				self.play_sound = True
 
-			if self.play_sound:
+			if self.play_sound and self.CanIplay_sound:
 				self.keySound.play()
 
 			# Prima riga
 
+			valuex, valuey = 70, 55
+
+			distanza_righe = 12.5
+
 			if self.condition0:
 				#print("prima condizione")
-				self.descrizione = self.descrizione + self.descr[int(round(self.delay, 1))]
+				self.descrizione += self.descr[int(round(self.delay, 1))]
 
 				self.Descrizione_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione, True, "White")
-				self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-50*GLOB.MULT))
+				self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-valuey*GLOB.MULT))
 
 				self.r0 = True
 
@@ -201,10 +228,10 @@ class Dialoghi():
 			
 			elif self.condition1:
 				#print("seconda condizione")
-				self.descrizione1 = self.descrizione1 + self.descr[int(round(self.delay, 1))]
+				self.descrizione1 += self.descr[int(round(self.delay, 1))]
 
 				self.Descrizione1_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione1, True, "White")
-				self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-35*GLOB.MULT))
+				self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe)*GLOB.MULT))
 
 				self.r1 = True
 
@@ -212,15 +239,40 @@ class Dialoghi():
 
 			elif self.condition2:
 				#print("terza condizione")
-				self.descrizione2 = self.descrizione2 + self.descr[int(round(self.delay, 1))]
+				self.descrizione2 += self.descr[int(round(self.delay, 1))]
 
 				self.Descrizione2_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione2, True, "White")
-				self.Descrizione2_RECT = self.Descrizione2_TEXT.get_rect(center=(GLOB.screen_width/2+70*GLOB.MULT, GLOB.screen_height-20*GLOB.MULT))
+				self.Descrizione2_RECT = self.Descrizione2_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*2)*GLOB.MULT))
 
 				self.r2 = True
 
+			elif self.condition3:
+    				#print("terza condizione")
+				self.descrizione3 += self.descr[int(round(self.delay, 1))]
+
+				self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")
+				self.Descrizione3_RECT = self.Descrizione3_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*3)*GLOB.MULT))
+
+				self.r3 = True
+
 			# contatore che serve a controllare quanti caratteri sono stati inseriti
 			self.contatore += 1
+
+			if self.contatore >= self.value and self.descrizione[-1] != "" and self.descrizione[-1] != "=" and self.descrizione[-1] != " ":
+				self.descrizione += " ="
+				self.Descrizione_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione, True, "White")
+
+			if self.contatore >= self.value*2 and self.descrizione1[-1] != "" and self.descrizione1[-1] != "=" and self.descrizione1[-1] != " ":
+				self.descrizione1 += " ="
+				self.Descrizione1_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione1, True, "White")
+
+			if self.contatore >= self.value*3 and self.descrizione2[-1] != "" and self.descrizione2[-1] != "=" and self.descrizione2[-1] != " ":
+				self.descrizione2 += " ="
+				self.Descrizione2_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione2, True, "White")
+
+			if self.contatore >= self.value*4 and self.descrizione3[-1] != "" and self.descrizione3[-1] != "=" and self.descrizione3[-1] != " ":
+				self.descrizione3 += " ="
+				self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")
 			
 		# Delay aggiuntivo per dei caratteri particolari indicati
 		if max and self.descr[int(round(self.delay, 1))] != "." and self.descr[int(round(self.delay, 1))] != "?" and self.descr[int(round(self.delay, 1))] != "!" or self.ritardo == 2:
@@ -233,18 +285,105 @@ class Dialoghi():
 		#print("Delay: "+str(round(self.delay, 1))+" | Intero: "+str(int(self.delay+0.1))+" | Lunghezza: "+str(len(self.descr))+" | Contatore: "+str(self.contatore)+" | Max: "+str((self.delay+1)))
 
 	def stampa(self):
-    		
-		self.__effetto_testo()
 
-		GLOB.screen.blit(self.sfondo, (0, GLOB.screen_height-self.sfondo.get_height()))
-		GLOB.screen.blit(self.vignetta, (45*GLOB.MULT, GLOB.screen_height-self.vignetta.get_height()-18*GLOB.MULT))
-		GLOB.screen.blit(self.Nome_TEXT, self.Nome_RECT)
+		clock = pygame.time.Clock()
 		
-		if self.r0:
-			GLOB.screen.blit(self.Descrizione_TEXT, self.Descrizione_RECT)
+		possoIniziare = False
 
-		if self.r1:
-			GLOB.screen.blit(self.Descrizione1_TEXT, self.Descrizione1_RECT)
+		while not possoIniziare:
+    		
+			self.__effetto_testo()
 
-		if self.r2:
-			GLOB.screen.blit(self.Descrizione2_TEXT, self.Descrizione2_RECT)
+			GLOB.screen.blit(self.sfondo, (0, GLOB.screen_height-self.sfondo.get_height()))
+			GLOB.screen.blit(self.vignetta, (45*GLOB.MULT, GLOB.screen_height-self.vignetta.get_height()-18*GLOB.MULT))
+			GLOB.screen.blit(self.Nome_TEXT, self.Nome_RECT)
+			
+			if self.r0:
+				GLOB.screen.blit(self.Descrizione_TEXT, self.Descrizione_RECT)
+
+			if self.r1:
+				GLOB.screen.blit(self.Descrizione1_TEXT, self.Descrizione1_RECT)
+
+			if self.r2:
+				GLOB.screen.blit(self.Descrizione2_TEXT, self.Descrizione2_RECT)
+
+			if self.r3:
+				GLOB.screen.blit(self.Descrizione3_TEXT, self.Descrizione3_RECT)
+
+			avanza = Button(image=pygame.image.load("assets/tasello.png").convert(), pos=(132*GLOB.MULT,  GLOB.screen_height-12*GLOB.MULT), 
+								text_input="", font=pygame.font.Font("font/font.ttf", (8*int(GLOB.MULT))), base_color="White", hovering_color="#d7fcd4", scale=1.8)
+
+			if self.interm == 0 or self.cooldown_interm != GLOB.FPS / 10:
+				avanza.update(GLOB.screen)
+				self.cooldown_interm += 0.25
+
+			self.interm += 1
+			
+			if self.interm >= GLOB.FPS and self.cooldown_interm == GLOB.FPS / 10:
+				self.interm = 0
+				self.cooldown_interm = 0
+
+			for event in pygame.event.get():
+				keys_pressed = pygame.key.get_pressed()
+    
+				if event.type == pygame.QUIT:
+					pygame.quit()
+					sys.exit()
+
+    				
+				if event.type == pygame.MOUSEBUTTONDOWN or keys_pressed[pygame.K_SPACE]:
+					possoIniziare = True
+
+				#delay.ActualState()
+
+
+			pygame.display.flip() # ti permette di aggiornare una area dello schermo per evitare lag e fornire piu' ottimizzazione
+			pygame.display.update()
+
+			clock.tick(GLOB.FPS) # setto i FramesPerSecond
+
+
+class Delay():
+    def __init__(self, sec):
+        self.__min = 0
+        self.__max = sec * GLOB.FPS
+        self.__increment = 1
+        self.__flag = True
+
+    #print(self.min, self.max, self.increment, self.function)
+
+    def Start(self):
+        if self.__flag:
+            self.__min += self.__increment
+
+            if int(self.__min) == self.__max:
+                self.__flag = False
+                return True
+
+        return False
+
+        #print(int(self.__min))
+
+    def ReStart(self):
+        if not self.__flag:
+            self.__min = 0
+            self.__flag = True
+
+        #print(int(self.__min))
+
+    def Infinite(self):
+        self.ReStart()
+        self.Start()
+
+    def ActualState(self):
+        print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
+
+
+# var = 0
+
+# def miaFunzione():
+#     global var
+#     var += 1
+#     print(var)
+
+# delay = Delay(sec = 3, event = miaFunzione)
