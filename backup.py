@@ -187,52 +187,6 @@ class Dialoghi():
 		self.condition3 = self.contatore >= self.value * 3 and self.contatore < self.value * 4
     		
 		max = not int((self.delay+1)) > len(self.descr)
-
-		valuex, valuey = 70, 55
-		distanza_righe = 12.5
-
-		def Condition(event):
-			return self.descr[self.value*event-self.valore] != " " and self.descr[self.value*event-self.valore] != "." and (self.contatore >= self.value*event-self.valore and self.contatore < self.value*event)
-
-		def Cerca(event):
-			for value in range(len(self.descr)):
-				if self.descr[self.value*event-1-value] == " " and self.flag_capo:
-					print("Trovato buco: ",value)
-					self.flag_capo = False
-					self.valore = value
-    		
-
-		def ScriviTesto1():
-			self.descrizione += self.descr[int(round(self.delay, 1))]
-
-			self.Descrizione_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione, True, "White")
-			self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey)*GLOB.MULT))
-
-			self.r0 = True
-
-		def ScriviTesto2():
-			self.descrizione1 += self.descr[int(round(self.delay, 1))]
-
-			self.Descrizione1_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione1, True, "White")
-			self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe)*GLOB.MULT))
-
-			self.r1 = True
-
-		def ScriviTesto3():
-			self.descrizione2 += self.descr[int(round(self.delay, 1))]
-
-			self.Descrizione2_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione2, True, "White")
-			self.Descrizione2_RECT = self.Descrizione2_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*2)*GLOB.MULT))
-
-			self.r2 = True
-
-		def ScriviTesto4():
-			self.descrizione3 += self.descr[int(round(self.delay, 1))]
-
-			self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")
-			self.Descrizione3_RECT = self.Descrizione3_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*3)*GLOB.MULT))
-
-			self.r3 = True
 		
 
 		# vado a confrontare se il delay corisponde ad un numero intero e non decimale e anche se non ha superato il valore massimo della lista
@@ -255,18 +209,41 @@ class Dialoghi():
 
 			# Prima riga
 
+			valuex, valuey = 70, 55
+
+			distanza_righe = 12.5
+
 			if self.condition0:
 				#print("prima condizione")
 				if len(self.descr) >= self.value:
         		
-					Cerca(1)
+					for value in range(len(self.descr)):
+						if self.descr[self.value-1-value] == " " and self.flag_capo:
+							print("Trovato buco: ",value)
+							self.flag_capo = False
+							self.valore = value
 
-					if Condition(1):
-						ScriviTesto2()
+					if self.descr[self.value*1-self.valore] != " " and self.descr[self.value*1-self.valore] != "." and (self.contatore >= self.value*1-self.valore and self.contatore < self.value*1):
+						self.descrizione1 += self.descr[int(round(self.delay, 1))]
+
+						self.Descrizione1_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione1, True, "White")
+						self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe)*GLOB.MULT))
+
+						self.r1 = True
 					else:
-						ScriviTesto1()
+						self.descrizione += self.descr[int(round(self.delay, 1))]
+
+						self.Descrizione_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione, True, "White")
+						self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey)*GLOB.MULT))
+
+						self.r0 = True
 				else:
-					ScriviTesto1()
+					self.descrizione += self.descr[int(round(self.delay, 1))]
+
+					self.Descrizione_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione, True, "White")
+					self.Descrizione_RECT = self.Descrizione_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey)*GLOB.MULT))
+
+					self.r0 = True
 
 				self.flag_capo = True
 
@@ -276,14 +253,33 @@ class Dialoghi():
 				#print("seconda condizione")
 				if len(self.descr) >= self.value*2:
             		
-					Cerca(2)
+					for value in range(len(self.descr)):
+						if self.descr[self.value*2-1-value] == " " and self.flag_capo:
+							print("Trovato buco: ",value)
+							self.flag_capo = False
+							self.valore = value
 
-					if Condition(2):
-						ScriviTesto3()
+					if self.descr[self.value*2-self.valore] != " " and self.descr[self.value*2-self.valore] != "." and (self.contatore >= self.value*2-self.valore and self.contatore < self.value*2):
+						self.descrizione2 += self.descr[int(round(self.delay, 1))]
+
+						self.Descrizione2_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione2, True, "White")
+						self.Descrizione2_RECT = self.Descrizione2_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*2)*GLOB.MULT))
+
+						self.r2 = True
 					else:
-						ScriviTesto2()
+						self.descrizione1 += self.descr[int(round(self.delay, 1))]
+
+						self.Descrizione1_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione1, True, "White")
+						self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe)*GLOB.MULT))
+
+						self.r1 = True
 				else:
-					ScriviTesto2()
+					self.descrizione1 += self.descr[int(round(self.delay, 1))]
+
+					self.Descrizione1_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione1, True, "White")
+					self.Descrizione1_RECT = self.Descrizione1_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe)*GLOB.MULT))
+
+					self.r1 = True
 				self.flag_capo = True
 
 			# Terza riga
@@ -292,24 +288,48 @@ class Dialoghi():
 				#print("terza condizione")
 				if len(self.descr) >= self.value*3:
             		
-					Cerca(3)
+					for value in range(len(self.descr)):
+						if self.descr[self.value*3-1-value] == " " and self.flag_capo:
+							print("Trovato buco: ",value)
+							self.flag_capo = False
+							self.valore = value
 
-					if Condition(3):
-						ScriviTesto4()
+					if self.descr[self.value*3-self.valore] != " " and self.descr[self.value*3-self.valore] != "." and (self.contatore >= self.value*3-self.valore and self.contatore < self.value*3):
+						self.descrizione3 += self.descr[int(round(self.delay, 1))]
+
+						self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")
+						self.Descrizione3_RECT = self.Descrizione3_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*3)*GLOB.MULT))
+
+						self.r3 = True
 					else:
-						ScriviTesto3()
+						self.descrizione2 += self.descr[int(round(self.delay, 1))]
+
+						self.Descrizione2_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione2, True, "White")
+						self.Descrizione2_RECT = self.Descrizione2_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*2)*GLOB.MULT))
+
+						self.r2 = True
 				else:
-					ScriviTesto3()
+					self.descrizione2 += self.descr[int(round(self.delay, 1))]
+
+					self.Descrizione2_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione2, True, "White")
+					self.Descrizione2_RECT = self.Descrizione2_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*2)*GLOB.MULT))
+
+					self.r2 = True
 				self.flag_capo = True
 
 			elif self.condition3:
-				#print("terza condizione")
-				ScriviTesto4()
+    				#print("terza condizione")
+				self.descrizione3 += self.descr[int(round(self.delay, 1))]
+
+				self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")
+				self.Descrizione3_RECT = self.Descrizione3_TEXT.get_rect(center=(GLOB.screen_width/2+valuex*GLOB.MULT, GLOB.screen_height-(valuey-distanza_righe*3)*GLOB.MULT))
+
+				self.r3 = True
 
 			# contatore che serve a controllare quanti caratteri sono stati inseriti
 			self.contatore += 1
 
-			"""if self.contatore >= self.value and self.descrizione[-1] != "" and self.descrizione[-1] != "=" and self.descrizione[-1] != " ":
+			if self.contatore >= self.value and self.descrizione[-1] != "" and self.descrizione[-1] != "=" and self.descrizione[-1] != " ":
 				self.descrizione += " ="
 				self.Descrizione_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione, True, "White")
 
@@ -323,7 +343,7 @@ class Dialoghi():
 
 			if self.contatore >= self.value*4 and self.descrizione3[-1] != "" and self.descrizione3[-1] != "=" and self.descrizione3[-1] != " ":
 				self.descrizione3 += " ="
-				self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")"""
+				self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")
 			
 		# Delay aggiuntivo per dei caratteri particolari indicati
 		if max and self.descr[int(round(self.delay, 1))] != "." and self.descr[int(round(self.delay, 1))] != "?" and self.descr[int(round(self.delay, 1))] != "!" or self.ritardo == 2:
