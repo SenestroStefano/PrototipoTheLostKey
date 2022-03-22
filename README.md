@@ -6,5 +6,4 @@ Per avviare il programma fare
 ### `python3 main.py`
 
 # Moduli richiesti:
-## - Pandas
-### `pip3 install pandas`
+## - Pandas ### `pip3 install pandas`
