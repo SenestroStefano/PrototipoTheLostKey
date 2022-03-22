@@ -117,21 +117,21 @@ def disegna():
         player.update() # richiama la funzione di aggiornamento del giocatore
         
         # Si consiglia di mettere una grandezza non minore di 18 w/h
-        # obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
+        obstacle = pygame.Rect((GLOB.screen_width/2-30*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
 
-        # pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
-        # player.HasCollision(obstacle)
+        pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
+        player.HasCollision(obstacle)
 
 
         #  # Si consiglia di mettere una grandezza non minore di 18 w/h
-        # obstacle1 = pygame.Rect((GLOB.screen_width/2+90*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
+        obstacle1 = pygame.Rect((GLOB.screen_width/2+90*GLOB.MULT+cam.getPositionX()),(GLOB.screen_height/2-75*GLOB.MULT+cam.getPositionY()), 50*GLOB.MULT, 50*GLOB.MULT)
 
-        # pygame.draw.rect(GLOB.screen, (250, 150, 20), obstacle1)
-        # player.HasCollision(obstacle1)
+        pygame.draw.rect(GLOB.screen, (250, 150, 20), obstacle1)
+        player.HasCollision(obstacle1)
 
-        # if GLOB.Debug:
-        #     pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
-        #     pygame.draw.rect(GLOB.screen, (255,0,0), obstacle1, int(1*GLOB.MULT))
+        if GLOB.Debug:
+             pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
+             pygame.draw.rect(GLOB.screen, (255,0,0), obstacle1, int(1*GLOB.MULT))
 
 #Funzione Volume e Audio del gioco
 def options_audio():
