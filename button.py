@@ -197,7 +197,7 @@ class Dialoghi():
 		def Cerca(event):
 			for value in range(len(self.descr)):
 				if self.descr[self.value*event-1-value] == " " and self.flag_capo:
-					print("Trovato buco: ",value)
+					#print("Trovato buco: ",value)
 					self.flag_capo = False
 					self.valore = value
     		
@@ -326,7 +326,7 @@ class Dialoghi():
 				self.Descrizione3_TEXT = get_font(4*int(GLOB.MULT)).render(self.descrizione3, True, "White")"""
 			
 		# Delay aggiuntivo per dei caratteri particolari indicati
-		if max and self.descr[int(round(self.delay, 1))] != "." and self.descr[int(round(self.delay, 1))] != "?" and self.descr[int(round(self.delay, 1))] != "!" or self.ritardo == 2:
+		if max and self.descr[int(round(self.delay, 1))] != "." and self.descr[int(round(self.delay, 1))] != "?" and self.descr[int(round(self.delay, 1))] != "!" or self.ritardo == 1:
 			self.delay += + self.text_speed
 			self.ritardo = 0
 		else:
