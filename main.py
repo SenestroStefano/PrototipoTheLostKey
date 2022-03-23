@@ -126,8 +126,12 @@ def disegna():
         #  # Si consiglia di mettere una grandezza non minore di 18 w/h
         obstacle1 = pygame.Rect((135*GLOB.MULT+cam.getPositionX()),(135*GLOB.MULT+cam.getPositionY()), 150*GLOB.MULT, 140*GLOB.MULT)
 
+        #obstacle3 = pygame.draw.polygon(GLOB.screen, (10, 10, 10), [[450*GLOB.MULT+cam.getPositionX(), 415*GLOB.MULT+cam.getPositionY()], [480*GLOB.MULT+cam.getPositionX(), 415*GLOB.MULT+cam.getPositionY()], [465*GLOB.MULT+cam.getPositionX(), 450*GLOB.MULT+cam.getPositionY()]])
+        obstacle3  = pygame.draw.circle(GLOB.screen, (0, 255, 0), (435*GLOB.MULT+cam.getPositionX(), 135*GLOB.MULT+cam.getPositionY()), 10*GLOB.MULT)
+
         #pygame.draw.rect(GLOB.screen, (250, 150, 20), obstacle1)
         player.HasCollision(obstacle1)
+        player.HasCollision(obstacle3)
 
         if GLOB.Debug:
              pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
