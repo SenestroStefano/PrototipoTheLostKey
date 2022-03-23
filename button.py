@@ -346,7 +346,7 @@ class Dialoghi():
 			self.__effetto_testo()
 
 			GLOB.screen.blit(self.sfondo, (0, GLOB.screen_height-self.sfondo.get_height()))
-			GLOB.screen.blit(self.vignetta, (45*GLOB.MULT, GLOB.screen_height-self.vignetta.get_height()-18*GLOB.MULT))
+			GLOB.screen.blit(self.vignetta, (42.5*GLOB.MULT, GLOB.screen_height-self.vignetta.get_height()-18*GLOB.MULT))
 			GLOB.screen.blit(self.Nome_TEXT, self.Nome_RECT)
 			
 			if self.r0:
