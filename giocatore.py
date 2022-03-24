@@ -47,6 +47,8 @@ class Player(pygame.sprite.Sprite):
 
         self.Last_keyPressed = "Null"
 
+        self.collision_state = {'top': False, 'bottom': False, 'right': False, 'left': False}
+
         #hitbox del player
         self.setHitbox()
         
@@ -191,22 +193,22 @@ class Player(pygame.sprite.Sprite):
 
             if value=="x":  # confronto il valore passato
 
-                if self.x >= object.x:  # confronto se la posizione del player delle x è maggiore o uguale della posizione delle x dell'oggetto di cui ho collisione
+                if self.hitbox[0] >= object.x:  # confronto se la posizione del player delle x è maggiore o uguale della posizione delle x dell'oggetto di cui ho collisione
                     self.x += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setLeftPress(False)    # ogni volta che collido dal lato sinistro non posso riandare a ricliccare il pulsante destro
                     return True # ritorno un valore perchè dopo lo vado ad utilizzare
-                elif self.x <= object.x:
+                elif self.hitbox[2] <= object.x:
                     self.x -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setRightPress(False)    # ogni volta che collido dal lato destro non posso riandare a ricliccare il pulsante sinistro
                     return False # ritorno un valore perchè dopo lo vado ad utilizzare
 
             if value=="y":  # confronto il valore passato
 
-                if self.y >= object.y:  # confronto se la posizione del player delle y è maggiore o uguale della posizione delle y dell'oggetto di cui ho collisione
+                if self.hitbox[1] >= object.y:  # confronto se la posizione del player delle y è maggiore o uguale della posizione delle y dell'oggetto di cui ho collisione
                     self.y += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setUpPress(False)    # ogni volta che collido dal lato basso non posso riandare a ricliccare il pulsante alto
                     return True # ritorno un valore perchè dopo lo vado ad utilizzare
-                elif self.y <= object.y:
+                elif self.hitbox[3] <= object.y:
                     self.y -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setDownPress(False)    # ogni volta che collido dal lato alto non posso riandare a ricliccare il pulsante basso
                     return False # ritorno un valore perchè dopo lo vado ad utilizzare
@@ -270,7 +272,6 @@ class Player(pygame.sprite.Sprite):
                 Confronta("y")
                 Confronta("x")
                 #self.setAllkeys(None)
-                
 
                     
             
@@ -314,7 +315,7 @@ class Player(pygame.sprite.Sprite):
         self.setHitbox()
 
     def setHitbox(self):
-        self.hitbox = (self.x + 15 * GLOB.MULT /GLOB.Player_proportion, self.y + 17 * GLOB.MULT /GLOB.Player_proportion, 24* GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion)
+        self.hitbox = (self.x + 14 * GLOB.MULT /GLOB.Player_proportion, self.y + 20 * GLOB.MULT /GLOB.Player_proportion, 26* GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion)
 
     # setta l'animazione della camminata a vera
     def animate(self):

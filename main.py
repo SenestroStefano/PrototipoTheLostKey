@@ -2,7 +2,7 @@ import pandas as pd
 import pygame, os, sys
 
 #Importo i vari file e classi necessarie
-import giocatore, menu, camera, debug
+import giocatore, menu, camera, debug, collisioni
 from button import Bar, Button, Dialoghi
 from pygame import mixer
 
@@ -102,40 +102,95 @@ def inizializza():
     # Faccio nascere l'oggetto "cam"
     cam = camera.Cam()
 
+
+def render(lista, object, var, hitbox):
+    x = 0
+    y = 0
+    risoluzione_tiles = 32
+
+    for valore_y in range(len(lista)):
+
+        x = 0
+        for valore_x in range(len(lista[valore_y])):
+            condition = lista[valore_y][valore_x] == var
+
+            if condition:
+                GLOB.screen.blit(object, (cam.getPositionX()+x * GLOB.MULT, cam.getPositionY()+y * GLOB.MULT))
+                
+            if (var == 11 or var == 1 or var == 15 or var == 10) and condition and hitbox != None:
+                collisione = pygame.Rect((cam.getPositionX()+(x+hitbox[0]) * GLOB.MULT),(cam.getPositionY()+(y+hitbox[1]) * GLOB.MULT), hitbox[2] * GLOB.MULT, hitbox[3] *GLOB.MULT)
+                pygame.draw.rect(GLOB.screen, (255,255,255), collisione, int(1*GLOB.MULT))
+                player.HasCollision(collisione)
+
+            x += risoluzione_tiles
+
+        y += risoluzione_tiles
+
+
+def load_images():
+    global pavimento, muro_alto, muro_basso, banco, banco_obliquo, lim_alta, lim_bassa, cattedra
+
+    pavimento = pygame.image.load("mappa/Tiles/pavimento.png").convert()
+    pavimento = pygame.transform.scale(pavimento, (pavimento.get_width() * GLOB.MULT, pavimento.get_height() * GLOB.MULT))
+
+    muro_alto = pygame.image.load("mappa/Tiles/muro-alto.png").convert()
+    muro_alto = pygame.transform.scale(muro_alto, (muro_alto.get_width() * GLOB.MULT, muro_alto.get_height() * GLOB.MULT))
+
+    muro_basso = pygame.image.load("mappa/Tiles/muro-basso2.png")
+    muro_basso = pygame.transform.scale(muro_basso, (muro_basso.get_width() * GLOB.MULT, muro_basso.get_height() * GLOB.MULT))
+
+    banco = pygame.image.load("mappa/Tiles/banco.png")
+    banco = pygame.transform.scale(banco, (banco.get_width() * GLOB.MULT, banco.get_height() * GLOB.MULT))
+
+    banco_obliquo = pygame.image.load("mappa/Tiles/banco-obliquo.png")
+    banco_obliquo = pygame.transform.scale(banco_obliquo, (banco_obliquo.get_width() * GLOB.MULT, banco_obliquo.get_height() * GLOB.MULT))
+
+    lim_alta = pygame.image.load("mappa/Tiles/lim-alta.png")
+    lim_alta = pygame.transform.scale(lim_alta, (lim_alta.get_width() * GLOB.MULT, lim_alta.get_height() * GLOB.MULT))
+
+    lim_bassa = pygame.image.load("mappa/Tiles/lim-bassa.png")
+    lim_bassa = pygame.transform.scale(lim_bassa, (lim_bassa.get_width() * GLOB.MULT, lim_bassa.get_height() * GLOB.MULT))
+
+    cattedra = pygame.image.load("mappa/Tiles/cattedra-full.png")
+    cattedra = pygame.transform.scale(cattedra, (cattedra.get_width() * GLOB.MULT, cattedra.get_height() * GLOB.MULT))
+
+def render_objectWNC():
+    render(collisioni.pavimento, pavimento, 0, None)
+    render(collisioni.muri, muro_basso, 3, None)
+    render(collisioni.oggetti, lim_bassa, 7, None)
+    render(collisioni.oggetti, cattedra, 10, None)
+
+def render_objectWC():
+    render(collisioni.muri, muro_alto, 1, (0, 0, 32, 32))
+    
+    render(collisioni.oggetti, lim_alta, 6, None)
+    render(collisioni.oggetti, banco, 11, (0, 0, 32, 15))
+    render(collisioni.oggetti, banco_obliquo, 15, (0, 0, 32, 32))
+
 def disegna():
-
-        val = 2
-
-        mappa = pygame.image.load("mappa/TIleset/img/mappa.png").convert()
-        mappa = pygame.transform.scale(mappa, (mappa.get_width()*GLOB.MULT*val, mappa.get_height()*GLOB.MULT*val))
         
         GLOB.screen.fill(GLOB.Background_Color)
-        GLOB.screen.blit(mappa, (cam.getPositionX(),cam.getPositionY()))
 
         cam.update(GLOB.Cam_visible)
 
+        load_images()
+
+        render_objectWNC()
+
         player.update() # richiama la funzione di aggiornamento del giocatore
-        
+
+        render_objectWC()
+
         # Si consiglia di mettere una grandezza non minore di 18 w/h
-        obstacle = pygame.Rect((cam.getPositionX()),(cam.getPositionY()), mappa.get_width(), 55*GLOB.MULT)
+        # obstacle = pygame.Rect((cam.getPositionX()),(cam.getPositionY()), 32 * GLOB.MULT, 32*GLOB.MULT)
 
         #pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
-        player.HasCollision(obstacle)
-
-
-        #  # Si consiglia di mettere una grandezza non minore di 18 w/h
-        obstacle1 = pygame.Rect((135*GLOB.MULT+cam.getPositionX()),(135*GLOB.MULT+cam.getPositionY()), 150*GLOB.MULT, 140*GLOB.MULT)
-
-        #obstacle3 = pygame.draw.polygon(GLOB.screen, (10, 10, 10), [[450*GLOB.MULT+cam.getPositionX(), 415*GLOB.MULT+cam.getPositionY()], [480*GLOB.MULT+cam.getPositionX(), 415*GLOB.MULT+cam.getPositionY()], [465*GLOB.MULT+cam.getPositionX(), 450*GLOB.MULT+cam.getPositionY()]])
-        obstacle3  = pygame.draw.circle(GLOB.screen, (0, 255, 0), (435*GLOB.MULT+cam.getPositionX(), 135*GLOB.MULT+cam.getPositionY()), 10*GLOB.MULT)
-
-        #pygame.draw.rect(GLOB.screen, (250, 150, 20), obstacle1)
-        player.HasCollision(obstacle1)
-        player.HasCollision(obstacle3)
+        #player.HasCollision(obstacle)
 
         if GLOB.Debug:
-             pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
-             pygame.draw.rect(GLOB.screen, (255,0,0), obstacle1, int(1*GLOB.MULT))
+            pass
+             #pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
+
 
 #Funzione Volume e Audio del gioco
 def options_audio():
