@@ -119,7 +119,7 @@ def render(lista, object, var, hitbox):
                 
             if (var == 11 or var == 1 or var == 15 or var == 10) and condition and hitbox != None:
                 collisione = pygame.Rect((cam.getPositionX()+(x+hitbox[0]) * GLOB.MULT),(cam.getPositionY()+(y+hitbox[1]) * GLOB.MULT), hitbox[2] * GLOB.MULT, hitbox[3] *GLOB.MULT)
-                pygame.draw.rect(GLOB.screen, (255,255,255), collisione, int(1*GLOB.MULT))
+                #pygame.draw.rect(GLOB.screen, (255,255,255), collisione, int(1*GLOB.MULT))
                 player.HasCollision(collisione)
 
             x += risoluzione_tiles
@@ -180,6 +180,8 @@ def disegna():
         player.update() # richiama la funzione di aggiornamento del giocatore
 
         render_objectWC()
+
+        player.surface.blit(player.character, (0, 0))
 
         # Si consiglia di mettere una grandezza non minore di 18 w/h
         # obstacle = pygame.Rect((cam.getPositionX()),(cam.getPositionY()), 32 * GLOB.MULT, 32*GLOB.MULT)

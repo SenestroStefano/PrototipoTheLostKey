@@ -56,6 +56,8 @@ class Player(pygame.sprite.Sprite):
         self.character = pygame.image.load(
         os.path.join(self.Name_animationWVD,char_image[0][0]))
 
+        self.surface = pygame.Surface((self.width, 80*GLOB.MULT))
+
         # animazione di walking
         self.animationWO = char_image[2]
         self.current_spriteWO = 0 # indica il corrente sprite generato e ciclato
