@@ -162,10 +162,10 @@ class Dialoghi():
 		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.personaggio, True, "Black")
 		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
 
-		self.vignetta = pygame.image.load("Dialoghi/Characters/"+self.personaggio+".png")
+		self.vignetta = pygame.image.load("Dialoghi/Characters/"+self.personaggio+".png").convert_alpha()
 		self.vignetta = pygame.transform.scale(self.vignetta, (self.vignetta.get_width()*GLOB.MULT*2, self.vignetta.get_height()*GLOB.MULT*2))
 
-		self.sfondo = pygame.image.load("assets/Dialoghi.png")
+		self.sfondo = pygame.image.load("assets/Dialoghi.png").convert_alpha()
 		self.sfondo = pygame.transform.scale(self.sfondo, (self.sfondo.get_width()*GLOB.MULT, self.sfondo.get_height()*GLOB.MULT))
 
 		self.keySound = mixer.Sound("suoni/char-sound.wav")
