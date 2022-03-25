@@ -102,7 +102,6 @@ def inizializza():
     # Faccio nascere l'oggetto "cam"
     cam = camera.Cam()
 
-
 def render(lista, object, var, hitbox):
     x = 0
     y = 0
@@ -114,21 +113,22 @@ def render(lista, object, var, hitbox):
         for valore_x in range(len(lista[valore_y])):
             condition = lista[valore_y][valore_x] == var
 
-            if condition:
+            if condition and object != None:
                 GLOB.screen.blit(object, (cam.getPositionX()+x * GLOB.MULT, cam.getPositionY()+y * GLOB.MULT))
                 
-            if (var == 11 or var == 1 or var == 15 or var == 10) and condition and hitbox != None:
+            if condition and hitbox != None:
                 collisione = pygame.Rect((cam.getPositionX()+(x+hitbox[0]) * GLOB.MULT),(cam.getPositionY()+(y+hitbox[1]) * GLOB.MULT), hitbox[2] * GLOB.MULT, hitbox[3] *GLOB.MULT)
-                #pygame.draw.rect(GLOB.screen, (255,255,255), collisione, int(1*GLOB.MULT))
                 player.HasCollision(collisione)
+            
+                if GLOB.Debug:
+                    pygame.draw.rect(GLOB.screen, (255,0,0), collisione, int(1*GLOB.MULT))
 
             x += risoluzione_tiles
 
         y += risoluzione_tiles
 
-
 def load_images():
-    global pavimento, muro_alto, muro_basso, banco, banco_obliquo, lim_alta, lim_bassa, cattedra
+    global pavimento, muro_alto, banco
 
     pavimento = pygame.image.load("mappa/Tiles/pavimento.png").convert()
     pavimento = pygame.transform.scale(pavimento, (pavimento.get_width() * GLOB.MULT, pavimento.get_height() * GLOB.MULT))
@@ -136,36 +136,20 @@ def load_images():
     muro_alto = pygame.image.load("mappa/Tiles/muro-alto.png").convert()
     muro_alto = pygame.transform.scale(muro_alto, (muro_alto.get_width() * GLOB.MULT, muro_alto.get_height() * GLOB.MULT))
 
-    muro_basso = pygame.image.load("mappa/Tiles/muro-basso2.png")
-    muro_basso = pygame.transform.scale(muro_basso, (muro_basso.get_width() * GLOB.MULT, muro_basso.get_height() * GLOB.MULT))
-
-    banco = pygame.image.load("mappa/Tiles/banco.png")
+    banco = pygame.image.load("mappa/Tiles/banco.png").convert_alpha()
     banco = pygame.transform.scale(banco, (banco.get_width() * GLOB.MULT, banco.get_height() * GLOB.MULT))
 
-    banco_obliquo = pygame.image.load("mappa/Tiles/banco-obliquo.png")
-    banco_obliquo = pygame.transform.scale(banco_obliquo, (banco_obliquo.get_width() * GLOB.MULT, banco_obliquo.get_height() * GLOB.MULT))
+def load_map(path):
+    global mappa
+    mappa = pygame.image.load(path).convert()
+    mappa = pygame.transform.scale(mappa, (mappa.get_width() * GLOB.MULT, mappa.get_height() * GLOB.MULT))
 
-    lim_alta = pygame.image.load("mappa/Tiles/lim-alta.png")
-    lim_alta = pygame.transform.scale(lim_alta, (lim_alta.get_width() * GLOB.MULT, lim_alta.get_height() * GLOB.MULT))
+def render_object():
+    render(collisioni.muri, None, 30, (0, 35, 32, 5))
+    render(collisioni.oggetti, banco, 92, (6, 12, 24, 14))
 
-    lim_bassa = pygame.image.load("mappa/Tiles/lim-bassa.png")
-    lim_bassa = pygame.transform.scale(lim_bassa, (lim_bassa.get_width() * GLOB.MULT, lim_bassa.get_height() * GLOB.MULT))
-
-    cattedra = pygame.image.load("mappa/Tiles/cattedra-full.png")
-    cattedra = pygame.transform.scale(cattedra, (cattedra.get_width() * GLOB.MULT, cattedra.get_height() * GLOB.MULT))
-
-def render_objectWNC():
-    render(collisioni.pavimento, pavimento, 0, None)
-    render(collisioni.muri, muro_basso, 3, None)
-    render(collisioni.oggetti, lim_bassa, 7, None)
-    render(collisioni.oggetti, cattedra, 10, None)
-
-def render_objectWC():
-    render(collisioni.muri, muro_alto, 1, (0, 0, 32, 32))
-    
-    render(collisioni.oggetti, lim_alta, 6, None)
-    render(collisioni.oggetti, banco, 11, (0, 0, 32, 15))
-    render(collisioni.oggetti, banco_obliquo, 15, (0, 0, 32, 32))
+def render_map():
+    GLOB.screen.blit(mappa, (cam.getPositionX(), cam.getPositionY()))
 
 def disegna():
         
@@ -173,26 +157,16 @@ def disegna():
 
         cam.update(GLOB.Cam_visible)
 
-        load_images()
-
-        render_objectWNC()
+        render_map()
 
         player.update() # richiama la funzione di aggiornamento del giocatore
 
-        render_objectWC()
+        render_object()
 
-        player.surface.blit(player.character, (0, 0))
-
-        # Si consiglia di mettere una grandezza non minore di 18 w/h
-        # obstacle = pygame.Rect((cam.getPositionX()),(cam.getPositionY()), 32 * GLOB.MULT, 32*GLOB.MULT)
-
-        #pygame.draw.rect(GLOB.screen, (0,100,255), obstacle)
-        #player.HasCollision(obstacle)
+        player.load_playerSurface()
 
         if GLOB.Debug:
-            pass
-             #pygame.draw.rect(GLOB.screen, (255,0,0), obstacle, int(1*GLOB.MULT))
-
+            cam.ShowCam()
 
 #Funzione Volume e Audio del gioco
 def options_audio():
@@ -387,17 +361,27 @@ def main():
     pygame.mouse.set_visible(False)
    
     run = True # funzione mainloop() principale
+    load_images()
+    load_map("mappa/Mappa.png")
     
     # Funzione che controlla se il tasto è stato premuto
     def key_pressed(event,IsPressed):
+        UP = event.key == pygame.K_w or event.key == pygame.K_UP
+        DOWN = event.key == pygame.K_s or event.key == pygame.K_DOWN
+        LEFT = event.key == pygame.K_a or event.key == pygame.K_LEFT
+        RIGHT = event.key == pygame.K_d or event.key == pygame.K_RIGHT
 
-        # if player.getDownPress() and player.getUpPress():
-        #     player.finish()
+        getUp = player.getUpPress()
+        getDown = player.getDownPress()
+        getLeft = player.getLeftPress()
+        getRight = player.getRightPress()
 
-        # if player.getLeftPress() and player.getRightPress():
-        #     player.finish()
-        
-        if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+        condition_1 = getLeft and UP and not(getRight and getDown)
+        condition_2 = getLeft and getDown and not(getRight and getUp)
+        condition_3 = getRight and UP and not(getLeft and getDown)
+        condition_4 = getRight and getDown and not(getLeft and getUp)
+
+        if LEFT and not RIGHT and not(condition_1 and condition_2):
             player.setLeftPress(IsPressed)
 
             if IsPressed:
@@ -406,7 +390,7 @@ def main():
             else:
                 player.finish()
             
-        if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+        if RIGHT and not LEFT and not(condition_3 and condition_4):    
             player.setRightPress(IsPressed)
 
             if IsPressed:
@@ -415,7 +399,7 @@ def main():
             else:
                 player.finish()
 
-        if event.key == pygame.K_w or event.key == pygame.K_UP:
+        if UP and not DOWN and not(condition_1 and condition_3):
             player.setUpPress(IsPressed)
 
             if IsPressed:
@@ -423,8 +407,8 @@ def main():
                 player.Last_keyPressed = "Up"
             else:
                 player.finish()
-
-        if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+            
+        if DOWN and not UP and not(condition_2 and condition_4):
             player.setDownPress(IsPressed)
 
             if IsPressed:
@@ -435,8 +419,10 @@ def main():
 
         if event.key == pygame.K_LSHIFT:
             if IsPressed:
+                player.setIsRunning(True)
                 GLOB.Player_speed = GLOB.Player_speed * GLOB.PlayerRun_speed
             else:
+                player.setIsRunning(False)
                 GLOB.Player_speed = GLOB.Player_default_speed
 
     """

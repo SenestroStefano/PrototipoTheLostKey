@@ -25,6 +25,8 @@ class Cam():
 
         self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*3), (self.height*GLOB.MULT*3)))
 
+        self.Player_hitbox = [ 14 * GLOB.MULT /GLOB.Player_proportion, 35 * GLOB.MULT /GLOB.Player_proportion, 26 * GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion]
+
 
     def setPositionX(self, x):
         self.x = x
@@ -42,13 +44,13 @@ class Cam():
     def update(self, visibility):
         #GLOB.screen.blit(self.image, (self.x, self.y))
 
-        offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
+        self.offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
 
-        a =  main.player.getPositionX() >= GLOB.screen_width - offset[0] - main.player.width
-        b =  main.player.getPositionX() <= offset[0]
+        a =  main.player.getPositionX() >= GLOB.screen_width - self.offset[0] - main.player.width
+        b =  main.player.getPositionX() <= self.offset[0]
 
-        c =  main.player.getPositionY() >= GLOB.screen_height - offset[1] - main.player.height
-        d =  main.player.getPositionY() <= offset[1]
+        c =  main.player.getPositionY() >= GLOB.screen_height - self.offset[1] - main.player.height
+        d =  main.player.getPositionY() <= self.offset[1]
 
         a1 = main.player.getRightPress()
         b1 = main.player.getLeftPress()
@@ -93,11 +95,13 @@ class Cam():
             self.y += -main.player.getVelocitaY()
             # print("D vero")
         
-        if visibility:
+        if visibility:        
+            self.ShowCam()
 
-            Player_hitbox = [ 15 * GLOB.MULT /GLOB.Player_proportion, 17 * GLOB.MULT /GLOB.Player_proportion, 24 * GLOB.MULT /GLOB.Player_proportion, 43 * GLOB.MULT /GLOB.Player_proportion]
-
-            Offset_rect = pygame.Rect(offset[0] + Player_hitbox[0], offset[1] + Player_hitbox[1], GLOB.screen_width - offset[0]*2 - Player_hitbox[0]*2, GLOB.screen_height - offset[1]*2 - Player_hitbox[1]*2)
-            pygame.draw.rect(GLOB.screen, (255,255,255), Offset_rect, int(GLOB.MULT))
         
         #print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))
+
+
+    def ShowCam(self):
+        Offset_rect = pygame.Rect(self.offset[0] + self.Player_hitbox[0], self.offset[1] + self.Player_hitbox[1], GLOB.screen_width - self.offset[0]*2 - self.Player_hitbox[0]*2, GLOB.screen_height - self.offset[1]*2 - self.Player_hitbox[1]*2)
+        pygame.draw.rect(GLOB.screen, (255,255,255), Offset_rect, int(GLOB.MULT))

@@ -9,7 +9,7 @@
  <tileset firstgid="49" source="../../TheLostKeys/Tiles/Prototipi e prove/TileMap/Prova_collisioni/oggetti_generali.tsx"/>
  <tileset firstgid="65" source="../../TheLostKeys/Tiles/Prototipi e prove/TileMap/Prova_collisioni/LavagneMappe.tsx"/>
  <tileset firstgid="81" source="../../TheLostKeys/Tiles/Prototipi e prove/TileMap/Prova_collisioni/BanchiSedie.tsx"/>
- <layer id="1" name="Pavimento" width="20" height="10" visible="0">
+ <layer id="1" name="Pavimento" width="20" height="10">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

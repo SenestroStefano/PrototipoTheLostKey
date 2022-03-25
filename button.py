@@ -151,10 +151,10 @@ class Dialoghi():
 
 		self.ritardo = 0
 
-		self.CanIplay_sound = False
+		self.CanIplay_sound = True
 		self.play_sound = False
 		self.cooldown_suono = 0
-		self.MaxCooldwon_suono = 3
+		self.MaxCooldwon_suono = 0
 
 		self.descr = [self.descr[i:i+1] for i in range(0, len(self.descr), 1)]
 		#print(self.descr)

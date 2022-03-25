@@ -10,10 +10,10 @@ Player_proportion = 1 # Divisore della grandezza del giocatore
 FPS = 30 * Delta_Time
 
 # rapporto di proporzione allo schermo NON INFERIORE AD 1
-MULT = 3
+MULT = 4
 
 # rapporto offset telecamera dello schermo MAX 40
-Moff = 30
+Moff = 40
 
 # rapporto audio del gioco
 AU = 5
@@ -48,7 +48,8 @@ Dark_Stat = [ 3, 8, 7, 9, 10, 8, 6, 7, 6, 2 ]
 
 Stats = ( Senex_Stat, Seima_Stat, Aleks_Stat, Beppe_Stat, Dark_Stat )
 
-Background_Color = (12, 24, 36)
+#Background_Color = (12, 24, 36)
+Background_Color = (0, 0, 0)
 
 # Dimensione Schermo
 DF_width = 480

@@ -28,6 +28,7 @@ def play():
     
 def options():
     mixer.music.stop()
+    global flag_Fullscreen
     flag_Fullscreen = False
 
     while True:
@@ -295,11 +296,27 @@ def options():
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(screen)
 
+        flag_screen = False
+
+        def setFullScreen():
+            global flag_Fullscreen
+
+            if flag_Fullscreen == False:
+                flag_Fullscreen = True
+            else:
+                flag_Fullscreen = False
+
         for event in pygame.event.get():
+            keys_pressed = pygame.key.get_pressed()
 
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            if keys_pressed[pygame.K_F12]:
+                flag_screen = True
+                setFullScreen()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 flag_screen = False
 
@@ -345,20 +362,16 @@ def options():
                 
                 if Screen_FULL.checkForInput(OPTIONS_MOUSE_POS):
                     flag_screen = True
-                    
-                    if flag_Fullscreen == False:
-                        flag_Fullscreen = True
-                    else:
-                        flag_Fullscreen = False
+                    setFullScreen()
 
-                if flag_screen:
-                    GLOB.screen_width = 480*GLOB.MULT
-                    GLOB.screen_height = 270*GLOB.MULT
+            if flag_screen:
+                GLOB.screen_width = 480*GLOB.MULT
+                GLOB.screen_height = 270*GLOB.MULT
 
-                    if not flag_Fullscreen:
-                        GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height))
-                    else: 
-                        GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height),pygame.FULLSCREEN)
+                if not flag_Fullscreen:
+                    GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height))
+                else: 
+                    GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height),pygame.FULLSCREEN)
 
 
             button_sound = mixer.Sound("suoni/option-sound.wav")

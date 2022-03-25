@@ -16,6 +16,8 @@ class Player(pygame.sprite.Sprite):
         #stato attuale dell'animazione
         self.setIsWalking(False)
 
+        self.setIsRunning(False)
+
         #indico il giocatore impostato
         self.Player_selected = selected
 
@@ -56,7 +58,9 @@ class Player(pygame.sprite.Sprite):
         self.character = pygame.image.load(
         os.path.join(self.Name_animationWVD,char_image[0][0]))
 
-        self.surface = pygame.Surface((self.width, 80*GLOB.MULT))
+        self.value_surface = 40 * GLOB.MULT
+
+        self.surface = pygame.Surface((self.width, self.value_surface), pygame.SRCALPHA)
 
         # animazione di walking
         self.animationWO = char_image[2]
@@ -88,6 +92,9 @@ class Player(pygame.sprite.Sprite):
     def setIsWalking(self, val):
         self.__is_walking = val
 
+    def setIsRunning(self, val):
+        self.__is_running = val
+
     def setRightPress(self, r):
         self.__right_pressed = r
 
@@ -109,6 +116,9 @@ class Player(pygame.sprite.Sprite):
         self.setDownPress(v)
         self.setLeftPress(v)
         self.setRightPress(v)
+
+    def setAnimationSpeed(self, s):
+        self.__animation_speed = s
 
 
 # ---------- self.get() ----------
@@ -140,15 +150,21 @@ class Player(pygame.sprite.Sprite):
     def getIsWalking(self):
         return self.__is_walking
 
+    def getIsRunning(self):
+        return self.__is_running
+
+    def getAnimationSpeed(self):
+        return self.__animation_speed
+
     # aggiorna a schermo l'immagine attuale del Player
     def character_update(self,var):
 
         # Controlla se l'animazione è attiva
         if self.getIsWalking():
 
-            self.current_spriteWO += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
-            self.current_spriteWVD += 0.4 / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
-            self.current_spriteWVU += 0.4 / GLOB.Delta_Time
+            self.current_spriteWO += self.getAnimationSpeed() / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
+            self.current_spriteWVD += self.getAnimationSpeed() / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
+            self.current_spriteWVU += self.getAnimationSpeed() / GLOB.Delta_Time
 
             # Controllo di non uscire dal range dei frames possibili
             if self.current_spriteWO >= len(self.animationWO):
@@ -275,31 +291,77 @@ class Player(pygame.sprite.Sprite):
                 Confronta("x")
                 #self.setAllkeys(None)
 
-                    
-            
-
-
     # Funzione che serve ad aggiornare la velocità attuale del giocatore la velocità da' un'impressione Smooth
     def update(self):
         self.setVelocitaX(0)
         self.setVelocitaY(0)
 
-        if (self.getLeftPress() and not self.getRightPress()):
+        getUp = self.getUpPress()
+        getDown = self.getDownPress()
+        getLeft = self.getLeftPress()
+        getRight = self.getRightPress()
+
+        condition_1 = getLeft and getUp and not(getRight and getDown)
+        condition_2 = getLeft and getDown and not(getRight and getUp)
+        condition_3 = getRight and getUp and not(getLeft and getDown)
+        condition_4 = getRight and getDown and not(getLeft and getUp)
+
+        slow = 0.15
+        normal = 0.4
+        run = 1.35
+
+        if self.getIsRunning():
+            slow *= run
+            normal *= run
+        else:
+            slow = 0.15
+            normal = 0.4
+
+        if condition_1:
+            self.setVelocitaY(-GLOB.Player_speed)
+            self.setVelocitaX(GLOB.Player_speed)           
+            self.setIsWalking(True)
+            self.character_update(1) # richiamo la funzione di aggiorna l'animazione
+
+        if condition_2:
+            self.setVelocitaY(GLOB.Player_speed)
+            self.setVelocitaX(GLOB.Player_speed)           
+            self.setIsWalking(True)
+            self.character_update(0) # richiamo la funzione di aggiorna l'animazione
+
+        if condition_3:
+            self.setVelocitaY(-GLOB.Player_speed)
+            self.setVelocitaX(-GLOB.Player_speed)           
+            self.setIsWalking(True)
+            self.character_update(1) # richiamo la funzione di aggiorna l'animazione
+
+        if condition_4:
+            self.setVelocitaY(GLOB.Player_speed)
+            self.setVelocitaX(-GLOB.Player_speed)           
+            self.setIsWalking(True)
+            self.character_update(1) # richiamo la funzione di aggiorna l'animazione
+
+        if condition_1 or condition_2 or condition_3 or condition_4:
+            self.setAnimationSpeed(slow)
+        else:
+            self.setAnimationSpeed(normal)
+
+        if (getLeft and not getRight):
             self.setVelocitaX(-GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(3) # richiamo la funzione di aggiorna l'animazione
         
-        if (self.getRightPress() and not self.getLeftPress()):
+        if (getRight and not getLeft):
             self.setVelocitaX(GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(2) # richiamo la funzione di aggiorna l'animazione
 
-        if (self.getUpPress() and not self.getDownPress()):
+        if (getUp and not getDown):
             self.setVelocitaY(-GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(1) # richiamo la funzione di aggiorna l'animazione
 
-        if (self.getDownPress() and not self.getUpPress()):
+        if (getDown and not getUp):
             self.setVelocitaY(GLOB.Player_speed)
             self.setIsWalking(True)
             self.character_update(0) # richiamo la funzione di aggiorna l'animazione
@@ -316,8 +378,11 @@ class Player(pygame.sprite.Sprite):
         # self.hitbox = (self.x-60, self.y-55, 200, 180)
         self.setHitbox()
 
+        #print("| Condizione 1: "+str(condition_1)+" | Condizione 2: "+str(condition_2)+" | Condizione 3: "+str(condition_3)+" | Condizione 4: "+str(condition_4))
+        #print(self.animation_speed)
+
     def setHitbox(self):
-        self.hitbox = (self.x + 14 * GLOB.MULT /GLOB.Player_proportion, self.y + 20 * GLOB.MULT /GLOB.Player_proportion, 26* GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion)
+        self.hitbox = (self.x + 14 * GLOB.MULT /GLOB.Player_proportion, self.y + 35 * GLOB.MULT /GLOB.Player_proportion, 26* GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion)
 
     # setta l'animazione della camminata a vera
     def animate(self):
@@ -334,3 +399,11 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animationWO[int(self.current_spriteWO)]
         self.character = pygame.image.load(
             os.path.join(self.Name_animationWVD,'Walk0.png'))
+
+    def load_playerSurface(self):
+        self.surface = pygame.Surface((self.width, self.value_surface), pygame.SRCALPHA)
+        value = 13
+
+        self.surface.blit(self.character, (-value * GLOB.MULT, 0))
+
+        GLOB.screen.blit(self.surface, (self.getPositionX() + value * GLOB.MULT, self.getPositionY()))
