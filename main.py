@@ -3,7 +3,7 @@ import pygame, os, sys
 
 #Importo i vari file e classi necessarie
 import giocatore, menu, camera, debug, collisioni
-from button import Bar, Button, Dialoghi
+from button import Bar, Button, Dialoghi, Timer
 from pygame import mixer
 
 
@@ -15,7 +15,7 @@ def get_font(size): # Returns Press-Start-2P in the desired size
 
 #funzione di default
 def inizializza():
-    global player, cam, clock
+    global player, cam, timer, clock
 
     """
  --- Cambio il personaggio in base alla scelta del giocatore ---
@@ -102,6 +102,12 @@ def inizializza():
     # Faccio nascere l'oggetto "cam"
     cam = camera.Cam()
 
+    def miaFunzione():
+        print("Tempo Scaduto!")
+        inizializza()
+
+    timer = Timer(max_sec = 60, molt_sec = 1, event = miaFunzione)
+
 def render(lista, object, var, hitbox):
     x = 0
     y = 0
@@ -152,21 +158,22 @@ def render_map():
     GLOB.screen.blit(mappa, (cam.getPositionX(), cam.getPositionY()))
 
 def disegna():
+
+    timer.Start()
         
-        GLOB.screen.fill(GLOB.Background_Color)
+    GLOB.screen.fill(GLOB.Background_Color)
 
-        cam.update(GLOB.Cam_visible)
+    cam.update()
 
-        render_map()
+    render_map()
 
-        player.update() # richiama la funzione di aggiornamento del giocatore
+    player.update() # richiama la funzione di aggiornamento del giocatore
 
-        render_object()
+    render_object()
 
-        player.load_playerSurface()
+    player.load_playerSurface()
 
-        if GLOB.Debug:
-            cam.ShowCam()
+    timer.Show()
 
 #Funzione Volume e Audio del gioco
 def options_audio():
@@ -288,7 +295,8 @@ def options_audio():
 
 # Funzione Gioco in Pausa
 def pausa():
-
+    mixer.music.stop()
+    timer.Pause()
     # Setto visibile il cursore del mouse
     pygame.mouse.set_visible(True)
 
@@ -333,6 +341,7 @@ def pausa():
             if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                 ricominciamo = True
                 player.finish()
+                timer.DePause()
                 main()
 
             if event_pausa.type == pygame.QUIT:
@@ -357,12 +366,18 @@ def pausa():
 #funzione principale
 def main():
 
+    mixer.music.load("suoni/mix.wav")
+    mixer.music.set_volume(0.02*GLOB.MU)
+    mixer.music.play(-1)	# La setto a -1 che indica un loop quindi a infinito
+
     # Setto il cursore del mouse a non visibile
     pygame.mouse.set_visible(False)
    
     run = True # funzione mainloop() principale
     load_images()
     load_map("mappa/Mappa.png")
+
+
     
     # Funzione che controlla se il tasto è stato premuto
     def key_pressed(event,IsPressed):

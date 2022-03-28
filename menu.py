@@ -426,8 +426,13 @@ def main_menu():
     
     # Imposto una musica di background
     mixer.music.load("suoni/Rain-sound.wav")
-    mixer.music.set_volume(0.02*GLOB.AU)
+    mixer.music.set_volume(0.01*GLOB.AU)
     mixer.music.play(-1)	# La setto a -1 che indica un loop quindi a infinito
+
+    # musica = mixer.Sound("suoni/musica1.wav")
+    # musica.set_volume(0.2*GLOB.MU)
+    # musica.stop()
+    # musica.play(-1)	# La setto a -1 che indica un loop quindi a infinito
 
     BG_School = pygame.image.load("assets/ScuolaHorror.png").convert()
     BG_School = pygame.transform.scale(BG_School, (BG_School.get_width()*GLOB.MULT/4,BG_School.get_height()*GLOB.MULT/4))
@@ -507,14 +512,14 @@ def main_menu():
             tuono = pygame.image.load("assets/tuono.png").convert()
             tuono = pygame.transform.scale(tuono, (tuono.get_width()*GLOB.MULT, tuono.get_height()*GLOB.MULT))
 
-            if random.randint(0, 100) >= 50:
-                tuonoSound = mixer.Sound("suoni/thunder-sound.wav")
-            else:
-                tuonoSound = mixer.Sound("suoni/thunder-sound2.wav")
+            val = 0.16 * GLOB.AU
 
-            tuonoSound.set_volume(0.16*GLOB.AU)
+            tuonoSound = [mixer.Sound("suoni/thunder-sound.wav"), mixer.Sound("suoni/thunder-sound2.wav")]
 
-            tuonoSound.play()
+            tuonoSound[0].set_volume(val)
+            tuonoSound[1].set_volume(val)
+
+            random.choice(tuonoSound).play()
 
             screen.blit(tuono, (0, 0))
         

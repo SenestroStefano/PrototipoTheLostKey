@@ -6,6 +6,9 @@ from pygame import mixer
     ---  Classe genera un pulsante a schermo un pulsante cliccabile	---
 """
 
+def get_font(size): # Returns Press-Start-2P in the desired size
+    return pygame.font.Font("font/font.ttf", size)
+
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color, scale):
     	
@@ -428,6 +431,50 @@ class Delay():
 
     def ActualState(self):
         print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
+
+class Timer():	
+	def __init__(self, max_sec, molt_sec, event):
+		self.__min = 0
+		self.__max = max_sec * GLOB.FPS
+		self.__max_sec = max_sec * GLOB.FPS
+		self.__molt_sec = molt_sec
+		self.__decrement = 1 * molt_sec
+		self.__function = event
+		self.__flag = True
+
+    #print(self.min, self.max, self.increment, self.function)
+
+	def Start(self):
+		if self.__flag:
+			self.__max -= self.__decrement
+
+			if int(self.__max) == self.__min:
+				self.__function()
+				self.Pause()
+
+	def ReStart(self):
+		if not self.__flag:
+			self.__flag = True
+			self.__max = self.__max_sec
+
+        #print(int(self.__min))
+
+	def Pause(self):
+		self.__flag = False
+
+	def DePause(self):
+		self.__flag = True
+
+	def Stop(self):
+		self.__init__(self.__max_sec, self.__molt_sec, self.__function)
+
+	def Show(self):
+		testo = get_font(12*int(GLOB.MULT)).render(str(int(self.__max/GLOB.FPS)), True, "White")
+		GLOB.screen.blit(testo, (GLOB.screen_width/2 - testo.get_width()/2, 35 * GLOB.MULT))
+
+	def ActualState(self):
+		if self.__flag:
+			print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
 
 
 # var = 0

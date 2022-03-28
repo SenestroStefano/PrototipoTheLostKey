@@ -70,4 +70,5 @@ class Debug():
             POS_RECT = POS_TEXT.get_rect(center=(200*GLOB.MULT, 20*GLOB.MULT))
 
             GLOB.screen.blit(POS_TEXT, POS_RECT)
-        
+
+            main.cam.ShowCam()
