@@ -153,20 +153,18 @@ def render_map():
 
 def disegna():
         
-        GLOB.screen.fill(GLOB.Background_Color)
+    GLOB.screen.fill(GLOB.Background_Color)
 
-        cam.update(GLOB.Cam_visible)
+    cam.update(GLOB.Cam_visible)
 
-        render_map()
+    render_map()
 
-        player.update() # richiama la funzione di aggiornamento del giocatore
+    player.update() # richiama la funzione di aggiornamento del giocatore
 
-        render_object()
+    render_object()
 
-        player.load_playerSurface()
+    player.load_playerSurface()
 
-        if GLOB.Debug:
-            cam.ShowCam()
 
 #Funzione Volume e Audio del gioco
 def options_audio():
