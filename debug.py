@@ -72,4 +72,3 @@ class Debug():
             GLOB.screen.blit(POS_TEXT, POS_RECT)
 
             main.cam.ShowCam()
-        

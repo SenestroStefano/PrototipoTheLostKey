@@ -41,7 +41,7 @@ class Cam():
         return self.y
 
         
-    def update(self, visibility):
+    def update(self):
         #GLOB.screen.blit(self.image, (self.x, self.y))
 
         self.offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
@@ -94,9 +94,6 @@ class Cam():
             main.player.setPositionY(main.player.getPositionY()-main.player.getVelocitaY())
             self.y += -main.player.getVelocitaY()
             # print("D vero")
-        
-        if visibility:        
-            self.ShowCam()
 
         
         #print("Posizione x: "+str(main.player.getPositionX())+" | Posizione y: "+str(main.player.getPositionY())+" | VelocitàX: "+str(main.player.getVelocitaX()))
