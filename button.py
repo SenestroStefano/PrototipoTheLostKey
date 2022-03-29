@@ -433,31 +433,46 @@ class Delay():
         print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
 
 class Timer():	
-	def __init__(self, max_sec, molt_sec, event):
-		self.__min = 0
-		self.__max = max_sec * GLOB.FPS
-		self.__max_sec = max_sec * GLOB.FPS
-		self.__molt_sec = molt_sec
-		self.__decrement = 1 * molt_sec
+	def __init__(self, minutes, molt_sec, event):
+		self.__max = minutes
+		self.__minimal = 0
+		self.__minutes = minutes
+		self.__seconds = 0
+		self.__decrement = molt_sec
 		self.__function = event
 		self.__flag = True
+
+		self.__testo1 = ""
+		self.__testo2 = ":"
 
     #print(self.min, self.max, self.increment, self.function)
 
 	def Start(self):
 		if self.__flag:
-			self.__max -= self.__decrement
+			self.__seconds -= self.__decrement
 
-			if int(self.__max) == self.__min:
+			if self.__seconds <= 0:
+				self.__minutes -= 1
+				self.__seconds = 59 * GLOB.FPS
+
+			if self.__seconds/GLOB.FPS < 10:
+				self.__testo2 = ":0"
+			else:
+				self.__testo2 = ":"
+
+			if self.__minutes < 10:
+				self.__testo1 = "0"
+			else:
+				self.__testo1 = ""
+
+			if int(self.__minutes) == self.__minimal:
 				self.__function()
 				self.Pause()
 
 	def ReStart(self):
 		if not self.__flag:
 			self.__flag = True
-			self.__max = self.__max_sec
-
-        #print(int(self.__min))
+			self.__minutes = self.__max
 
 	def Pause(self):
 		self.__flag = False
@@ -465,17 +480,40 @@ class Timer():
 	def DePause(self):
 		self.__flag = True
 
+	def AddSeconds(self, value):
+		if (self.getSeconds() + value) >= 59:
+			if value < 0:
+				parse_value = -0.9
+			else:
+				parse_value = +0.9
+    			
+			self.__minutes += int(value/60 + parse_value)
+			
+			if value >= 120:
+				var = int(self.getSeconds() * value / 60) - value
+			else:
+				var = value - (60 - self.getSeconds())
+			
+			self.__seconds = var * GLOB.FPS
+		else:
+			self.__seconds += value * GLOB.FPS
+
 	def Stop(self):
 		self.__init__(self.__max_sec, self.__molt_sec, self.__function)
 
 	def Show(self):
-		testo = get_font(12*int(GLOB.MULT)).render(str(int(self.__max/GLOB.FPS)), True, "White")
+		testo = get_font(12*int(GLOB.MULT)).render((self.__testo1+str(self.__minutes)+str(self.__testo2)+str(int(self.__seconds/GLOB.FPS))), True, "White")
 		GLOB.screen.blit(testo, (GLOB.screen_width/2 - testo.get_width()/2, 35 * GLOB.MULT))
+
+	def getSeconds(self):
+		return self.__seconds / GLOB.FPS
+    	
+	def getMinutes(self):
+		return self.__minutes
 
 	def ActualState(self):
 		if self.__flag:
-			print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
-
+			print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__minimal/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
 
 # var = 0
 

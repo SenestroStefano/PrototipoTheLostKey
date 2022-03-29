@@ -106,7 +106,7 @@ def inizializza():
         print("Tempo Scaduto!")
         inizializza()
 
-    timer = Timer(max_sec = 60, molt_sec = 1, event = miaFunzione)
+    timer = Timer(minutes = 45, molt_sec = 1, event = miaFunzione)
 
 def render(lista, object, var, hitbox):
     x = 0
@@ -164,7 +164,7 @@ def disegna():
     GLOB.screen.fill(GLOB.Background_Color)
 
     cam.update()
-
+    
     render_map()
 
     player.update() # richiama la funzione di aggiornamento del giocatore
