@@ -106,7 +106,7 @@ def inizializza():
         print("Tempo Scaduto!")
         inizializza()
 
-    timer = Timer(minutes = 45, molt_sec = 1, event = miaFunzione)
+    timer = Timer(minutes = 2, molt_sec = 1, event = miaFunzione)
 
 def render(lista, object, var, hitbox):
     x = 0
@@ -134,7 +134,7 @@ def render(lista, object, var, hitbox):
         y += risoluzione_tiles
 
 def load_images():
-    global pavimento, muro_alto, banco
+    global pavimento, muro_alto, banco, bancone_chimica1, bancone_chimica2, bancone_chimica3, bancone_chimica4, bancone_chimica5, bancone_chimica6, bancone_chimica7, bancone_chimica8
 
     pavimento = pygame.image.load("mappa/Tiles/pavimento.png").convert()
     pavimento = pygame.transform.scale(pavimento, (pavimento.get_width() * GLOB.MULT, pavimento.get_height() * GLOB.MULT))
@@ -145,14 +145,49 @@ def load_images():
     banco = pygame.image.load("mappa/Tiles/banco.png").convert_alpha()
     banco = pygame.transform.scale(banco, (banco.get_width() * GLOB.MULT, banco.get_height() * GLOB.MULT))
 
+    bancone_chimica1 = pygame.image.load("mappa/Tiles/bancone1-0.png").convert_alpha()
+    bancone_chimica1 = pygame.transform.scale(bancone_chimica1, (bancone_chimica1.get_width() * GLOB.MULT, bancone_chimica1.get_height() * GLOB.MULT))
+
+    bancone_chimica2 = pygame.image.load("mappa/Tiles/bancone1-1.png").convert_alpha()
+    bancone_chimica2 = pygame.transform.scale(bancone_chimica2, (bancone_chimica2.get_width() * GLOB.MULT, bancone_chimica2.get_height() * GLOB.MULT))
+
+    bancone_chimica3 = pygame.image.load("mappa/Tiles/bancone2-0.png").convert_alpha()
+    bancone_chimica3 = pygame.transform.scale(bancone_chimica3, (bancone_chimica3.get_width() * GLOB.MULT, bancone_chimica3.get_height() * GLOB.MULT))
+
+    bancone_chimica4 = pygame.image.load("mappa/Tiles/bancone2-1.png").convert_alpha()
+    bancone_chimica4 = pygame.transform.scale(bancone_chimica4, (bancone_chimica4.get_width() * GLOB.MULT, bancone_chimica4.get_height() * GLOB.MULT))
+
+    bancone_chimica5 = pygame.image.load("mappa/Tiles/bancone3-0.png").convert_alpha()
+    bancone_chimica5 = pygame.transform.scale(bancone_chimica5, (bancone_chimica5.get_width() * GLOB.MULT, bancone_chimica5.get_height() * GLOB.MULT))
+
+    bancone_chimica6 = pygame.image.load("mappa/Tiles/bancone3-1.png").convert_alpha()
+    bancone_chimica6 = pygame.transform.scale(bancone_chimica6, (bancone_chimica6.get_width() * GLOB.MULT, bancone_chimica6.get_height() * GLOB.MULT))
+
+    bancone_chimica7 = pygame.image.load("mappa/Tiles/bancone4-0.png").convert_alpha()
+    bancone_chimica7 = pygame.transform.scale(bancone_chimica7, (bancone_chimica7.get_width() * GLOB.MULT, bancone_chimica7.get_height() * GLOB.MULT))
+
+    bancone_chimica8 = pygame.image.load("mappa/Tiles/bancone4-1.png").convert_alpha()
+    bancone_chimica8 = pygame.transform.scale(bancone_chimica8, (bancone_chimica8.get_width() * GLOB.MULT, bancone_chimica8.get_height() * GLOB.MULT))
+
 def load_map(path):
     global mappa
     mappa = pygame.image.load(path).convert()
     mappa = pygame.transform.scale(mappa, (mappa.get_width() * GLOB.MULT, mappa.get_height() * GLOB.MULT))
 
 def render_object():
-    render(collisioni.muri, None, 30, (0, 35, 32, 5))
-    render(collisioni.oggetti, banco, 92, (6, 12, 24, 14))
+    collisione_bancone1 = (6, 12, 24, 14)
+    collisione_bancone2 = (0, 12, 24, 14)
+    render(collisioni.chimica_collisioni, None, 3, (0, 35, 32, 5))
+    render(collisioni.chimica_collisioni, None, 6, (0, 0, 32, 32))
+    render(collisioni.chimica_collisioni, None, 7, (0, 16, 32, 32))
+    render(collisioni.chimica_oggetti, bancone_chimica1, 0, collisione_bancone1)
+    render(collisioni.chimica_oggetti, bancone_chimica2, 1, collisione_bancone2)
+    render(collisioni.chimica_oggetti, bancone_chimica3, 2, collisione_bancone1)
+    render(collisioni.chimica_oggetti, bancone_chimica4, 3, collisione_bancone2)
+    render(collisioni.chimica_oggetti, bancone_chimica5, 4, collisione_bancone1)
+    render(collisioni.chimica_oggetti, bancone_chimica6, 5, collisione_bancone2)
+    render(collisioni.chimica_oggetti, bancone_chimica7, 6, collisione_bancone1)
+    render(collisioni.chimica_oggetti, bancone_chimica8, 7, collisione_bancone2)
 
 def render_map():
     GLOB.screen.blit(mappa, (cam.getPositionX(), cam.getPositionY()))
@@ -375,7 +410,7 @@ def main():
    
     run = True # funzione mainloop() principale
     load_images()
-    load_map("mappa/Mappa.png")
+    load_map("mappa/Stanze/AulaChimica/chimica.png")
 
 
     

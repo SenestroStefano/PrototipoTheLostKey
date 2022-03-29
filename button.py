@@ -452,8 +452,8 @@ class Timer():
 			self.__seconds -= self.__decrement
 
 			if self.__seconds <= 0:
+				self.__seconds = 60 * GLOB.FPS
 				self.__minutes -= 1
-				self.__seconds = 59 * GLOB.FPS
 
 			if self.__seconds/GLOB.FPS < 10:
 				self.__testo2 = ":0"
@@ -481,20 +481,27 @@ class Timer():
 		self.__flag = True
 
 	def AddSeconds(self, value):
-		if (self.getSeconds() + value) >= 59:
+		if (self.getSeconds() + value) >= 60:
 			if value < 0:
 				parse_value = -0.9
 			else:
 				parse_value = +0.9
-    			
+
 			self.__minutes += int(value/60 + parse_value)
 			
-			if value >= 120:
-				var = int(self.getSeconds() * value / 60) - value
-			else:
-				var = value - (60 - self.getSeconds())
+			m =  value//GLOB.FPS
+
+			var = value - (m * 60)
+			d = self.getSeconds() + var - 60
 			
-			self.__seconds = var * GLOB.FPS
+			self.__seconds += var * GLOB.FPS
+			#print(self.getSeconds())
+
+			if self.getSeconds() >= 59:
+				self.__seconds = d * GLOB.FPS
+
+			if value != (m * 60):
+				self.__minutes -= 1
 		else:
 			self.__seconds += value * GLOB.FPS
 
