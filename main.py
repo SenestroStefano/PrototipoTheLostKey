@@ -106,9 +106,10 @@ def inizializza():
         print("Tempo Scaduto!")
         inizializza()
 
-    timer = Timer(minutes = 2, molt_sec = 1, event = miaFunzione)
+    timer = Timer(minutes = 2, molt_sec = 8, event = miaFunzione)
 
     collisions = collisioni.Map(risoluzione = 32, tipo_stanza = "Chimica", path = "mappa/Tiles/")
+    load_images()
 
 def load_images():
     collisions.load_images("Bancone_chimica1", 0)
@@ -340,7 +341,6 @@ def main():
     pygame.mouse.set_visible(False)
    
     run = True # funzione mainloop() principale
-    load_images()
 
 
     
