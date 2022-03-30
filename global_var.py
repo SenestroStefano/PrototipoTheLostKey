@@ -28,6 +28,8 @@ Debug = False
 
 Dialogo = False
 
+Drop_Frames = False
+
 Player_speed = 2 * MULT
 PlayerRun_speed = 3 * MULT
 

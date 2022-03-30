@@ -72,3 +72,9 @@ class Debug():
             GLOB.screen.blit(POS_TEXT, POS_RECT)
 
             main.cam.ShowCam()
+
+
+        if int(main.clock.get_fps()) <= (GLOB.FPS-(GLOB.FPS/20)):
+            GLOB.Drop_Frames = True
+        else:
+            GLOB.Drop_Frames = False
