@@ -465,7 +465,7 @@ class Timer():
 			else:
 				self.__testo1 = ""
 
-			if self.getMinutes() == 0 and self.getSeconds() == 0:
+			if int(self.getMinutes()) == self.__minimal and int(self.getSeconds()) == self.__minimal:
 				self.__function()
 				self.Pause()
 

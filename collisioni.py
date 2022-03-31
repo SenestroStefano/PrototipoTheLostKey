@@ -57,7 +57,7 @@ class Map():
             for valore_x in range(len(lista[valore_y])):
                 condition = lista[valore_y][valore_x] == var
 
-                if condition and object != None and not GLOB.Drop_Frames:
+                if condition and object != None:
                     GLOB.screen.blit(object, (main.cam.getPositionX()+x * GLOB.MULT, main.cam.getPositionY()+y * GLOB.MULT))
                     #print("Render | Oggetto a schermo!", object)
                     
@@ -66,7 +66,7 @@ class Map():
                     #print("Render | Collisione Oggetto Impostata!", collisione)
                     main.player.HasCollision(collisione)
                 
-                    if GLOB.Debug:
+                    if GLOB.Debug and not GLOB.Drop_Frames:
                         pygame.draw.rect(GLOB.screen, (255,0,0), collisione, int(1*GLOB.MULT))
 
                 x += self.tiles_risoluzione
@@ -79,23 +79,21 @@ class Map():
     def render_object(self, event):
         lista_chiavi = list(self.tiles_oggetti.keys())
 
-        if not GLOB.Drop_Frames:
+        for value in range(len(lista_chiavi)):
+            condition =  str(type(self.tiles_oggetti.get(lista_chiavi[value])[0])) == "<class 'pygame.Surface'>"
+            #print(str(lista_chiavi[value])+" | "+str(condition))
+            if condition:
+                
+                try:      
+                    if  self.tiles_oggetti.get(lista_chiavi[value])[2] == None:
+                        collisione = (0, 0, self.tiles_risoluzione, self.tiles_risoluzione)
+                    else:
+                        collisione = self.tiles_oggetti.get(lista_chiavi[value])[2]
 
-            for value in range(len(lista_chiavi)):
-                condition =  str(type(self.tiles_oggetti.get(lista_chiavi[value])[0])) == "<class 'pygame.Surface'>"
-                print(str(lista_chiavi[value])+" | "+str(condition))
-                if condition:
-                    
-                    try:      
-                        if  self.tiles_oggetti.get(lista_chiavi[value])[2] == None:
-                            collisione = (0, 0, self.tiles_risoluzione, self.tiles_risoluzione)
-                        else:
-                            collisione = self.tiles_oggetti.get(lista_chiavi[value])[2]
-
-                        self.render(lista = event, object = self.tiles_oggetti.get(lista_chiavi[value])[0], var = self.tiles_oggetti.get(lista_chiavi[value])[1], hitbox = collisione)
-                        print("Render_object | Oggetto Caricato!")
-                    except KeyError:
-                        print("Render_object | Errore nel caricare l'oggetto")
+                    self.render(lista = event, object = self.tiles_oggetti.get(lista_chiavi[value])[0], var = self.tiles_oggetti.get(lista_chiavi[value])[1], hitbox = collisione)
+                    print("Render_object | Oggetto Caricato!")
+                except KeyError:
+                    print("Render_object | Errore nel caricare l'oggetto")
 
     def render_collision(self, event):
         self.render(event, None, 3, (0, 0, 32, 32))
