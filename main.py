@@ -136,7 +136,7 @@ def disegna():
 
     collisions.render_object(event = collisioni.chimica_oggetti)
     collisions.render_gamemapCollision(lista = collisioni.chimica_collisioni, var = 6, collisione = (0, 0, 32, 32))
-    collisions.render_gamemapCollision(lista = collisioni.chimica_collisioni, var = 3, collisione = (0, 0, 32, 12))
+    collisions.render_gamemapCollision(lista = collisioni.chimica_collisioni, var = 3, collisione = (0, 0, 32, 8))
 
     player.load_playerSurface()
 

@@ -64,7 +64,8 @@ class Player(pygame.sprite.Sprite):
 
         # animazione di walking
         self.animationWO = char_image[2]
-        self.current_spriteWO = 0 # indica il corrente sprite generato e ciclato
+        self.current_spriteWOL = 0 # indica il corrente sprite generato e ciclato
+        self.current_spriteWOR = 0 # indica il corrente sprite generato e ciclato
 
         self.animationWVD = char_image[0]
         self.current_spriteWVD = 0
@@ -162,27 +163,66 @@ class Player(pygame.sprite.Sprite):
         # Controlla se l'animazione è attiva
         if self.getIsWalking():
 
-            self.current_spriteWO += self.getAnimationSpeed() / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
-            self.current_spriteWVD += self.getAnimationSpeed() / GLOB.Delta_Time # è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
-            self.current_spriteWVU += self.getAnimationSpeed() / GLOB.Delta_Time
+            u = self.getUpPress() or self.Last_keyPressed == "Up"
+            d = self.getDownPress() or self.Last_keyPressed == "Down"
+            l = self.getLeftPress() or self.Last_keyPressed == "Left"
+            r = self.getRightPress() or self.Last_keyPressed == "Right"
 
-            # Controllo di non uscire dal range dei frames possibili
-            if self.current_spriteWO >= len(self.animationWO):
-                self.current_spriteWO = 0
+            # LEFT_KEY
 
-            # setta l'immagine di animazione attuale di walking
-            if self.getLeftPress():
-                self.image = self.animationWO[int(self.current_spriteWO)]
+            if l and not r:
+                print("Sto premendo A")
+                #è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
+                self.current_spriteWOL += self.getAnimationSpeed() / GLOB.Delta_Time
 
-            if self.current_spriteWVD >= len(self.animationWVD):
-                self.current_spriteWVD = 0
+                # Controllo di non uscire dal range dei frames possibili
+                if self.current_spriteWOL >= len(self.animationWO) or self.getRightPress():
+                    self.current_spriteWOL = 0
+
+                # setta l'immagine di animazione attuale di walking
+                self.image = self.animationWO[int(self.current_spriteWOL)]
+
+
+            # RIGHT_KEY
+
+            elif r and not l:
+                print("Sto premendo D")
+                self.current_spriteWOR += self.getAnimationSpeed() / GLOB.Delta_Time
+
+                if self.current_spriteWOR >= len(self.animationWO)or self.getLeftPress():
+                    self.current_spriteWOR = 0
+                    
+                self.image = self.animationWO[int(self.current_spriteWOR)]
+
+
+            # DOWN_KEY
+
+            elif d and not u:
+                print("Sto premendo S")
+                self.current_spriteWVD += self.getAnimationSpeed() / GLOB.Delta_Time
+
+                if self.current_spriteWVD >= len(self.animationWVD):
+                    self.current_spriteWVD = 0
             
-            self.image = self.animationWVD[int(self.current_spriteWVD)]
+                self.image = self.animationWVD[int(self.current_spriteWVD)]
 
-            if self.current_spriteWVU >= len(self.animationWVU):
-                self.current_spriteWVU = 0
-            
-            self.image = self.animationWVU[int(self.current_spriteWVU)]
+
+            # UP_KEY
+
+            elif u and not d:
+                print("Sto premendo W")
+                self.current_spriteWVU += self.getAnimationSpeed() / GLOB.Delta_Time
+
+                if self.current_spriteWVU >= len(self.animationWVU):
+                    self.current_spriteWVU = 0
+                
+                self.image = self.animationWVU[int(self.current_spriteWVU)]
+
+            else:
+                print("Conflitto tra il movimento")
+                self.finish()
+                return
+
 
             if var==0:
                 self.character = pygame.image.load(
@@ -382,7 +422,7 @@ class Player(pygame.sprite.Sprite):
         #print(self.animation_speed)
 
     def setHitbox(self):
-        self.hitbox = (self.x + 14 * GLOB.MULT /GLOB.Player_proportion, self.y + 35 * GLOB.MULT /GLOB.Player_proportion, 26* GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion)
+        self.hitbox = (self.x + 20 * GLOB.MULT /GLOB.Player_proportion, self.y + 35 * GLOB.MULT /GLOB.Player_proportion, 15 * GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion)
 
     # setta l'animazione della camminata a vera
     def animate(self):
@@ -391,12 +431,12 @@ class Player(pygame.sprite.Sprite):
     # setta l'animazione della camminata a falso e rimette le variabili a default
     def finish(self):
         self.setIsWalking(False)
-        self.current_spriteWO = 0
+        self.current_spriteWOL = 0
+        self.current_spriteWOR = 0
         self.current_spriteWVD = 0
         self.current_spriteWVU = 0
 
         # imposta un'animazione di default dopo aver eseguito l'ultima
-        self.image = self.animationWO[int(self.current_spriteWO)]
         self.character = pygame.image.load(
             os.path.join(self.Name_animationWVD,'Walk0.png')).convert_alpha()
 

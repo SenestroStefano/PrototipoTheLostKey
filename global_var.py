@@ -13,13 +13,13 @@ FPS = 30 * Delta_Time
 MULT = 3
 
 # rapporto offset telecamera dello schermo MAX 40
-Moff = 40
+Moff = 30
 
 # rapporto audio del gioco
 AU = 5
 
 # rapporto musica del gioco
-MU = 5
+MU = 0
 
 Scelta = 0
 Cam_visible = False

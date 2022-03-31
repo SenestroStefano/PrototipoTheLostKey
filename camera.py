@@ -25,7 +25,7 @@ class Cam():
 
         self.image = pygame.transform.scale(self.image,((self.width*GLOB.MULT*3), (self.height*GLOB.MULT*3)))
 
-        self.Player_hitbox = [ 14 * GLOB.MULT /GLOB.Player_proportion, 35 * GLOB.MULT /GLOB.Player_proportion, 26 * GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion]
+        self.Player_hitbox = [ 20 * GLOB.MULT /GLOB.Player_proportion, 35 * GLOB.MULT /GLOB.Player_proportion, 15 * GLOB.MULT /GLOB.Player_proportion, 10 * GLOB.MULT /GLOB.Player_proportion]
 
 
     def setPositionX(self, x):
@@ -44,7 +44,9 @@ class Cam():
     def update(self):
         #GLOB.screen.blit(self.image, (self.x, self.y))
 
-        self.offset = (4 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
+        self.offset = (5 * GLOB.Moff * GLOB.MULT, 2.25 * GLOB.Moff * GLOB.MULT)
+
+        #print(GLOB.Moff)
 
         a =  main.player.getPositionX() >= GLOB.screen_width - self.offset[0] - main.player.width
         b =  main.player.getPositionX() <= self.offset[0]
