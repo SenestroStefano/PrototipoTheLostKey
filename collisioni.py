@@ -59,13 +59,13 @@ class Map():
 
                 if condition and object != None:
                     GLOB.screen.blit(object, (main.cam.getPositionX()+x * GLOB.MULT, main.cam.getPositionY()+y * GLOB.MULT))
-                    #print("Render | Oggetto a schermo!", object)
+                    print("\n- Render | Oggetto a schermo!", object)
                     
                 if condition and hitbox != None:
                     collisione = pygame.Rect((main.cam.getPositionX()+(x+hitbox[0]) * GLOB.MULT),(main.cam.getPositionY()+(y+hitbox[1]) * GLOB.MULT), hitbox[2] * GLOB.MULT, hitbox[3] * GLOB.MULT)
-                    #print("Render | Collisione Oggetto Impostata!", collisione)
+                    print("- Render | Collisione Oggetto Impostata!", collisione,"\n")
                     main.player.HasCollision(collisione)
-                
+
                     if GLOB.Debug and not GLOB.Drop_Frames:
                         pygame.draw.rect(GLOB.screen, (255,0,0), collisione, int(1*GLOB.MULT))
 
@@ -91,9 +91,9 @@ class Map():
                         collisione = self.tiles_oggetti.get(lista_chiavi[value])[2]
 
                     self.render(lista = event, object = self.tiles_oggetti.get(lista_chiavi[value])[0], var = self.tiles_oggetti.get(lista_chiavi[value])[1], hitbox = collisione)
-                    print("Render_object | Oggetto Caricato!")
+                    print(str(lista_chiavi[value])+" | Oggetto Caricato!")
                 except KeyError:
-                    print("Render_object | Errore nel caricare l'oggetto")
+                    print(str(lista_chiavi[value])+" | Errore nel caricare l'oggetto")
 
     def render_collision(self, event):
         self.render(event, None, 3, (0, 0, 32, 32))
@@ -132,6 +132,5 @@ chimica_collisioni = [
 [6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6],
 [6,7,7,7,7,7,7,7,7,7,7,7,6],
 [6,6,6,6,6,6,6,6,6,6,6,6,6]
-
 
 ]
