@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
 
         self.Last_keyPressed = "Null"
 
-        self.collision_state = {'top': False, 'bottom': False, 'right': False, 'left': False}
+        self.collision_state = {'top': False, 'bottom': False, 'left': False, 'right': False}
 
         #hitbox del player
         self.setHitbox()
@@ -157,9 +157,12 @@ class Player(pygame.sprite.Sprite):
     def getAnimationSpeed(self):
         return self.__animation_speed
 
+    def getHitCollision(self, var):
+        self.collision_state = {'top': self.flag_top, 'bottom': self.flag_bottom, 'left': self.flag_left, 'right': self.flag_right}
+        return self.collision_state[var]
+
     # aggiorna a schermo l'immagine attuale del Player
     def character_update(self,var):
-
         # Controlla se l'animazione è attiva
         if self.getIsWalking():
 
@@ -171,10 +174,9 @@ class Player(pygame.sprite.Sprite):
             # LEFT_KEY
 
             if l and not r:
-                print("Sto premendo A")
                 #è un float perchè quando arriverà ad un int l'animazione cambiera quindi è come se fosse un delay
                 self.current_spriteWOL += self.getAnimationSpeed() / GLOB.Delta_Time
-
+ 
                 # Controllo di non uscire dal range dei frames possibili
                 if self.current_spriteWOL >= len(self.animationWO) or self.getRightPress():
                     self.current_spriteWOL = 0
@@ -186,7 +188,6 @@ class Player(pygame.sprite.Sprite):
             # RIGHT_KEY
 
             elif r and not l:
-                print("Sto premendo D")
                 self.current_spriteWOR += self.getAnimationSpeed() / GLOB.Delta_Time
 
                 if self.current_spriteWOR >= len(self.animationWO)or self.getLeftPress():
@@ -198,7 +199,6 @@ class Player(pygame.sprite.Sprite):
             # DOWN_KEY
 
             elif d and not u:
-                print("Sto premendo S")
                 self.current_spriteWVD += self.getAnimationSpeed() / GLOB.Delta_Time
 
                 if self.current_spriteWVD >= len(self.animationWVD):
@@ -210,7 +210,6 @@ class Player(pygame.sprite.Sprite):
             # UP_KEY
 
             elif u and not d:
-                print("Sto premendo W")
                 self.current_spriteWVU += self.getAnimationSpeed() / GLOB.Delta_Time
 
                 if self.current_spriteWVU >= len(self.animationWVU):
@@ -219,9 +218,7 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.animationWVU[int(self.current_spriteWVU)]
 
             else:
-                print("Conflitto tra il movimento")
                 self.finish()
-                return
 
 
             if var==0:
@@ -246,33 +243,34 @@ class Player(pygame.sprite.Sprite):
     def HasCollision(self, object):
 
         def Confronta(value):   # Creo una funziona dato che la utilizzo piu' volte e se gli passo "x" fa una cosa mentre se gli passo "y" ne fa un'altra
-            
-            self.finish()    # ogni volta che collido stoppo l'animazione del player
 
             if value=="x":  # confronto il valore passato
 
-                if self.hitbox[0] >= object.x:  # confronto se la posizione del player delle x è maggiore o uguale della posizione delle x dell'oggetto di cui ho collisione
+                if self.mesh.right >= object.right:  # confronto se la posizione del player delle x è maggiore o uguale della posizione delle x dell'oggetto di cui ho collisione
                     self.x += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setLeftPress(False)    # ogni volta che collido dal lato sinistro non posso riandare a ricliccare il pulsante destro
-                    return True # ritorno un valore perchè dopo lo vado ad utilizzare
-                elif self.hitbox[2] <= object.x:
+                    self.collision_state["right"] = True
+                elif self.mesh.left <= object.left:
                     self.x -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setRightPress(False)    # ogni volta che collido dal lato destro non posso riandare a ricliccare il pulsante sinistro
-                    return False # ritorno un valore perchè dopo lo vado ad utilizzare
+                    self.collision_state["left"] = True
 
             if value=="y":  # confronto il valore passato
 
-                if self.hitbox[1] >= object.y:  # confronto se la posizione del player delle y è maggiore o uguale della posizione delle y dell'oggetto di cui ho collisione
+                if self.mesh.bottom >= object.bottom:  # confronto se la posizione del player delle y è maggiore o uguale della posizione delle y dell'oggetto di cui ho collisione
                     self.y += GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setUpPress(False)    # ogni volta che collido dal lato basso non posso riandare a ricliccare il pulsante alto
-                    return True # ritorno un valore perchè dopo lo vado ad utilizzare
-                elif self.hitbox[3] <= object.y:
+                    self.collision_state["bottom"] = True
+                elif self.mesh.top <= object.top:
                     self.y -= GLOB.Player_speed    # ogni volta che collido vado a settare la posizione del player indietro grazie alla sua velocità
                     self.setDownPress(False)    # ogni volta che collido dal lato alto non posso riandare a ricliccare il pulsante basso
-                    return False # ritorno un valore perchè dopo lo vado ad utilizzare
+                    self.collision_state["top"] = True
             
 
         if self.mesh.colliderect(object):   # Metodo di pygame che confronta se due rettangoli collidono
+
+            self.finish()    # ogni volta che collido stoppo l'animazione del player
+            self.character = pygame.transform.scale(self.character, (self.width, self.height))
 
             # Setto diverse variabili per non ripeterli nei confronti
             w = (self.Last_keyPressed == "Up")
@@ -288,36 +286,18 @@ class Player(pygame.sprite.Sprite):
             c1 =  (self.getUpPress() and a or self.getDownPress() and a)
             d1 =  (self.getUpPress() and d or self.getDownPress() and d)
 
-            # print("\n\nSinistro o Destro and Sù: ",str(a1))
-            # print("Sinistro o Destro and Giù: ",str(b1))
-            # print("Alto o Basso and Sinistra: ",str(c1))
-            # print("Alto o Basso and Destra: ",str(d1))
 
-            # print("\nup: "+str(self.getUpPress())+" |down: "+str(self.getDownPress())+" |left: "+str(self.getLeftPress())+" |right: "+str(self.getRightPress())+"\n")
-            
             if self.Last_keyPressed != "Null":  # Confronto se il giocatore è fermo o si sta muovendo
 
                 if (a1 or b1) and (not c1 and not d1):  # se è stato premuto il pulsante destro/sinistro e NON quello alto o basso mentre si ha una collisione allora:
 
                     Confronta("x")  # richiamo la funzione
-
-                    if Confronta("x"):  # se la funzione mi ritorna True allora:
-                        self.setLeftPress(False)
-                    else:  # se la funzione mi ritorna False allora:
-                        self.setRightPress(False)
-
                     self.Last_keyPressed = "Null"   # Variabile usata per non dare errori dato che l'ultimo pulsante cliccato sono l'insieme di due in contemporanea
 
                     
                 if (c1 or d1) and (not a1 and not b1):  # se è stato premuto il pulsante alto/basso e NON con quello sinistro o destro mentre si ha una collisione allora:
 
                     Confronta("y")  # richiamo la funzione
-
-                    if Confronta("y"):  # se la funzione mi ritorna True allora:
-                        self.setUpPress(False)
-                    else:  # se la funzione mi ritorna False allora:
-                        self.setDownPress(False)
-
                     self.Last_keyPressed = "Null"   # Variabile usata per non dare errori dato che l'ultimo pulsante cliccato sono l'insieme di due in contemporanea
                     
 
@@ -329,12 +309,21 @@ class Player(pygame.sprite.Sprite):
             else:
                 Confronta("y")
                 Confronta("x")
-                #self.setAllkeys(None)
+
+        else:
+            if (self.current_spriteWOL or self.current_spriteWOR or self.current_spriteWVD or self.current_spriteWVU) > 0:
+                self.collision_state["top"] = False
+                self.collision_state["bottom"] = False
+                self.collision_state["left"] = False
+                self.collision_state["right"] = False
+            #self.setAllkeys(None)
 
     # Funzione che serve ad aggiornare la velocità attuale del giocatore la velocità da' un'impressione Smooth
     def update(self):
         self.setVelocitaX(0)
         self.setVelocitaY(0)
+
+        #print(self.collision_state)
 
         getUp = self.getUpPress()
         getDown = self.getDownPress()
@@ -406,6 +395,9 @@ class Player(pygame.sprite.Sprite):
             self.setIsWalking(True)
             self.character_update(0) # richiamo la funzione di aggiorna l'animazione
 
+        if (getLeft and getRight) or (getUp and getDown):
+            self.finish()
+
         self.x += self.getVelocitaX()
         self.y += self.getVelocitaY()
 
@@ -442,8 +434,7 @@ class Player(pygame.sprite.Sprite):
 
     def load_playerSurface(self):
         self.surface = pygame.Surface((self.width, self.value_surface), pygame.SRCALPHA)
-        value = 13
 
-        self.surface.blit(self.character, (-value * GLOB.MULT, 0))
+        self.surface.blit(self.character, (0, 0))
 
-        GLOB.screen.blit(self.surface, (self.getPositionX() + value * GLOB.MULT, self.getPositionY()))
+        GLOB.screen.blit(self.surface, (self.getPositionX(), self.getPositionY()))

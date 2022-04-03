@@ -1,7 +1,6 @@
 import pygame
 import global_var as GLOB
 import main
-from collections import OrderedDict
 
 class Map():
     def __init__(self, risoluzione, tipo_stanza, path):
@@ -10,6 +9,8 @@ class Map():
         self.tiles_risoluzione = risoluzione
         self.tiles_mappa = pygame.image.load(path+"nero.png").convert()
         self.tiles_immagini = {}
+        self.posX = 0
+        self.posY = 0
         val = None
 
         self.tiles_collisioni = {
@@ -48,12 +49,12 @@ class Map():
         self.tiles_mappa = pygame.transform.scale(self.tiles_mappa, (self.tiles_mappa.get_width() * GLOB.MULT, self.tiles_mappa.get_height() * GLOB.MULT))
 
     def render(self, lista, object, var, hitbox):
-        x = 0
-        y = 0
+        x = self.posX
+        y = self.posY
 
         for valore_y in range(len(lista)):
 
-            x = 0
+            x = self.posX
             for valore_x in range(len(lista[valore_y])):
                 condition = lista[valore_y][valore_x] == var
 
@@ -101,6 +102,8 @@ class Map():
 
     def render_map(self, pos):
         GLOB.screen.blit(self.tiles_mappa, (main.cam.getPositionX() + pos[0] * GLOB.MULT, main.cam.getPositionY() + pos[1] * GLOB.MULT))
+        self.posX = pos[0]
+        self.posY = pos[1]
 
 
 

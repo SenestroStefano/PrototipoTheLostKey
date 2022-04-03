@@ -21,6 +21,9 @@ AU = 5
 # rapporto musica del gioco
 MU = 0
 
+# Timer del gioco
+Timer = 25
+
 Scelta = 0
 Cam_visible = False
 

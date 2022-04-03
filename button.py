@@ -495,7 +495,6 @@ class Timer():
 			d = self.getSeconds() + var - 60
 			
 			self.__seconds += var * GLOB.FPS
-			#print(self.getSeconds())
 
 			if self.getSeconds() >= 59:
 				self.__seconds = d * GLOB.FPS
