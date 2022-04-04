@@ -1,0 +1,163 @@
+import pygame, sys
+import global_var as GLOB
+
+class Delay():
+    def __init__(self, sec, event):
+        self.__min = 0
+        self.__max = sec * GLOB.FPS
+        self.__increment = 1
+        self.__function = event
+        self.__flag = True
+        self.__times = 0
+
+    # | Avvia il delay -> Poi si interromperà |
+    def Start(self):
+        if self.__flag:
+            self.__min += self.__increment
+
+            if int(self.__min) >= self.__max:
+                self.__function()
+                self.__flag = False
+
+    # | Restarta il delay |
+    def ReStart(self):
+        if not self.__flag:
+            self.__min = 0
+            self.__flag = True
+
+    # | Imposta il delay a infinito |
+    def Infinite(self):
+        self.ReStart()
+        self.Start()
+
+    def TotTimes(self, val):
+        if self.__times <= val * GLOB.FPS:
+            self.ReStart()
+            self.Start()
+            self.__times += 1
+
+    # | Stampa lo stato attuale del delay |
+    def ActualState(self):
+        print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__min/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
+
+
+
+class Transizione():
+    def __init__(self, mappa, character, vel):
+        self.___mappa = mappa
+        self.__character = character
+        self.__vel = vel
+        self.__delay = Delay(sec = self.__vel, event = self.sgrana)
+        self.superficie = pygame.surface.Surface((GLOB.screen_width, GLOB.screen_height))
+        self.superficie.fill((0,0,0))
+        self.val_scurisci = 0
+        self.val_sgrana = 1
+        self.flag_reverse = False
+        self.flag_sgrana = False
+        self.iFinished = False
+
+        self.__loadImages()
+
+    def Start(self):
+        self.__delay.Infinite()
+
+    def sgrana(self):
+
+        if not self.iFinished:
+
+            print(self.val_scurisci, self.val_sgrana)
+
+            if not self.flag_reverse:
+                self.val_sgrana += 4
+                self.val_scurisci += 16
+            else:
+                self.val_sgrana -= 4
+                self.val_scurisci -= 16
+
+            if self.val_sgrana >= 310 or self.val_scurisci >= 255:
+                self.__loadImages()
+            elif self.val_sgrana <= 1:
+                self.__loadImages()
+
+            if self.val_scurisci >= 310:
+                self.val_scurisci = 310
+                self.val_sgrana = 1
+                self.flag_reverse = True
+            elif self.val_scurisci <= 0:
+                self.val_scurisci = 0
+                self.val_sgrana = 1
+                self.flag_reverse = False
+                self.iFinished = True
+
+            if self.val_sgrana >= 256:
+                self.val_sgrana = 256
+                self.flag_sgrana = True
+            elif self.val_sgrana <= 1:
+                self.val_sgrana = 1
+                self.flag_sgrana = False
+
+            num_alpha = 250
+
+            self.mappa.set_alpha(self.val_sgrana+num_alpha)
+            self.immagine.set_alpha(self.val_sgrana+num_alpha)
+            self.superficie.set_alpha(self.val_scurisci)
+
+                
+            self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() / GLOB.MULT, self.immagine.get_height() / GLOB.MULT))
+            self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() * GLOB.MULT, self.immagine.get_height() * GLOB.MULT))
+            
+            self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() / GLOB.MULT, self.mappa.get_height() / GLOB.MULT))                
+            self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT, self.mappa.get_height() * GLOB.MULT))
+
+
+    def __loadImages(self):
+        self.immagine = pygame.image.load("Characters_Image/"+self.__character).convert_alpha()
+        self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() * GLOB.MULT, self.immagine.get_height() * GLOB.MULT))
+        
+        self.mappa = pygame.image.load("mappa/"+self.___mappa).convert()
+        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT, self.mappa.get_height() * GLOB.MULT))
+
+
+
+def inizializza():
+    global clock, animazione
+    pygame.display.set_caption("Effetto")
+    clock = pygame.time.Clock()
+    animazione = Transizione(mappa = "Mappa.png", character = "Senex.png" ,vel = 0.05)
+
+
+def disegna():
+    GLOB.screen.fill((0,0,0))
+
+    animazione.Start()
+    GLOB.screen.blit(animazione.mappa, (animazione.val_sgrana, animazione.val_sgrana))
+    GLOB.screen.blit(animazione.immagine, (GLOB.screen_width/2 - animazione.immagine.get_width()/2 + animazione.val_sgrana, GLOB.screen_height/2 - animazione.immagine.get_height()/2 + animazione.val_sgrana))
+
+    GLOB.screen.blit(animazione.superficie, (0, 0))
+    #rettangolo = pygame.Rect(GLOB.screen_width/2 - immagine.get_width()/2, GLOB.screen_height/2 - immagine.get_height()/2, immagine.get_width(), immagine.get_height())
+    #pygame.draw.rect(GLOB.screen, (255, 0, 0), rettangolo, 1)
+
+def main():
+    inizializza()
+
+    while True:
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                animazione.iFinished = False
+
+        disegna()
+
+        clock.tick(GLOB.FPS)
+        pygame.display.flip()
+
+
+
+if __name__ == "__main__":
+    pygame.init()
+    main()
