@@ -31,7 +31,7 @@ class Delay():
         self.Start()
 
     def TotTimes(self, val):
-        if self.__times <= val * GLOB.FPS:
+        if self.__times <= val:
             self.ReStart()
             self.Start()
             self.__times += 1
