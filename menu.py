@@ -4,7 +4,7 @@ from button import Bar
 from pygame import mixer
 import global_var as GLOB
 
-import main
+import main, animazione
 from global_var import screen
 from pioggia import Rain
 

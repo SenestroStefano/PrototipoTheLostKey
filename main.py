@@ -2,9 +2,10 @@ import pandas as pd
 import pygame, os, sys
 
 #Importo i vari file e classi necessarie
-import giocatore, menu, camera, debug, collisioni, animazione
+import giocatore, menu, camera, debug, collisioni
 from button import Bar, Button, Dialoghi, Timer
 from pygame import mixer
+from animazione import Transizione
 
 
 # Importo le variabili Globali
@@ -14,22 +15,20 @@ def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("font/font.ttf", size)
 
 
-
 def SetPlayer_speed():
     global sceltaG
+
+    """
+
+             --- Cambio il personaggio in base alla scelta del giocatore ---
+        
+
+    """
 
     GLOB.Player_speed = 2 * GLOB.MULT / GLOB.Delta_Time / GLOB.Player_proportion
     GLOB.Player_default_speed = GLOB.Player_speed
     
-    if GLOB.Scelta==0:
-        
-        # SceltaG è il percorso dove si trovano i sprite per le animazioni
-        sceltaG="/Senex"
-
-        # In base alla statistica della velolità del giocatore vado ad impostrare la velocità corrente che deve avere il player nel gioco
-        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
-
-    elif GLOB.Scelta==1:
+    if GLOB.Scelta==1:
         sceltaG="/Seima"
         GLOB.PlayerRun_speed = 1 + GLOB.Seima_Stat[0]/10
     elif GLOB.Scelta==2:
@@ -42,26 +41,21 @@ def SetPlayer_speed():
         sceltaG="/Giulio"
         GLOB.PlayerRun_speed = 1 + GLOB.Dark_Stat[0]/10
     else:
+        # SceltaG è il percorso dove si trovano i sprite per le animazioni
         sceltaG="/Senex"
+
+        # In base alla statistica della velolità del giocatore vado ad impostrare la velocità corrente che deve avere il player nel gioco
         GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
 
 
-#funzione di default
-def inizializza():
-    global player, cam, timer, clock, collisions, animazione
-
+def SetPlayer_sprite():
+    global Folder_walkO, Folder_walkVD, Folder_walkVU
+    
     """
- --- Cambio il personaggio in base alla scelta del giocatore ---
-        
-    """
-
-    SetPlayer_speed()
+ 
+            ---   Setto il percorso degli sprite ---
 
 
-
-    """
- ---   Setto il percorso degli sprite ---
-        
     """
     
     #(0 => "/Senex" - 1 => "/Seima" - 2 => "/Alexandra" - 3 => "/XPeppoz" - 4 => "/Giulio" - Default => "/Senex")
@@ -94,8 +88,18 @@ def inizializza():
     riempi(Folder_walkVD)
     riempi(Folder_walkVU)
 
+#funzione di default
+def inizializza():
+    global player, cam, timer, clock, collisions, animazione
+
+    SetPlayer_speed()
+
+    SetPlayer_sprite()
+
     # Inizializzazione Tupla di animazioni
     character_image = (GLOB.PlayerWalkingVD,GLOB.PlayerWalkingVU,GLOB.PlayerWalkingO)
+    
+    GLOB.Default_Character = 'Characters'+sceltaG+'/WalkVerticalD/Walk0.png'
 
     # Ottengo la larghezza e l'altezza che ha il giocatore nell'immagine ( questo per evitare di allungarla in modo sbagliato e non proporzionale )
     Player_width = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).convert().get_width() * GLOB.MULT / GLOB.Player_proportion
@@ -114,10 +118,8 @@ def inizializza():
         print("Tempo Scaduto!")
         inizializza()
 
-    GLOB.Default_Character = 'Characters'+sceltaG+'/WalkVerticalD/Walk0.png'
-
     timer = Timer(minutes = GLOB.Timer, molt_sec = 1, event = miaFunzione)
-    animazione = animazione.Transizione(vel = 0.05)
+    animazione = Transizione(vel = 0.05)
 
     collisions = collisioni.Map(risoluzione = 32, tipo_stanza = "Chimica", path = "mappa/Tiles/")
     load_images()
@@ -341,7 +343,6 @@ def pausa():
 
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
                      options_audio()
-                     print("Per ora non faccio ancora nulla")
 
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     menu.main_menu()

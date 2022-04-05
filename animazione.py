@@ -1,6 +1,6 @@
 import pygame, sys
 import global_var as GLOB
-import main
+import main, menu
 
 class Delay():
     def __init__(self, sec, event):
@@ -69,8 +69,6 @@ class Transizione():
 
     def sgrana(self):
 
-        print(GLOB.PlayerCanMove)
-
         if not self.iFinished:
 
             if not self.flag_reverse:
@@ -138,10 +136,10 @@ class Transizione():
             self.schermo.fill((0,0,0))
 
             self.Start()
-            self.schermo.blit(self.mappa, (-self.val_sgrana * GLOB.MULT + main.cam.getPositionX(), -self.val_sgrana * GLOB.MULT + main.cam.getPositionY()))
+            self.schermo.blit(self.mappa, (-self.val_sgrana * GLOB.MULT + main.cam.getPositionX() + GLOB.MULT, -self.val_sgrana * GLOB.MULT + main.cam.getPositionY() + GLOB.MULT))
 
-            self.schermo.blit(self.ombra, (main.player.getPositionX() -self.val_sgrana * GLOB.MULT, main.player.getPositionY()-2.5*GLOB.MULT/GLOB.Player_proportion -self.val_sgrana * GLOB.MULT))
-            self.schermo.blit(self.immagine, (main.player.getPositionX() -self.val_sgrana * GLOB.MULT, main.player.getPositionY() -self.val_sgrana * GLOB.MULT))
+            self.schermo.blit(self.ombra, (main.player.getPositionX() -self.val_sgrana * GLOB.MULT + GLOB.MULT, main.player.getPositionY()-2.5*GLOB.MULT/GLOB.Player_proportion -self.val_sgrana * GLOB.MULT + GLOB.MULT))
+            self.schermo.blit(self.immagine, (main.player.getPositionX() -self.val_sgrana * GLOB.MULT + GLOB.MULT, main.player.getPositionY() -self.val_sgrana * GLOB.MULT + GLOB.MULT))
 
             self.schermo.blit(self.superficie, (0, 0))
             GLOB.screen.blit(self.schermo, (0, 0))
