@@ -63,6 +63,11 @@ DF_height = 270
 screen_width = DF_width * MULT
 screen_height = DF_height * MULT
 
+Default_Character = 'Characters/Senex/WalkOrizontal/Walk0.png'
+Default_Map = 'mappa/Stanze/AulaChimica/chimica.png'
+
+PlayerCanMove = True
+
 # Configurazione Schermo
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption(TITLE)

@@ -2,7 +2,7 @@ import pandas as pd
 import pygame, os, sys
 
 #Importo i vari file e classi necessarie
-import giocatore, menu, camera, debug, collisioni
+import giocatore, menu, camera, debug, collisioni, animazione
 from button import Bar, Button, Dialoghi, Timer
 from pygame import mixer
 
@@ -13,15 +13,11 @@ import global_var as GLOB
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("font/font.ttf", size)
 
-#funzione di default
-def inizializza():
-    global player, cam, timer, clock, collisions
 
-    """
- --- Cambio il personaggio in base alla scelta del giocatore ---
-        
-    """
-    
+
+def SetPlayer_speed():
+    global sceltaG
+
     GLOB.Player_speed = 2 * GLOB.MULT / GLOB.Delta_Time / GLOB.Player_proportion
     GLOB.Player_default_speed = GLOB.Player_speed
     
@@ -48,6 +44,18 @@ def inizializza():
     else:
         sceltaG="/Senex"
         GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
+
+
+#funzione di default
+def inizializza():
+    global player, cam, timer, clock, collisions, animazione
+
+    """
+ --- Cambio il personaggio in base alla scelta del giocatore ---
+        
+    """
+
+    SetPlayer_speed()
 
 
 
@@ -106,7 +114,10 @@ def inizializza():
         print("Tempo Scaduto!")
         inizializza()
 
+    GLOB.Default_Character = 'Characters'+sceltaG+'/WalkVerticalD/Walk0.png'
+
     timer = Timer(minutes = GLOB.Timer, molt_sec = 1, event = miaFunzione)
+    animazione = animazione.Transizione(vel = 0.05)
 
     collisions = collisioni.Map(risoluzione = 32, tipo_stanza = "Chimica", path = "mappa/Tiles/")
     load_images()
@@ -120,9 +131,18 @@ def load_images():
     collisions.load_images("Bancone_chimica6", 5)
     collisions.load_images("Bancone_chimica7", 6)
     collisions.load_images("Bancone_chimica8", 7)
-    collisions.load_map("mappa/Stanze/AulaChimica/chimica.png")
+    collisions.load_map(GLOB.Default_Map)
 
 def disegna():
+
+    if animazione.iFinished:
+        GLOB.PlayerCanMove = True
+    else:
+        GLOB.PlayerCanMove = False
+        player.setAllkeys(False)
+        player.finish()
+        SetPlayer_speed()
+
 
     timer.Start()
         
@@ -141,6 +161,8 @@ def disegna():
     player.load_playerSurface()
 
     timer.Show()
+
+    animazione.disegna()
 
 #Funzione Volume e Audio del gioco
 def options_audio():
@@ -423,39 +445,43 @@ def main():
         for event in pygame.event.get(): # per ogni evento che viene eseguito in pygame.event.get()
             keys_pressed = pygame.key.get_pressed()
 
+
             if event.type == pygame.QUIT:
                 run = False
 
-            if event.type == pygame.KEYDOWN:
-                key_pressed(event,True)
-                # print("Ultima key: ",player.Last_keyPressed)
-                
-            if event.type == pygame.KEYUP:
-                key_pressed(event,False)
-                player.Last_keyPressed = "Null"
-
             if keys_pressed[pygame.K_ESCAPE]:
-                # run = False
-                # menu.main_menu()
                 pausa()
 
-        # if int(clock.get_fps())<110:
-        #     print("| fps: "+str(int(clock.get_fps()))) # Per mostrare gli GLOB.FPS
-            if keys_pressed[pygame.K_F3]:
-        
-                if not GLOB.Debug:
-                    GLOB.Debug = True
-                    GLOB.Cam_visible = True
-                elif GLOB.Debug:
-                    GLOB.Debug = False
-                    GLOB.Cam_visible = False
+            if GLOB.PlayerCanMove:
 
-            if keys_pressed[pygame.K_k]:
+                if event.type == pygame.KEYDOWN:
+                    key_pressed(event,True)
+                    # print("Ultima key: ",player.Last_keyPressed)
+                    
+                if event.type == pygame.KEYUP:
+                    key_pressed(event,False)
+                    player.Last_keyPressed = "Null"
+
+                if keys_pressed[pygame.K_l]:
+                    animazione.iFinished = False
+
+            # if int(clock.get_fps())<110:
+            #     print("| fps: "+str(int(clock.get_fps()))) # Per mostrare gli GLOB.FPS
+                if keys_pressed[pygame.K_F3]:
             
-                if not GLOB.Dialogo:
-                    GLOB.Dialogo = True
-                elif GLOB.Debug:
-                    GLOB.Dialogo = False
+                    if not GLOB.Debug:
+                        GLOB.Debug = True
+                        GLOB.Cam_visible = True
+                    elif GLOB.Debug:
+                        GLOB.Debug = False
+                        GLOB.Cam_visible = False
+
+                if keys_pressed[pygame.K_k]:
+                
+                    if not GLOB.Dialogo:
+                        GLOB.Dialogo = True
+                    elif GLOB.Debug:
+                        GLOB.Dialogo = False
 
         disegna()
 
