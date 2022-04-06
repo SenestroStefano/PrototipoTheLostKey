@@ -62,7 +62,7 @@ class Transizione():
         self.flag_sgrana = False
         self.iFinished = True
 
-        self.__loadImages()
+        self.__loadImagesANDconvert()
 
     def Start(self):
         self.__delay.Infinite()
@@ -79,22 +79,20 @@ class Transizione():
                 self.val_scurisci -= 16
 
             if self.val_sgrana >= 310 or self.val_scurisci >= 255:
-                self.__loadImages()
+                self.__loadImagesANDconvert()
             elif self.val_sgrana <= 1:
-                self.__loadImages()
+                self.__loadImagesANDconvert()
 
             if self.val_scurisci >= 310:
                 self.val_scurisci = 310
-                self.val_sgrana = 1
                 self.flag_reverse = True
             elif self.val_scurisci <= 0:
                 self.val_scurisci = 0
-                self.val_sgrana = 1
                 self.flag_reverse = False
                 self.iFinished = True
 
-            if self.val_sgrana >= 256:
-                self.val_sgrana = 256
+            if self.val_sgrana >= 64:
+                self.val_sgrana = 64
                 self.flag_sgrana = True
             elif self.val_sgrana <= 1:
                 self.val_sgrana = 1
@@ -106,26 +104,31 @@ class Transizione():
             self.immagine.set_alpha(self.val_sgrana+num_alpha)
             self.superficie.set_alpha(self.val_scurisci)
 
+            if not self.flag_reverse:
+                self.__sgrana()
+            else:
+                self.__loadImagesANDconvert()
+                self.__sgrana()
 
-            self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width() / self.val_sgrana, self.ombra.get_height() / self.val_sgrana))
-            self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width() * self.val_sgrana + self.val_sgrana, self.ombra.get_height() * self.val_sgrana + self.val_sgrana))
-                
-            self.immagine = pygame.transform.scale(self.immagine, (self.immagine.get_width() / self.val_sgrana, self.immagine.get_height() / self.val_sgrana))
-            self.immagine = pygame.transform.scale(self.immagine, (self.immagine.get_width() * self.val_sgrana + self.val_sgrana, self.immagine.get_height() * self.val_sgrana + self.val_sgrana))
+    def __sgrana(self):
+        self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width() / self.val_sgrana, self.ombra.get_height() / self.val_sgrana))
+        self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width() * self.val_sgrana + self.val_sgrana, self.ombra.get_height() * self.val_sgrana + self.val_sgrana))
             
-            self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() / self.val_sgrana, self.mappa.get_height() / self.val_sgrana))                
-            self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * self.val_sgrana + self.val_sgrana, self.mappa.get_height() * self.val_sgrana + self.val_sgrana))
-
-
-    def __loadImages(self):
-
-        self.ombra = pygame.image.load("assets/ombra.png").convert_alpha()
-        self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width()*GLOB.MULT/GLOB.Player_proportion,self.ombra.get_height()*GLOB.MULT/GLOB.Player_proportion))
-
-        self.immagine = pygame.image.load(self.__character).convert_alpha()
-        self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() * GLOB.MULT, self.immagine.get_height() * GLOB.MULT))
+        self.immagine = pygame.transform.scale(self.immagine, (self.immagine.get_width() / self.val_sgrana, self.immagine.get_height() / self.val_sgrana))
+        self.immagine = pygame.transform.scale(self.immagine, (self.immagine.get_width() * self.val_sgrana + self.val_sgrana, self.immagine.get_height() * self.val_sgrana + self.val_sgrana))
         
+        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() / self.val_sgrana, self.mappa.get_height() / self.val_sgrana))                
+        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * self.val_sgrana + self.val_sgrana, self.mappa.get_height() * self.val_sgrana + self.val_sgrana))
+        
+    def __loadImages(self):
+        self.ombra = pygame.image.load("assets/ombra.png").convert_alpha()
+        self.immagine = pygame.image.load(self.__character).convert_alpha()
         self.mappa = pygame.image.load(self.___mappa).convert()
+
+    def __loadImagesANDconvert(self):
+        self.__loadImages()
+        self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width()*GLOB.MULT/GLOB.Player_proportion,self.ombra.get_height()*GLOB.MULT/GLOB.Player_proportion))
+        self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() * GLOB.MULT, self.immagine.get_height() * GLOB.MULT))
         self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT, self.mappa.get_height() * GLOB.MULT))
 
 

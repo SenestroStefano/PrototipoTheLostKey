@@ -139,7 +139,9 @@ def disegna():
 
     if animazione.iFinished:
         GLOB.PlayerCanMove = True
+        timer.DePause()
     else:
+        timer.Pause()
         GLOB.PlayerCanMove = False
         player.setAllkeys(False)
         player.finish()
