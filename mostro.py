@@ -13,26 +13,38 @@ class Mostro():
         self.vel = vel
         self.x, self.y = GLOB.screen.get_rect().center
         self.line_vector = pygame.math.Vector2(1, 0)
-        self.angle = 0
+        self.angle = 90
+        self.angle_triangle = 0
 
 
     def aggiorna(self):
         radius = 360
         rot_vector = self.line_vector.rotate(self.angle) * radius
-        start = round(self.x + rot_vector.x), round(self.y + rot_vector.y)
-        end = round(self.x), round(self.y)
-        #pygame.draw.line(GLOB.screen, (5,80,255), start, end, 8)
-        self.triangle = pygame.draw.polygon(surface=GLOB.screen, color=(255,0,0), points=[start, (start[0] + self.width, start[1]), (end[0] + self.width/2, end[1] - self.height)])
+        start = round(self.x), round(self.y)
+        end = round(self.x - rot_vector.x), round(self.y - rot_vector.y)
+        self.line = pygame.draw.line(GLOB.screen, (5,80,255), start, end, 8)
 
-        print(" Punto Y: ",start, " Punto Z: ", start[0] + self.width, start[1], " Punto X: ", end[0] + self.width/2, end[1] - self.height)
+        val = 2
+
+        immagine = pygame.image.load("Characters_Image/luce.png").convert_alpha()
+        immagine = pygame.transform.scale(immagine, (immagine.get_width() * GLOB.MULT * val, immagine.get_height() * GLOB.MULT * val))
+
+        immagine = pygame.transform.flip(immagine, False, False)
+        immagine = pygame.transform.rotate(immagine, self.angle_triangle)
+
+        GLOB.screen.blit(immagine, (GLOB.screen_width/2 - int(immagine.get_width()/2)  - rot_vector.x/2, GLOB.screen_height/2 - int(immagine.get_height()/2) - rot_vector.y/2))
+
+        print(" Punto X: ",start,  " Punto Y: ", end)
 
     def ruota_destra(self):
         self.angle += 1
+        self.angle_triangle -= 1
 
         print(self.angle)
 
     def ruota_sinistra(self):
         self.angle -= 1
+        self.angle_triangle += 1
 
         print(self.angle)
 
@@ -43,7 +55,7 @@ def inizializza():
     global clock, animazione, mostro
     pygame.display.set_caption("Effetto")
     clock = pygame.time.Clock()
-    mostro = Mostro((500,500), 20, (50 * GLOB.MULT, 50 * GLOB.MULT))
+    mostro = Mostro((500,500), 20, (10 * GLOB.MULT, 80 * GLOB.MULT))
 
 
 def disegna():
