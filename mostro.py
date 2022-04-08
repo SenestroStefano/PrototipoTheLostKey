@@ -4,7 +4,7 @@ import global_var as GLOB
 
 
 
-class Mostro():
+class Mostro(pygame.sprite.Sprite):
     def __init__(self, pos, vel, wh):
         self.x = pos[0]
         self.y = pos[1]
@@ -15,7 +15,6 @@ class Mostro():
         self.line_vector = pygame.math.Vector2(1, 0)
         self.angle = 90
         self.angle_triangle = 0
-
 
     def aggiorna(self):
         radius = 360
@@ -32,9 +31,18 @@ class Mostro():
         immagine = pygame.transform.flip(immagine, False, False)
         immagine = pygame.transform.rotate(immagine, self.angle_triangle)
 
+        mask_image = immagine.convert()
+        mask_image.set_colorkey("#e40000")
+        mask = pygame.mask.from_surface(mask_image)
+
         GLOB.screen.blit(immagine, (GLOB.screen_width/2 - int(immagine.get_width()/2)  - rot_vector.x/2, GLOB.screen_height/2 - int(immagine.get_height()/2) - rot_vector.y/2))
 
         print(" Punto X: ",start,  " Punto Y: ", end)
+
+        rect = pygame.Rect(MENU_MOUSE_POS[0], MENU_MOUSE_POS[1], 1, 1) 
+        print(rect)
+        if not pygame.sprite.collide_mask(mask, rect):
+            print("Sto collidendo")
 
     def ruota_destra(self):
         self.angle += 1
@@ -57,7 +65,6 @@ def inizializza():
     clock = pygame.time.Clock()
     mostro = Mostro((500,500), 20, (10 * GLOB.MULT, 80 * GLOB.MULT))
 
-
 def disegna():
     GLOB.screen.fill((12,24,36))
     mostro.aggiorna()
@@ -66,11 +73,12 @@ def disegna():
 
 def testa():
     inizializza()
+    global MENU_MOUSE_POS
 
     while True:
 
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
