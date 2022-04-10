@@ -24,6 +24,15 @@ class Mostro():
         end = round(self.x - rot_vector.x), round(self.y - rot_vector.y)
         self.line = pygame.draw.line(GLOB.screen, (5,80,255), start, end, 8)
 
+        lunghezza, altezza = 200, 150
+
+        self.surface = pygame.Surface((lunghezza, altezza))
+        self.surface.fill((0,0,255))
+
+        self.triangle = pygame.draw.polygon(self.surface, (255,0,0), [(0, 0), (lunghezza, 0), (lunghezza-100, altezza)])
+
+        self.surface = pygame.transform.rotate(self.surface, self.angle_triangle)
+
         val = 2
 
         immagine = pygame.image.load("Characters_Image/luce.png").convert_alpha()
@@ -31,6 +40,9 @@ class Mostro():
 
         immagine = pygame.transform.flip(immagine, False, False)
         immagine = pygame.transform.rotate(immagine, self.angle_triangle)
+
+
+        GLOB.screen.blit(self.surface, (0,0))
 
         GLOB.screen.blit(immagine, (GLOB.screen_width/2 - int(immagine.get_width()/2)  - rot_vector.x/2, GLOB.screen_height/2 - int(immagine.get_height()/2) - rot_vector.y/2))
 
