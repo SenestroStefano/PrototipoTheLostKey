@@ -399,15 +399,25 @@ class Dialoghi():
 
 # risposte (risposta1, risposta2, risposta3)
 class Dialoghi_Interattivi():
-	def __init__(self, personaggio, descrizione, enigma_testo, risposte, soluzione, text_speed):
-		self.personaggio = personaggio
-		self.descr = descrizione
-		self.descr = self.descr.split("\n")
+	def __init__(self, oggetto, descrizione, enigma_testo, risposte, soluzione, text_speed):
+		self.oggetto = oggetto
+		self.descr = descrizione.split("\n")
+		self.enigma_testo = enigma_testo.split("\n")
+		
+		self.risposte = risposte
+		self.soluzione = soluzione
 
 		for var in range(len(self.descr)):
 			if self.descr[var] == "VAR":
 				self.descr[var] = GLOB.Scelta
 
+
+		for var in range(len(self.enigma_testo)):
+			if self.enigma_testo[var] == "VAR":
+				self.enigma_testo[var] = GLOB.Scelta
+
+
+		self.enigma_testo = "".join(self.enigma_testo)
 		self.descr = "".join(self.descr)
 
 		self.delay = 0
@@ -459,10 +469,10 @@ class Dialoghi_Interattivi():
 		self.descr = [self.descr[i:i+1] for i in range(0, len(self.descr), 1)]
 		#print(self.descr)
     		
-		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.personaggio, True, "Black")
+		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.oggetto, True, "Black")
 		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
 
-		self.vignetta = pygame.image.load("Dialoghi/Characters/"+self.personaggio+".png").convert_alpha()
+		self.vignetta = pygame.image.load("Dialoghi/Characters/"+self.oggetto+".png").convert_alpha()
 		self.vignetta = pygame.transform.scale(self.vignetta, (self.vignetta.get_width()*GLOB.MULT*2, self.vignetta.get_height()*GLOB.MULT*2))
 
 		self.sfondo = pygame.image.load("assets/Dialoghi.png").convert_alpha()

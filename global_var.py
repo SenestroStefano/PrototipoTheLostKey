@@ -71,3 +71,29 @@ PlayerCanMove = True
 # Configurazione Schermo
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption(TITLE)
+
+
+def setCharacter():
+    Player_speed = 2 * MULT / Delta_Time / Player_proportion
+    Player_default_speed = Player_speed
+    
+    if Scelta==1:
+        scelta_char = "Seima"
+        PlayerRun_speed = 1 + Seima_Stat[0]/10
+    elif Scelta==2:
+        scelta_char="Aleks"
+        PlayerRun_speed = 1 + Aleks_Stat[0]/10
+    elif Scelta==3:
+        scelta_char="Beppe"
+        PlayerRun_speed = 1 + Beppe_Stat[0]/10
+    elif Scelta==4:
+        scelta_char="DarkAngel"
+        PlayerRun_speed = 1 + Dark_Stat[0]/10
+    else:
+        # SceltaG è il percorso dove si trovano i sprite per le animazioni
+        scelta_char="Senex"
+
+        # In base alla statistica della velolità del giocatore vado ad impostrare la velocità corrente che deve avere il player nel gioco
+        PlayerRun_speed = 1 + Senex_Stat[0]/10
+
+    scelta_Rep = "/" + scelta_char
