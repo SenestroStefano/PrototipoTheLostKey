@@ -38,6 +38,15 @@ class Mostro(pygame.sprite.Sprite):
 
         self.triangle = pygame.draw.polygon(surface=GLOB.screen, color=(255, 0, 0),points=[start_line, (lunghezza1, fine), (lunghezza2, fine)])
 
+        lunghezza, altezza = 200, 150
+
+        self.surface = pygame.Surface((lunghezza, altezza))
+        self.surface.fill((0,0,255))
+
+        self.triangle = pygame.draw.polygon(self.surface, (255,0,0), [(0, 0), (lunghezza, 0), (lunghezza-100, altezza)])
+
+        self.surface = pygame.transform.rotate(self.surface, self.angle_triangle)
+
         val = 2
 
         immagine = pygame.image.load("Characters_Image/luce.png").convert_alpha()
@@ -46,9 +55,8 @@ class Mostro(pygame.sprite.Sprite):
         immagine = pygame.transform.flip(immagine, False, False)
         immagine = pygame.transform.rotate(immagine, self.angle_triangle)
 
-        # mask_image = immagine.convert()
-        # mask_image.set_colorkey("#e40000")
-        # mask = pygame.mask.from_surface(mask_image)
+
+        GLOB.screen.blit(self.surface, (0,0))
 
         GLOB.screen.blit(immagine, (GLOB.screen_width/2 - int(immagine.get_width()/2)  - rot_vector.x/2, GLOB.screen_height/2 - int(immagine.get_height()/2) - rot_vector.y/2))
 
