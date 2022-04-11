@@ -67,6 +67,9 @@ class Transizione():
     def Start(self):
         self.__delay.Infinite()
 
+    def aggiorna_mappa(self):
+        self.___mappa = GLOB.Default_Map
+
     def sgrana(self):
 
         if not self.iFinished:
@@ -127,8 +130,8 @@ class Transizione():
 
     def __loadImagesANDconvert(self):
         self.__loadImages()
-        self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width()*GLOB.MULT/GLOB.Player_proportion,self.ombra.get_height()*GLOB.MULT/GLOB.Player_proportion))
-        self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() * GLOB.MULT, self.immagine.get_height() * GLOB.MULT))
+        self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width()*GLOB.MULT / GLOB.Player_proportion,self.ombra.get_height()*GLOB.MULT / GLOB.Player_proportion))
+        self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() * GLOB.MULT / GLOB.Player_proportion, self.immagine.get_height() * GLOB.MULT / GLOB.Player_proportion))
         self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT, self.mappa.get_height() * GLOB.MULT))
 
 

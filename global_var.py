@@ -4,7 +4,7 @@ TITLE = "The Lost Keys"
 # Valori di proporzione
 
 Delta_Time = 2 # Delta_Time (Congliabile 1/2)
-Player_proportion = 1 # Divisore della grandezza del giocatore
+Player_proportion = 0.7 # Divisore della grandezza del giocatore
 
 #FPS
 FPS = 30 * Delta_Time
@@ -30,6 +30,7 @@ Cam_visible = False
 Debug = False
 
 Dialogo = False
+Enigma = False
 
 Drop_Frames = False
 
@@ -53,8 +54,8 @@ Dark_Stat = [ 3, 8, 7, 9, 10, 8, 6, 7, 6, 2 ]
 
 Stats = ( Senex_Stat, Seima_Stat, Aleks_Stat, Beppe_Stat, Dark_Stat )
 
-#Background_Color = (12, 24, 36)
-Background_Color = (0, 0, 0)
+Background_Color = (12, 24, 36)
+#Background_Color = (0, 0, 0)
 
 # Dimensione Schermo
 DF_width = 480

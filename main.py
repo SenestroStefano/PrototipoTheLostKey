@@ -3,10 +3,10 @@ import pygame, os, sys
 
 #Importo i vari file e classi necessarie
 import giocatore, menu, camera, debug, collisioni
-from button import Bar, Button, Dialoghi, Timer
+from button import Bar, Button, Dialoghi, Dialoghi_Interattivi, Timer
 from pygame import mixer
 from animazione import Transizione
-
+import stanze
 
 # Importo le variabili Globali
 import global_var as GLOB
@@ -100,18 +100,24 @@ def inizializza():
     animazione = Transizione(vel = 0.05)
 
     collisions = collisioni.Map(risoluzione = 32, tipo_stanza = "Chimica", path = "mappa/Tiles/")
-    load_images()
 
-def load_images():
-    collisions.load_images("Bancone_chimica1", 0)
-    collisions.load_images("Bancone_chimica2", 1)
-    collisions.load_images("Bancone_chimica3", 2)
-    collisions.load_images("Bancone_chimica4", 3)
-    collisions.load_images("Bancone_chimica5", 4)
-    collisions.load_images("Bancone_chimica6", 5)
-    collisions.load_images("Bancone_chimica7", 6)
-    collisions.load_images("Bancone_chimica8", 7)
-    collisions.load_map(GLOB.Default_Map)
+
+def load_collisions(file):
+    csv = pd.read_csv("MappaGioco/Tileset/Stanze/1-PianoTerra/"+collisions.tiles_stanza+"/"+file)
+    csv = list(csv.values)
+    #print(csv)
+    collisions.render_object(event = csv)
+    collisions.render_gamemapCollision(lista = csv, var = 6, collisione = (0, 0, 32, 32))
+    collisions.render_gamemapCollision(lista = csv, var = 12, collisione = (0, 0, 32, 32))
+    collisions.render_gamemapCollision(lista = csv, var = 15, collisione = (0, 16, 32, 16))
+    collisions.render_gamemapCollision(lista = csv, var = 0, collisione = None)
+    # collisions.render_gamemapCollision(lista = csv, var = 3, collisione = (0, 0, 32, 8))
+
+def load_images(mappa, oggetti):
+    # for var in range(len(oggetti)):
+    #     collisions.load_images(oggetti[var][0], oggetti[var][1])
+
+    collisions.load_map(mappa)
 
 def disegna():
 
@@ -136,9 +142,7 @@ def disegna():
 
     player.update() # richiama la funzione di aggiornamento del giocatore
 
-    collisions.render_object(event = collisioni.chimica_oggetti)
-    collisions.render_gamemapCollision(lista = collisioni.chimica_collisioni, var = 6, collisione = (0, 0, 32, 32))
-    collisions.render_gamemapCollision(lista = collisioni.chimica_collisioni, var = 3, collisione = (0, 0, 32, 8))
+    stanze.caricaStanza()
 
     player.load_playerSurface()
 
@@ -464,6 +468,13 @@ def main():
                     elif GLOB.Debug:
                         GLOB.Dialogo = False
 
+                if keys_pressed[pygame.K_n]:
+                    
+                    if not GLOB.Enigma:
+                        GLOB.Enigma = True
+                    elif GLOB.Debug:
+                        GLOB.Enigma = False
+
         disegna()
 
 
@@ -475,6 +486,16 @@ def main():
                 player.finish()
                 Racconto.stampa()
             GLOB.Dialogo = False
+
+
+        if GLOB.Enigma:
+                #print(len(df.values))
+            for row in range(len(df.values)):
+                Enigma = Dialoghi_Interattivi(oggetto = df.values[0][0], descrizione = df.values[row][1], risposte = 0,  soluzione = 0,  difficolta = 0, text_speed = 3,)
+                player.setAllkeys(False)
+                player.finish()
+                Enigma.stampa()
+            GLOB.Enigma = False
         
         # Debugging
         console = debug.Debug()

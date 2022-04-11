@@ -411,17 +411,19 @@ class Dialoghi():
 
 # risposte (risposta1, risposta2, risposta3)
 class Dialoghi_Interattivi():
-	def __init__(self, oggetto, descrizione, risposte, soluzione, text_speed):
+	def __init__(self, oggetto, descrizione, risposte, soluzione, difficolta, text_speed):
 		self.oggetto = oggetto
+		self.difficolta = difficolta
 		self.descr = descrizione.split("\n")		
 		self.risposte = risposte
 		self.soluzione = soluzione
+		self.descr = "".join(self.descr)
 
+		self.descr = descrizione.split(" ")	
 		for var in range(len(self.descr)):
 			if self.descr[var] == "VAR":
 				self.descr[var] = GLOB.scelta_char
-
-		self.descr = "".join(self.descr)
+		self.descr = " ".join(self.descr)
 
 		self.delay = 0
 
@@ -430,17 +432,12 @@ class Dialoghi_Interattivi():
 		self.descrizione2 = ""
 		self.descrizione3 = ""
 
-		# print(self.descr.split(" "))
-		# print(len(self.descr.split(" ")))
-
-		# self.lunghezza = self.descr.split(" ")
-
 		self.r0 = False
 		self.r1 = False
 		self.r2 = False
 		self.r3 = False
 
-		self.value = 64
+		self.value = 86
 		self.valore = 0
 		self.flag_capo = True
 
@@ -471,14 +468,14 @@ class Dialoghi_Interattivi():
 
 		self.descr = [self.descr[i:i+1] for i in range(0, len(self.descr), 1)]
 		#print(self.descr)
-    		
-		self.Nome_TEXT = get_font(7*int(GLOB.MULT)).render(self.oggetto, True, "Black")
-		self.Nome_RECT = self.Nome_TEXT.get_rect(center=(70*GLOB.MULT, GLOB.screen_height-10*GLOB.MULT))
+
+		self.background = pygame.image.load("assets/Dialoghi-Sfondo1.png").convert()
+		self.background = pygame.transform.scale(self.background, (self.background.get_width()*GLOB.MULT, self.background.get_height()*GLOB.MULT))
 
 		self.vignetta = pygame.image.load("Dialoghi/Characters/"+self.oggetto+".png").convert_alpha()
 		self.vignetta = pygame.transform.scale(self.vignetta, (self.vignetta.get_width()*GLOB.MULT*2, self.vignetta.get_height()*GLOB.MULT*2))
 
-		self.sfondo = pygame.image.load("assets/Dialoghi.png").convert_alpha()
+		self.sfondo = pygame.image.load("assets/dialoghi-risposta.png").convert_alpha()
 		self.sfondo = pygame.transform.scale(self.sfondo, (self.sfondo.get_width()*GLOB.MULT, self.sfondo.get_height()*GLOB.MULT))
 
 		self.keySound = mixer.Sound("suoni/char-sound.wav")
@@ -501,7 +498,7 @@ class Dialoghi_Interattivi():
     		
 		max = not int((self.delay+1)) > len(self.descr)
 
-		valuex, valuey = 70, 55
+		valuex, valuey = 45, 55
 		distanza_righe = 12.5
 
 		def Condition(event):
@@ -658,9 +655,9 @@ class Dialoghi_Interattivi():
     		
 			self.__effetto_testo()
 
+			GLOB.screen.blit(self.background, (0,0))
 			GLOB.screen.blit(self.sfondo, (0, GLOB.screen_height-self.sfondo.get_height()))
-			GLOB.screen.blit(self.vignetta, (42.5*GLOB.MULT, GLOB.screen_height-self.vignetta.get_height()-18*GLOB.MULT))
-			GLOB.screen.blit(self.Nome_TEXT, self.Nome_RECT)
+			GLOB.screen.blit(self.vignetta, (150*GLOB.MULT, 80*GLOB.MULT))
 			
 			if self.r0:
 				GLOB.screen.blit(self.Descrizione_TEXT, self.Descrizione_RECT)
@@ -674,7 +671,7 @@ class Dialoghi_Interattivi():
 			if self.r3:
 				GLOB.screen.blit(self.Descrizione3_TEXT, self.Descrizione3_RECT)
 
-			avanza = Button(image=pygame.image.load("assets/tasello.png").convert(), pos=(132*GLOB.MULT,  GLOB.screen_height-12*GLOB.MULT), 
+			avanza = Button(image=pygame.image.load("assets/tasello.png").convert(), pos=(80*GLOB.MULT,  GLOB.screen_height-12*GLOB.MULT), 
 								text_input="", font=pygame.font.Font("font/font.ttf", (8*int(GLOB.MULT))), base_color="White", hovering_color="#d7fcd4", scale=1.8)
 
 			if self.interm == 0 or self.cooldown_interm != GLOB.FPS / 10:
