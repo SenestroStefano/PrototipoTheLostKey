@@ -74,6 +74,7 @@ pygame.display.set_caption(TITLE)
 
 
 def setCharacter():
+    global Player_speed, Player_default_speed, PlayerRun_speed, scelta_char, scelta_rep
     Player_speed = 2 * MULT / Delta_Time / Player_proportion
     Player_default_speed = Player_speed
     
@@ -87,7 +88,7 @@ def setCharacter():
         scelta_char="Beppe"
         PlayerRun_speed = 1 + Beppe_Stat[0]/10
     elif Scelta==4:
-        scelta_char="DarkAngel"
+        scelta_char="Dark Angel"
         PlayerRun_speed = 1 + Dark_Stat[0]/10
     else:
         # SceltaG è il percorso dove si trovano i sprite per le animazioni
@@ -96,4 +97,7 @@ def setCharacter():
         # In base alla statistica della velolità del giocatore vado ad impostrare la velocità corrente che deve avere il player nel gioco
         PlayerRun_speed = 1 + Senex_Stat[0]/10
 
-    scelta_Rep = "/" + scelta_char
+    scelta_rep = "/" + scelta_char
+
+
+setCharacter()

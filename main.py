@@ -16,8 +16,6 @@ def get_font(size): # Returns Press-Start-2P in the desired size
 
 
 def SetPlayer_speed():
-    global sceltaG
-
     """
 
              --- Cambio il personaggio in base alla scelta del giocatore ---
@@ -25,27 +23,7 @@ def SetPlayer_speed():
 
     """
 
-    GLOB.Player_speed = 2 * GLOB.MULT / GLOB.Delta_Time / GLOB.Player_proportion
-    GLOB.Player_default_speed = GLOB.Player_speed
-    
-    if GLOB.Scelta==1:
-        sceltaG="/Seima"
-        GLOB.PlayerRun_speed = 1 + GLOB.Seima_Stat[0]/10
-    elif GLOB.Scelta==2:
-        sceltaG="/Alexandra"
-        GLOB.PlayerRun_speed = 1 + GLOB.Aleks_Stat[0]/10
-    elif GLOB.Scelta==3:
-        sceltaG="/XPeppoz"
-        GLOB.PlayerRun_speed = 1 + GLOB.Beppe_Stat[0]/10
-    elif GLOB.Scelta==4:
-        sceltaG="/Giulio"
-        GLOB.PlayerRun_speed = 1 + GLOB.Dark_Stat[0]/10
-    else:
-        # SceltaG è il percorso dove si trovano i sprite per le animazioni
-        sceltaG="/Senex"
-
-        # In base alla statistica della velolità del giocatore vado ad impostrare la velocità corrente che deve avere il player nel gioco
-        GLOB.PlayerRun_speed = 1 + GLOB.Senex_Stat[0]/10
+    GLOB.setCharacter()
 
 
 def SetPlayer_sprite():
@@ -59,9 +37,9 @@ def SetPlayer_sprite():
     """
     
     #(0 => "/Senex" - 1 => "/Seima" - 2 => "/Alexandra" - 3 => "/XPeppoz" - 4 => "/Giulio" - Default => "/Senex")
-    Folder_walkO = 'Characters'+sceltaG+'/WalkOrizontal'
-    Folder_walkVD = 'Characters'+sceltaG+'/WalkVerticalD'
-    Folder_walkVU = 'Characters'+sceltaG+'/WalkVerticalU'
+    Folder_walkO = 'Characters'+GLOB.scelta_rep+'/WalkOrizontal'
+    Folder_walkVD = 'Characters'+GLOB.scelta_rep+'/WalkVerticalD'
+    Folder_walkVU = 'Characters'+GLOB.scelta_rep+'/WalkVerticalU'
 
     # estrapolo tutti i file (sprite/immagini) dalla cartella selezionata
     def riempi(percorso):
@@ -99,7 +77,7 @@ def inizializza():
     # Inizializzazione Tupla di animazioni
     character_image = (GLOB.PlayerWalkingVD,GLOB.PlayerWalkingVU,GLOB.PlayerWalkingO)
     
-    GLOB.Default_Character = 'Characters'+sceltaG+'/WalkVerticalD/Walk0.png'
+    GLOB.Default_Character = 'Characters'+GLOB.scelta_rep+'/WalkVerticalD/Walk0.png'
 
     # Ottengo la larghezza e l'altezza che ha il giocatore nell'immagine ( questo per evitare di allungarla in modo sbagliato e non proporzionale )
     Player_width = pygame.image.load(os.path.join(Folder_walkVD,character_image[0][0])).convert().get_width() * GLOB.MULT / GLOB.Player_proportion
@@ -109,7 +87,7 @@ def inizializza():
     clock = pygame.time.Clock()
 
     # Fa Spawnare il giocatore e al centro dello schermo e con che velocità
-    player = giocatore.Player(GLOB.screen_width/2-Player_width/2, GLOB.screen_height/2-Player_height/2, sceltaG, Player_width, Player_height, character_image)
+    player = giocatore.Player(GLOB.screen_width/2-Player_width/2, GLOB.screen_height/2-Player_height/2, GLOB.scelta_rep, Player_width, Player_height, character_image)
 
     # Faccio nascere l'oggetto "cam"
     cam = camera.Cam()

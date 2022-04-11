@@ -41,26 +41,9 @@ def options():
         BG_Option = pygame.image.load("assets/Menu.png").convert()
         BG_Option = pygame.transform.scale(BG_Option, (GLOB.screen_width, GLOB.screen_height))
 
-        if GLOB.Scelta==0:
-            char = "Senex.png"
-            name = "Senex"
-        elif GLOB.Scelta==1:
-            char = "Seima.png"
-            name = "Seima"
-        elif GLOB.Scelta==2:
-            char = "Aleks.png"
-            name = "Aleks"
-        elif GLOB.Scelta==3:
-            char = "Beppe.png"
-            name = "Beppe"
-        elif GLOB.Scelta==4:
-            char = "Giulio.png"
-            name = "Dark Angel"
-        else:
-            char = "Senex.png"
-            name = "Senex"
+        GLOB.setCharacter()
 
-        NAME_TEXT = get_font(12*int(GLOB.MULT)).render(name, True, "#e9eef7")
+        NAME_TEXT = get_font(12*int(GLOB.MULT)).render(GLOB.scelta_char, True, "#e9eef7")
         NAME_RECT = NAME_TEXT.get_rect(center=(GLOB.screen_width/2, 80*GLOB.MULT))
 
 
@@ -74,7 +57,7 @@ def options():
         # OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(GLOB.screen_width/2, 20*GLOB.MULT))
         # screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
-        CHARACTER = pygame.image.load(os.path.join("Characters_Image",char)).convert_alpha()
+        CHARACTER = pygame.image.load(os.path.join("Characters_Image",GLOB.scelta_char+".png")).convert_alpha()
 
         Scala = 2.5 * GLOB.MULT
 

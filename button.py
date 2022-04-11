@@ -110,9 +110,21 @@ class Dialoghi():
 		
 		self.personaggio = personaggio
 		self.descr = descrizione
-		self.descr = self.descr.split("\n")
+		self.descr = descrizione.split("\n")
 		self.descr = "".join(self.descr)
 
+		
+		self.descr = self.descr.split(" ")
+
+		for var in range(len(self.descr)):
+
+			if self.descr[var] == "VAR":
+				# print("Trovato")
+				self.descr[var] = GLOB.scelta_char
+
+		self.descr = " ".join(self.descr)
+
+		
 		self.delay = 0
 
 		self.descrizione = ""
@@ -399,25 +411,16 @@ class Dialoghi():
 
 # risposte (risposta1, risposta2, risposta3)
 class Dialoghi_Interattivi():
-	def __init__(self, oggetto, descrizione, enigma_testo, risposte, soluzione, text_speed):
+	def __init__(self, oggetto, descrizione, risposte, soluzione, text_speed):
 		self.oggetto = oggetto
-		self.descr = descrizione.split("\n")
-		self.enigma_testo = enigma_testo.split("\n")
-		
+		self.descr = descrizione.split("\n")		
 		self.risposte = risposte
 		self.soluzione = soluzione
 
 		for var in range(len(self.descr)):
 			if self.descr[var] == "VAR":
-				self.descr[var] = GLOB.Scelta
+				self.descr[var] = GLOB.scelta_char
 
-
-		for var in range(len(self.enigma_testo)):
-			if self.enigma_testo[var] == "VAR":
-				self.enigma_testo[var] = GLOB.Scelta
-
-
-		self.enigma_testo = "".join(self.enigma_testo)
 		self.descr = "".join(self.descr)
 
 		self.delay = 0
