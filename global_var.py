@@ -54,8 +54,8 @@ Dark_Stat = [ 3, 8, 7, 9, 10, 8, 6, 7, 6, 2 ]
 
 Stats = ( Senex_Stat, Seima_Stat, Aleks_Stat, Beppe_Stat, Dark_Stat )
 
-Background_Color = (12, 24, 36)
-#Background_Color = (0, 0, 0)
+#Background_Color = (12, 24, 36)
+Background_Color = (0, 0, 0)
 
 # Dimensione Schermo
 DF_width = 480

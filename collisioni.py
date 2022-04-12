@@ -67,8 +67,14 @@ class Map():
                     #print("- Render | Collisione Oggetto Impostata!", collisione,"\n")
                     main.player.HasCollision(collisione)
 
-                    if GLOB.Debug and not GLOB.Drop_Frames:
+                    if GLOB.Debug:
                         pygame.draw.rect(GLOB.screen, (255,0,0), collisione, int(1*GLOB.MULT))
+                    # if GLOB.Debug and not GLOB.Drop_Frames:
+                    #     pygame.draw.rect(GLOB.screen, (255,0,0), collisione, int(1*GLOB.MULT))
+
+                if condition and GLOB.Debug and hitbox == None:
+                    oggetto = pygame.Rect((main.cam.getPositionX()+(x) * GLOB.MULT),(main.cam.getPositionY()+(y) * GLOB.MULT), 32 * GLOB.MULT, 32 * GLOB.MULT)
+                    pygame.draw.rect(GLOB.screen, (0,255,0), oggetto, int(1*GLOB.MULT))
 
                 x += self.tiles_risoluzione
 

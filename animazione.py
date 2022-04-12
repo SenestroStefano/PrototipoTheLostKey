@@ -45,7 +45,8 @@ class Delay():
 
 class Transizione():
     def __init__(self, vel):
-        self.___mappa = GLOB.Default_Map
+        self.flag_changeBg = True 
+        self.ImpostaSfondo()
         self.__character = GLOB.Default_Character
 
         self.__vel = vel
@@ -58,6 +59,7 @@ class Transizione():
         
         self.val_scurisci = 0
         self.val_sgrana = 1
+
         self.flag_reverse = False
         self.flag_sgrana = False
         self.iFinished = True
@@ -67,12 +69,19 @@ class Transizione():
     def Start(self):
         self.__delay.Infinite()
 
-    def aggiorna_mappa(self):
+    def ImpostaSfondo(self):
         self.___mappa = GLOB.Default_Map
-
+        self.mappa = pygame.image.load(self.___mappa).convert()
+        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT, self.mappa.get_height() * GLOB.MULT))
+        
     def sgrana(self):
 
+        if self.iFinished:
+            self.flag_changeBg = True
+
         if not self.iFinished:
+
+            self.flag_changeBg = False
 
             if not self.flag_reverse:
                 self.val_sgrana += 4

@@ -109,9 +109,7 @@ def load_collisions(file):
     collisions.render_object(event = csv)
     collisions.render_gamemapCollision(lista = csv, var = 6, collisione = (0, 0, 32, 32))
     collisions.render_gamemapCollision(lista = csv, var = 12, collisione = (0, 0, 32, 32))
-    collisions.render_gamemapCollision(lista = csv, var = 15, collisione = (0, 16, 32, 16))
-    collisions.render_gamemapCollision(lista = csv, var = 0, collisione = None)
-    # collisions.render_gamemapCollision(lista = csv, var = 3, collisione = (0, 0, 32, 8))
+    collisions.render_gamemapCollision(lista = csv, var = 5, collisione = None)
 
 def load_images(mappa, oggetti):
     # for var in range(len(oggetti)):
@@ -120,6 +118,9 @@ def load_images(mappa, oggetti):
     collisions.load_map(mappa)
 
 def disegna():
+
+    if animazione.flag_changeBg:
+        animazione.ImpostaSfondo()
 
     if animazione.iFinished:
         GLOB.PlayerCanMove = True
