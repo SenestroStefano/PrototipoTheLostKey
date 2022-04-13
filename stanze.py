@@ -4,8 +4,8 @@ import main
 
 
 def Chimica():
-    main.load_collisions("ChimicaProva_collisioni.csv")
-    GLOB.Default_Map = "MappaGioco/Tileset/Stanze/1-PianoTerra/Chimica/ChimicaProva.png"
+    main.load_collisions("ChimicaProva_CollisioniStefano.csv")
+    GLOB.Default_Map = "MappaGioco/Tileset/Stanze/1-PianoTerra/Chimica/Chimica.png"
 #    print(GLOB.Default_Map)
     main.load_images(GLOB.Default_Map, 0)
 

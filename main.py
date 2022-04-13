@@ -132,7 +132,6 @@ def disegna():
         player.finish()
         SetPlayer_speed()
 
-
     timer.Start()
         
     GLOB.screen.fill(GLOB.Background_Color)
