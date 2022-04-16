@@ -1,6 +1,6 @@
 import pygame, sys
 import global_var as GLOB
-import main, menu
+import main
 
 class Delay():
     def __init__(self, sec, event):
@@ -57,12 +57,12 @@ class Transizione():
         self.schermo = pygame.surface.Surface((GLOB.screen_width, GLOB.screen_height))
         self.schermo.fill((0,0,0))
         
-        self.val_scurisci = 0
+        self.val_scurisci = 300
         self.val_sgrana = 1
 
         self.flag_reverse = False
         self.flag_sgrana = False
-        self.iFinished = True
+        self.iFinished = False
 
         self.__loadImagesANDconvert()
 
@@ -70,9 +70,10 @@ class Transizione():
         self.__delay.Infinite()
 
     def ImpostaSfondo(self):
+        var = 2
         self.___mappa = GLOB.Default_Map
         self.mappa = pygame.image.load(self.___mappa).convert()
-        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT, self.mappa.get_height() * GLOB.MULT))
+        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT * var, self.mappa.get_height() * GLOB.MULT * var))
         
     def sgrana(self):
 
@@ -138,10 +139,11 @@ class Transizione():
         self.mappa = pygame.image.load(self.___mappa).convert()
 
     def __loadImagesANDconvert(self):
+        var = 2
         self.__loadImages()
         self.ombra = pygame.transform.scale(self.ombra, (self.ombra.get_width()*GLOB.MULT / GLOB.Player_proportion,self.ombra.get_height()*GLOB.MULT / GLOB.Player_proportion))
         self.immagine = pygame.transform.scale(self.immagine, ( self.immagine.get_width() * GLOB.MULT / GLOB.Player_proportion, self.immagine.get_height() * GLOB.MULT / GLOB.Player_proportion))
-        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT, self.mappa.get_height() * GLOB.MULT))
+        self.mappa = pygame.transform.scale(self.mappa, (self.mappa.get_width() * GLOB.MULT * var, self.mappa.get_height() * GLOB.MULT * var))
 
 
 

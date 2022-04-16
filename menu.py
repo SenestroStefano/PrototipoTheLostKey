@@ -348,6 +348,7 @@ def options():
                     setFullScreen()
 
             if flag_screen:
+                global rain
                 GLOB.screen_width = 480*GLOB.MULT
                 GLOB.screen_height = 270*GLOB.MULT
 
@@ -355,6 +356,8 @@ def options():
                     GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height))
                 else: 
                     GLOB.screen = pygame.display.set_mode((GLOB.screen_width,GLOB.screen_height),pygame.FULLSCREEN)
+
+                rain = Rain(screen, height = 60 * GLOB.MULT, speed = 12 * GLOB.MULT / GLOB.Delta_Time, color = (152, 164, 184, 255), numdrops = 270)
 
 
             button_sound = mixer.Sound("suoni/option-sound.wav")

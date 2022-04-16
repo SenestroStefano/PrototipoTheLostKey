@@ -1,4 +1,4 @@
-import pygame
+import pygame, os
 import global_var as GLOB
 import main
 
@@ -7,81 +7,151 @@ class Map():
         self.path = path
         self.tiles_stanza = tipo_stanza
         self.tiles_risoluzione = risoluzione
-        self.tiles_mappa = pygame.image.load(path+"nero.png").convert()
-        self.tiles_immagini = {}
+        self.tiles_mappa = pygame.Surface((0,0))
+        self.tiles_immagini = []
+        self.tiles_immagini_sprite = []
+        self.tiles_collisioni = {}
         self.posX = 0
         self.posY = 0
-        val = None
 
-        self.tiles_collisioni = {
-            "Bancone_chimica1" : (6, 12, 30, 14),
-            "Bancone_chimica2" : (0, 12, 24, 14),
-            "Banco" : (6, 12, 24, 14),
-            "Banco_obliquo" : (0, 0, 32, 32),
-        }
+        path = "MappaGioco/Tileset/Tileset_collisioni"
+        # self.__load_images("MappaGioco/Tileset/Tileset_Muri/Tiles")
+        self.__loadCollisions(path)
 
 
-        self.tiles_oggetti = {
-            
-            "Bancone_chimica1" : ["bancone1-0", val, self.tiles_collisioni.get("Bancone_chimica1")],
-            "Bancone_chimica2" : ["bancone1-1", val, self.tiles_collisioni.get("Bancone_chimica2")],
-            "Bancone_chimica3" : ["bancone2-0", val, self.tiles_collisioni.get("Bancone_chimica1")],
-            "Bancone_chimica4" : ["bancone2-1", val, self.tiles_collisioni.get("Bancone_chimica2")],
-            "Bancone_chimica5" : ["bancone3-0", val, self.tiles_collisioni.get("Bancone_chimica1")],
-            "Bancone_chimica6" : ["bancone3-1", val, self.tiles_collisioni.get("Bancone_chimica2")],
-            "Bancone_chimica7" : ["bancone4-0", val, self.tiles_collisioni.get("Bancone_chimica1")],
-            "Bancone_chimica8" : ["bancone4-1", val, self.tiles_collisioni.get("Bancone_chimica2")],
+        self.tiles_oggetti = {}
 
-            "Banco" : ["banco", val, self.tiles_collisioni.get("Banco")],
-            "Banco_obliquo" : ["banco-obliquo", val, self.tiles_collisioni.get("Banco_obliquo")],
-        }
+    def __loadCollisions(self, path):
 
-    def load_images(self, event, id):
-        self.tiles_oggetti[event][1] = id
-        #print(self.path+self.tiles_oggetti[event][0]+".png")
-        if str(type(self.tiles_oggetti[event][0])) != "<class 'pygame.Surface'>":
-            value = pygame.image.load(self.path+self.tiles_oggetti[event][0]+".png").convert_alpha()
-            value = pygame.transform.scale(value, (value.get_width() * GLOB.MULT, value.get_height() * GLOB.MULT))
-            self.tiles_oggetti[event][0] = value
+        def riempi(percorso):
+                FileNames = os.listdir(percorso)
+
+                # Ordino i file e gli appendo ad una lista, in modo che le animazioni siano lineari e ordinate
+                FileNames.sort()
+
+                for filename in FileNames:
+                    if filename[-3] == "p" and filename[-2] == "n" and filename[-1] == "g":
+                        self.tiles_immagini.append(filename)
+
+        def caricaCollisione():
+            for value in range(len(self.tiles_immagini)):
+                val = 8
+                rettangolo = pygame.image.load(path+"/"+self.tiles_immagini[value]).convert()
+                var = pygame.PixelArray(rettangolo)
+
+                #print(var)
+                x, y = 0, 0
+
+                startx ,starty = 0, 0
+                endx, endy = 0, 0
+
+                for colorey in var:
+                    # print(colorey)
+                    x = 0
+
+                    # ------- VERDE ------- 
+                    for colorex in colorey:
+                        if colorex == 65280:
+                            startx, starty = x, y
+                            # print("X: ",x, startx ,endx)
+                            # print("Y: ", y, starty, endy)
+
+                        # ------- ROSSO ------- 
+                        if colorex == 16711680:
+                            endx, endy = x - startx, y - starty
+                            # print("X: ",x, startx ,endx)
+                            # print("Y: ", y, starty, endy)
+
+                        x += val
+
+                    y += val
+
+                len_tileX = (self.tiles_risoluzione/2.5 - startx)
+                len_tileY = (self.tiles_risoluzione/2.5 - starty)
+                #len_tileY = 1 # da risolvere
+                self.tiles_collisioni[value] = (starty//len_tileX, startx//len_tileY, endy, endx)
+
+        riempi(path)
+        caricaCollisione()
+        # print(self.tiles_collisioni)
+
+
+    def __load_images(self, path):
+
+        lista = []
+
+        def riempi(percorso):
+            FileNames = os.listdir(percorso)
+
+            # Ordino i file e gli appendo ad una lista, in modo che le animazioni siano lineari e ordinate
+            FileNames.sort()
+
+            for filename in FileNames:
+                if filename[-3] == "p" and filename[-2] == "n" and filename[-1] == "g":
+                    lista.append(filename)
+            #print(self.path+self.tiles_oggetti[event][0]+".png")
+            #print(self.tiles_immagini_sprite)
+        
+        riempi(path)
+        
+        for value in range(len(lista)):
+            if str(type(lista[value])) != "<class 'pygame.Surface'>":
+                v = pygame.image.load(path+"/"+lista[value]).convert_alpha()
+                v = pygame.transform.scale(v, (v.get_width() * GLOB.MULT, v.get_height() * GLOB.MULT))
+                self.tiles_immagini_sprite.append(v)
+
+        #print(self.tiles_immagini_sprite)
 
     def load_map(self, path):
+        var = 2
         self.tiles_mappa = pygame.image.load(path).convert()
-        self.tiles_mappa = pygame.transform.scale(self.tiles_mappa, (self.tiles_mappa.get_width() * GLOB.MULT, self.tiles_mappa.get_height() * GLOB.MULT))
+        self.tiles_mappa = pygame.transform.scale(self.tiles_mappa, (self.tiles_mappa.get_width() * GLOB.MULT * var, self.tiles_mappa.get_height() * GLOB.MULT * var))
 
     def render(self, lista, object, var, hitbox):
         x = self.posX
         y = self.posY
+        value = 9.9 / GLOB.MULT
+        chunck = 32 * GLOB.MULT
+        chunck_render = pygame.Rect(main.player.x + 12 * GLOB.MULT /GLOB.Player_proportion, main.player.y + 25 * GLOB.MULT /GLOB.Player_proportion, chunck, chunck)
+
+        if GLOB.Debug:
+            pygame.draw.rect(GLOB.screen, (0,255,0), chunck_render, 4)
 
         for valore_y in range(len(lista)):
 
             x = self.posX
             for valore_x in range(len(lista[valore_y])):
                 condition = lista[valore_y][valore_x] == var
-
+                
                 if condition and object != None:
-                    GLOB.screen.blit(object, (main.cam.getPositionX()+x * GLOB.MULT, main.cam.getPositionY()+y * GLOB.MULT))
-                    #print("\n- Render | Oggetto a schermo!", object)
+                    if str(type(self.tiles_immagini_sprite[var])) == "<class 'pygame.Surface'>" and len(self.tiles_immagini_sprite) > 1:
+                        GLOB.screen.blit(self.tiles_immagini_sprite[var], (main.cam.getPositionX()+x * GLOB.MULT, main.cam.getPositionY()+y * GLOB.MULT))
+                        #print("\n- Render | Oggetto a schermo!", self.tiles_immagini_sprite[var])
+
+                if hitbox != None:
+                    oggetto = pygame.Rect((main.cam.getPositionX()+(x+self.tiles_collisioni[var][0]) * GLOB.MULT),(main.cam.getPositionY()+(y + self.tiles_collisioni[var][1]) * GLOB.MULT), self.tiles_collisioni[var][2]/value, self.tiles_collisioni[var][3]/value)
                     
-                if condition and hitbox != None:
-                    collisione = pygame.Rect((main.cam.getPositionX()+(x+hitbox[0]) * GLOB.MULT),(main.cam.getPositionY()+(y+hitbox[1]) * GLOB.MULT), hitbox[2] * GLOB.MULT, hitbox[3] * GLOB.MULT)
-                    #print("- Render | Collisione Oggetto Impostata!", collisione,"\n")
-                    main.player.HasCollision(collisione)
-
-                    if GLOB.Debug:
-                        pygame.draw.rect(GLOB.screen, (255,0,0), collisione, int(1*GLOB.MULT))
-                    # if GLOB.Debug and not GLOB.Drop_Frames:
-                    #     pygame.draw.rect(GLOB.screen, (255,0,0), collisione, int(1*GLOB.MULT))
-
-                if condition and GLOB.Debug and hitbox == None:
-                    oggetto = pygame.Rect((main.cam.getPositionX()+(x) * GLOB.MULT),(main.cam.getPositionY()+(y) * GLOB.MULT), 32 * GLOB.MULT, 32 * GLOB.MULT)
-                    pygame.draw.rect(GLOB.screen, (0,255,0), oggetto, int(1*GLOB.MULT))
+                    if condition and (oggetto.colliderect(chunck_render)):
+                        #print("- Render | Collisione Oggetto Impostata!", collisione,"\n")
+                        if hitbox:
+                            main.player.HasCollision(oggetto)
+                            if GLOB.Debug:
+                                pygame.draw.rect(GLOB.screen, (255,0,0), oggetto, int(1*GLOB.MULT))
+                        
+                        if not hitbox:
+                            pass
+                        
+                # if hitbox == None:
+                #     if GLOB.Debug:
+                #         oggetto = pygame.Rect((main.cam.getPositionX()+(x+self.tiles_collisioni[var][0]) * GLOB.MULT),(main.cam.getPositionY()+(y + self.tiles_collisioni[var][1]) * GLOB.MULT), self.tiles_collisioni[var][2]/value, self.tiles_collisioni[var][3]/value)
+                #         pygame.draw.rect(GLOB.screen, (0,255,0), oggetto, int(1*GLOB.MULT))
 
                 x += self.tiles_risoluzione
 
             y += self.tiles_risoluzione
 
-    def render_gamemapCollision(self, lista, var, collisione):
-        self.render(lista, None, var, collisione)
+    def render_gamemapCollision(self, object, lista, var, collisione):
+        self.render(lista, object, var, collisione)
 
     def render_object(self, event):
         lista_chiavi = list(self.tiles_oggetti.keys())
@@ -103,44 +173,7 @@ class Map():
                     #print(str(lista_chiavi[value])+" | Errore nel caricare l'oggetto")
                     pass
 
-    def render_collision(self, event):
-        self.render(event, None, 3, (0, 0, 32, 32))
-
     def render_map(self, pos):
         GLOB.screen.blit(self.tiles_mappa, (main.cam.getPositionX() + pos[0] * GLOB.MULT, main.cam.getPositionY() + pos[1] * GLOB.MULT))
         self.posX = pos[0]
         self.posY = pos[1]
-
-
-
-chimica_oggetti = [
-[-1],
-[-1],
-[-1],
-[-1],
-[-1],
-[-1,-1,6,1,-1,2,3,-1,4,5,-1],
-[-1],
-[-1,-1,2,3,-1,6,7,-1,6,7,-1],
-[-1],
-[-1,-1,4,5,-1,2,3,-1,0,3,-1],
-[-1]
-]
-
-chimica_collisioni = [
-
-[6,6,6,6,6,6,6,6,6,6,6,6],
-[6,0,0,0,0,0,0,0,0,0,0,6],
-[6,0,0,0,0,0,0,0,0,0,0,6],
-[6,3,3,3,3,3,3,3,3,3,3,6],
-[6,-1,11,10,-1,11,10,-1,11,10,-1,6],
-[6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6],
-[6,-1,11,10,-1,11,10,-1,11,10,-1,6],
-[6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6],
-[6,-1,11,10,-1,11,10,-1,11,10,-1,6],
-[6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6],
-[6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6],
-[6,7,7,7,7,7,7,7,7,7,7,7,6],
-[6,6,6,6,6,6,6,6,6,6,6,6,6]
-
-]

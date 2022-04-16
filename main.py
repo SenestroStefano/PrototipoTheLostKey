@@ -99,23 +99,46 @@ def inizializza():
     timer = Timer(minutes = GLOB.Timer, molt_sec = 1, event = miaFunzione)
     animazione = Transizione(vel = 0.05)
 
-    collisions = collisioni.Map(risoluzione = 32, tipo_stanza = "Chimica", path = "mappa/Tiles/")
+    collisions = collisioni.Map(risoluzione = 24, tipo_stanza = "Chimica", path = "MappaGioco/Tileset/Stanze/1-PianoTerra/")
 
 
-def load_collisions(file):
-    csv = pd.read_csv("MappaGioco/Tileset/Stanze/1-PianoTerra/"+collisions.tiles_stanza+"/"+file)
-    csv = list(csv.values)
-    #print(csv)
-    collisions.render_object(event = csv)
-    collisions.render_gamemapCollision(lista = csv, var = 6, collisione = (0, 0, 32, 32))
-    collisions.render_gamemapCollision(lista = csv, var = 12, collisione = (0, 0, 32, 32))
-    collisions.render_gamemapCollision(lista = csv, var = 5, collisione = None)
+def load_collisions():
 
-def load_images(mappa, oggetti):
-    # for var in range(len(oggetti)):
-    #     collisions.load_images(oggetti[var][0], oggetti[var][1])
+    def CaricaLista(file):
+        csv = pd.read_csv("MappaGioco/Tileset/Stanze/1-PianoTerra/"+collisions.tiles_stanza+"/"+file, header = None)
+        csv = list(csv.values)
 
-    collisions.load_map(mappa)
+        lista_valori = []
+
+
+        #print("csv",csv)
+        #print(GLOB.Drop_Frames)
+        # collisions.render_object(event = csv)
+        #print(clock.get_fps())
+        for value in range(len(csv)):
+            for val in csv[value]:
+                if val not in lista_valori and val != -1:
+                    lista_valori.append(val)
+        
+        lista_valori.sort()
+
+        tupla = (csv, lista_valori)
+        return tupla
+
+    l1 = CaricaLista("ChimicaProva_CollisioniStefano.csv")
+    # l2 = CaricaLista("ChimicaProva_Basamento.csv")
+
+    #print("\nLista valori",lista_valori)
+
+    for i in l1[1]:
+        if i >= 0 and i < 56:
+            CanCollide = True
+        elif i >= 56 and i < 112:
+            CanCollide = None
+        collisions.render_gamemapCollision(lista = l1[0], object= None, var = i, collisione = CanCollide)
+
+    # for i in l2[1]:
+    #     collisions.render_gamemapCollision(lista = l2[0], object= True, var = i, collisione = None)
 
 def disegna():
 
@@ -124,15 +147,18 @@ def disegna():
 
     if animazione.iFinished:
         GLOB.PlayerCanMove = True
-        timer.DePause()
+        #timer.DePause()
     else:
-        timer.Pause()
+        #timer.Pause()
         GLOB.PlayerCanMove = False
         player.setAllkeys(False)
         player.finish()
         SetPlayer_speed()
 
     timer.Start()
+
+    if timer.getSeconds() == 20:
+        timer.AddSeconds(70)
         
     GLOB.screen.fill(GLOB.Background_Color)
 
@@ -213,7 +239,7 @@ def options_audio():
             button_sound = mixer.Sound("suoni/option-sound.wav")
             keys_pressed = pygame.key.get_pressed()
 
-            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOPLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+            if event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOPLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
                 GLOB.AU += 1
 
                 if GLOB.AU > 10:
@@ -222,7 +248,7 @@ def options_audio():
                 button_sound.set_volume(0.16*GLOB.AU)
                 button_sound.play()
 
-            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOLESS_BUTTON.checkForInput(MENU_MOUSE_POS):
+            if event_pausa.type == pygame.MOUSEBUTTONDOWN and AUDIOLESS_BUTTON.checkForInput(MENU_MOUSE_POS):
                 GLOB.AU -= 1
 
                 if GLOB.AU < 0:
@@ -231,7 +257,7 @@ def options_audio():
                 button_sound.set_volume(0.16*GLOB.AU)
                 button_sound.play()
 
-            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and MUSICPLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+            if event_pausa.type == pygame.MOUSEBUTTONDOWN and MUSICPLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
                 GLOB.MU += 1
 
                 if GLOB.MU > 10:
@@ -240,7 +266,7 @@ def options_audio():
                 button_sound.set_volume(0.16*GLOB.MU)
                 button_sound.play()
 
-            if keys_pressed[pygame.K_ESCAPE] or event_pausa.type == pygame.MOUSEBUTTONDOWN and MUSICLESS_BUTTON.checkForInput(MENU_MOUSE_POS):
+            if event_pausa.type == pygame.MOUSEBUTTONDOWN and MUSICLESS_BUTTON.checkForInput(MENU_MOUSE_POS):
                 GLOB.MU -= 1
 
                 if GLOB.MU < 0:

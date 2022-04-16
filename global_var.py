@@ -16,10 +16,10 @@ MULT = 4
 Moff = 30
 
 # rapporto audio del gioco
-AU = 5
+AU = 1
 
 # rapporto musica del gioco
-MU = 5
+MU = 0
 
 # Timer del gioco
 Timer = 25
@@ -28,6 +28,7 @@ Scelta = 0
 Cam_visible = False
 
 Debug = False
+ShowFps = True
 
 Dialogo = False
 Enigma = False
@@ -65,7 +66,7 @@ screen_width = DF_width * MULT
 screen_height = DF_height * MULT
 
 Default_Character = 'Characters/Senex/WalkOrizontal/Walk0.png'
-Default_Map = 'mappa/Stanze/AulaChimica/chimica.png'
+Default_Map = 'MappaGioco/Tileset/Stanze/1-PianoTerra/Chimica/Chimica.png'
 
 PlayerCanMove = True
 

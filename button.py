@@ -808,6 +808,7 @@ class Timer():
 
 			if value != (m * 60):
 				self.__minutes -= 1
+
 		else:
 			self.__seconds += value * GLOB.FPS
 
@@ -826,7 +827,7 @@ class Timer():
 
 	def ActualState(self):
 		if self.__flag:
-			print("| Current Second: %d | Max Seconds: %d | Function: %s |" %(self.__minimal/GLOB.FPS, self.__max/GLOB.FPS, self.__function))
+			print("| Current Second: %d | Min Seconds: %d | Function: %s |" %(self.getSeconds() * self.getMinutes() * 60, self.__minimal/GLOB.FPS, self.__function))
 
 # var = 0
 
